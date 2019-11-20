@@ -1,0 +1,3 @@
+class UpcomingRequest {
+  int id;
+}

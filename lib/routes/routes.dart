@@ -1,0 +1,17 @@
+const String addressesRoute = "/addresses";
+const String checkoutRoute = "/checkout";
+const String contactUsRoute = "/contactUs";
+const String historyRoute = "/history";
+const String homeRoute = "/home";
+const String newAddressRoute = "/newAddress";
+const String profileEditRoute = "/profileEdit";
+const String profileRoute = "/profile";
+const String requestRoute = "/request";
+const String safetyTipRoute = "/safetyTip";
+const String landingRoute = "/landing";
+const String loginRoute = "/login";
+const String registerRoute = "/register";
+const String summaryRoute = "/summary";
+const String upcomingOrderRoute = "/upcomingOrder";
+const String addressChangeRoute = "/addressChange";
+const String dealersMapRoute = "/dealersMap";
