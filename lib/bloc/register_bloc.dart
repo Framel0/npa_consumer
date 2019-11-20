@@ -10,14 +10,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final DistrictRepository districtRepository;
   final RegionRepository regionRepository;
   final DepositeRepository depositeRepository;
-  final CylinderRepository cylinderRepository;
+  final CylinderSizeRepository cylinderSizeRepository;
 
   RegisterBloc(
       {@required this.lpgmcRepository,
       @required this.districtRepository,
       @required this.regionRepository,
       @required this.depositeRepository,
-      @required this.cylinderRepository,
+      @required this.cylinderSizeRepository,
       @required this.userRepository});
   @override
   RegisterState get initialState => InitialRegisterState();
@@ -52,7 +52,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         regionRepository.getRegions();
         lpgmcRepository.getLpgmcs();
         depositeRepository.getDeposites();
-        cylinderRepository.getCylinders();
+        cylinderSizeRepository.getCylinderSizes();
       } catch (ex) {
         RegisterFailuer(error: ex.toString());
       }

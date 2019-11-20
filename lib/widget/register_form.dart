@@ -71,6 +71,7 @@ class _RegisterFormState extends State<RegisterForm> {
   void initState() {
     // _selectedRegion = regionRepository.getRegions[0];
     // _selectedDistrict = districtRepository.getDistricts[0];
+    BlocProvider.of<RegisterBloc>(context)..dispatch(FetchAll());
     super.initState();
   }
 

@@ -22,9 +22,9 @@ class CylinderApiClient {
     final reponse = jsonDecode(cylindersResponse.body);
     var cylinders = reponse["model"];
     List<Cylinder> cylinderList = [];
-    for (var d in cylinders) {
-      cylinderList.add(Cylinder.fromJson(d));
-    }
+    // for (var d in cylinders) {
+    //   cylinderList.add(Cylinder.fromJson(d));
+    // }
 
     return cylinderList;
   }

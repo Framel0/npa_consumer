@@ -6,6 +6,7 @@ export 'address.dart';
 export 'region.dart';
 export 'district.dart';
 export 'cylinder.dart';
+export 'cylinder_size.dart';
 export 'delivery_method.dart';
 export 'payment_method.dart';
 export 'refill_type.dart';

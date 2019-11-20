@@ -37,9 +37,9 @@ class _RegisterPageState extends State<RegisterPage> {
             depositeRepository: DepositeRepository(
                 depositeApiClient:
                     DepositeApiClient(httpClient: http.Client())),
-            cylinderRepository: CylinderRepository(
-                cylinderApiClient:
-                    CylinderApiClient(httpClient: http.Client())),
+            cylinderSizeRepository: CylinderSizeRepository(
+                cylinderSizeApiClient:
+                    CylinderSizeApiClient(httpClient: http.Client())),
           );
         },
         child: new SingleChildScrollView(
