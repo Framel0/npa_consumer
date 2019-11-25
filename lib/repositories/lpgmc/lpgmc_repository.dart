@@ -9,7 +9,7 @@ class LpgmcRepository {
   LpgmcRepository({@required this.lpgmcApiClient});
 
   Future<void> getLpgmcs() async {
-    _lpgmcs = await lpgmcApiClient.fetchDealers();
+    _lpgmcs = await lpgmcApiClient.fetchLpgmcs();
   }
 
   List<Lpgmc> get lpgmcs {

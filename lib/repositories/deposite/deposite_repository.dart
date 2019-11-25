@@ -8,7 +8,9 @@ class DepositeRepository {
 
   DepositeRepository({@required this.depositeApiClient});
 
-  Future getDeposites() async {}
+  Future getDeposites() async {
+    _deposites = await depositeApiClient.fetchDeposites();
+  }
 
   List<Lpgmc> get deposites {
     return List.from(_deposites);

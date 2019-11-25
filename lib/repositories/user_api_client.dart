@@ -10,7 +10,7 @@ class UserApiClient {
 
   UserApiClient({@required this.httpClient}) : assert(httpClient != null);
 
-  Future<String> login({
+  Future<User> login({
     @required String phoneNumber,
     @required String password,
   }) async {
@@ -28,34 +28,55 @@ class UserApiClient {
     }
 
     final responseJson = jsonDecode(loginResponse.body);
-    var user = responseJson["model"];
-    return "token";
+    var userJson = responseJson["model"];
+    var user = User.fromJson(userJson);
+    return user;
   }
 
   Future<void> register({
+    @required String dateOfRegistration,
     @required String firstName,
     @required String lastName,
+    @required int lpgmcId,
+    @required int dealerId,
     @required String phoneNumber,
-    @required String password,
     @required String consumerId,
+    @required String password,
+    @required String houseNumber,
+    @required String streetName,
     @required String residentialAddress,
+    @required String ghanaPostGpsaddress,
+    @required int districtId,
+    @required int regionId,
+    @required int depositeId,
+    @required int cylinderSizeId,
+    @required int statusId,
     @required double latitude,
     @required double longitude,
-    @required int dealerId,
   }) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
+      // "dateOfRegistration": "$dateOfRegistration",
       "firstName": "$firstName",
       "lastName": "$lastName",
+      "lpgmcId": lpgmcId,
+      "dealerId": dealerId,
       "phoneNumber": "$phoneNumber",
       "consumerId": "$consumerId",
       "password": "$password",
+      "houseNumber": "$houseNumber",
+      "streetName": "$streetName",
       "residentialAddress": "$residentialAddress",
-      "latitude": "$latitude",
-      "longitude": "$longitude",
-      "dealerId": "$dealerId",
+      "districtId": districtId,
+      "regionId": regionId,
+      "depositeId": depositeId,
+      "cylinderSizeId": cylinderSizeId,
+      "statusId": statusId,
+      "ghanaPostGpsaddress": "$ghanaPostGpsaddress",
+      // "latitude": latitude,
+      // "longitude": longitude,
     });
-    final registernUrl = "$baseUrl/api/DealerApi/Register";
+    final registernUrl = "$baseUrl/api/ConsumerApi/Register";
     final registerResponse =
         await this.httpClient.post(registernUrl, headers: headers, body: body);
     if (registerResponse.statusCode != 200) {

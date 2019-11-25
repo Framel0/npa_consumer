@@ -10,22 +10,22 @@ class LpgmcApiClient {
 
   LpgmcApiClient({@required this.httpClient}) : assert(httpClient != null);
 
-  Future<List<Lpgmc>> fetchDealers() async {
-    final dealersUrl = "$baseUrl/api/DealerApi/Dealers";
-    final dealersResponse = await this.httpClient.get(dealersUrl);
+  Future<List<Lpgmc>> fetchLpgmcs() async {
+    final lpgmcsUrl = "$baseUrl/api/LpgmcApi/Lpgmcs";
+    final lpgmcsResponse = await this.httpClient.get(lpgmcsUrl);
 
-    if (dealersResponse.statusCode != 200) {
-      print(dealersResponse.statusCode);
-      throw Exception('error getting dealers');
+    if (lpgmcsResponse.statusCode != 200) {
+      print(lpgmcsResponse.statusCode);
+      throw Exception('error getting lpgmcs');
     }
 
-    final reponse = jsonDecode(dealersResponse.body);
-    var dealers = reponse["model"];
-    List<Lpgmc> dealerList = [];
-    // for (var d in dealers) {
-    //   dealerList.add(Lpgmc.fromJson(d));
-    // }
+    final reponse = jsonDecode(lpgmcsResponse.body);
+    var lpgmcs = reponse["model"];
+    List<Lpgmc> lpgmcList = [];
+    for (var l in lpgmcs) {
+      lpgmcList.add(Lpgmc.fromJson(l));
+    }
 
-    return dealerList;
+    return lpgmcList;
   }
 }

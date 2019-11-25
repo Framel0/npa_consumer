@@ -2,9 +2,8 @@ class CylinderSize {
   int id;
   String size;
 
-  CylinderSize.fromJson(Map<String, dynamic> json){
+  CylinderSize.fromJson(Map<String, dynamic> json) {
     this.id = json["id"];
-    this.id = json["size"];
+    this.size = json["size"];
   }
-  
 }

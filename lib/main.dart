@@ -22,10 +22,10 @@ import 'package:npa_user/widget/widget.dart';
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
-  final districtRepository = DistrictRepository(
-      districtApiClient: DistrictApiClient(httpClient: http.Client()));
-  final regionRepository = RegionRepository(
-      regionApiClient: RegionApiClient(httpClient: http.Client()));
+  // final districtRepository = DistrictRepository(
+  //     districtApiClient: DistrictApiClient(httpClient: http.Client()));
+  // final regionRepository = RegionRepository(
+  //     regionApiClient: RegionApiClient(httpClient: http.Client()));
   final dealerRepository = DealerRepository(
       dealerApiClient: DealerApiClient(
     httpClient: http.Client(),
@@ -55,23 +55,22 @@ void main() {
               upcomingRequestRepository: upcomingRequestRepository);
         },
       ),
-      BlocProvider<RegionBloc>(
-        builder: (context) {
-          return RegionBloc(regionRepository: regionRepository);
-        },
-      ),
-      BlocProvider<DistrictBloc>(
-        builder: (context) {
-          return DistrictBloc(districtRepository: districtRepository)
-            ..dispatch(FetchDistricts());
-        },
-      ),
-      BlocProvider<FiltereddistrictBloc>(
-        builder: (context) {
-          return FiltereddistrictBloc(
-              districtBloc: BlocProvider.of<DistrictBloc>(context));
-        },
-      ),
+      // BlocProvider<RegionBloc>(
+      //   builder: (context) {
+      //     return RegionBloc(regionRepository: regionRepository);
+      //   },
+      // ),
+      // BlocProvider<DistrictBloc>(
+      //   builder: (context) {
+      //     return DistrictBloc(districtRepository: districtRepository);
+      //   },
+      // ),
+      // BlocProvider<FiltereddistrictBloc>(
+      //   builder: (context) {
+      //     return FiltereddistrictBloc(
+      //         districtBloc: BlocProvider.of<DistrictBloc>(context));
+      //   },
+      // ),
     ],
     child: MyApp(
       userRepository: userRepository,

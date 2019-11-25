@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
+import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,34 +13,53 @@ class UserRepository {
     @required String phoneNumber,
     @required String password,
   }) async {
-    // String token =
-    //     await userApiClient.login(phoneNumber: phoneNumber, password: password);
-    await Future.delayed(Duration(seconds: 3));
-    return "token";
+    User user =
+        await userApiClient.login(phoneNumber: phoneNumber, password: password);
+    return user.token;
   }
 
   Future<void> register({
+    @required String dateOfRegistration,
     @required String firstName,
     @required String lastName,
+    @required int lpgmcId,
+    @required int dealerId,
     @required String phoneNumber,
-    @required String password,
     @required String consumerId,
+    @required String password,
+    @required String houseNumber,
+    @required String streetName,
     @required String residentialAddress,
+    @required String ghanaPostGpsaddress,
+    @required int districtId,
+    @required int regionId,
+    @required int depositeId,
+    @required int cylinderSizeId,
+    @required int statusId,
     @required double latitude,
     @required double longitude,
-    @required int dealerId,
   }) async {
-    // userApiClient.register(
-    //   firstName: firstName,
-    //   lastName: lastName,
-    //   phoneNumber: phoneNumber,
-    //   password: password,
-    //   consumerId: consumerId,
-    //   residentialAddress: residentialAddress,
-    //   latitude: latitude,
-    //   longitude: longitude,
-    //   dealerId: dealerId,
-    // );
+    await userApiClient.register(
+      dateOfRegistration: dateOfRegistration,
+      firstName: firstName,
+      lastName: lastName,
+      lpgmcId: lpgmcId,
+      dealerId: dealerId,
+      phoneNumber: phoneNumber,
+      password: password,
+      consumerId: consumerId,
+      houseNumber: houseNumber,
+      streetName: streetName,
+      residentialAddress: residentialAddress,
+      ghanaPostGpsaddress: ghanaPostGpsaddress,
+      districtId: districtId,
+      regionId: regionId,
+      depositeId: depositeId,
+      cylinderSizeId: cylinderSizeId,
+      statusId: statusId,
+      latitude: latitude,
+      longitude: longitude,
+    );
     await Future.delayed(Duration(seconds: 3));
   }
 

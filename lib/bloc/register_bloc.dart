@@ -29,30 +29,58 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if (event is RegisterButtonPressed) {
       yield RegisterLoading();
       try {
-        userRepository.register(
+        await userRepository.register(
+          dateOfRegistration: event.dateOfRegistration,
           firstName: event.firstName,
           lastName: event.lastName,
+          lpgmcId: event.lpgmcId,
+          dealerId: event.dealerId,
           phoneNumber: event.phoneNumber,
           password: event.password,
           consumerId: event.consumerId,
+          houseNumber: event.houseNumber,
+          streetName: event.streetName,
           residentialAddress: event.residentialAddress,
+          districtId: event.districtId,
+          regionId: event.regionId,
+          depositeId: event.depositeId,
+          cylinderSizeId: event.cylinderSizeId,
+          statusId: event.statusId,
+          ghanaPostGpsaddress: event.ghanaPostGpsaddress,
           latitude: event.latitude,
           longitude: event.longitude,
-          dealerId: event.dealerId,
         );
+
+        yield RegisterSuccess();
       } catch (e) {
         RegisterFailuer(error: e.toString());
       }
     }
     if (event is FetchAll) {
-      yield RegisterLoading();
+      yield RegisterApiLoading();
 
       try {
-        districtRepository.getDistricts();
-        regionRepository.getRegions();
-        lpgmcRepository.getLpgmcs();
-        depositeRepository.getDeposites();
-        cylinderSizeRepository.getCylinderSizes();
+        await districtRepository.getDistricts();
+        final districts = districtRepository.getDropdownMenuItems();
+
+        await regionRepository.getRegions();
+        final regions = regionRepository.regions;
+
+        await lpgmcRepository.getLpgmcs();
+        final lpgmcs = lpgmcRepository.getDropdownMenuItems();
+
+        await depositeRepository.getDeposites();
+        final deposites = depositeRepository.getDropdownMenuItems();
+
+        await cylinderSizeRepository.getCylinderSizes();
+        final cylinderSizes = cylinderSizeRepository.getDropdownMenuItems();
+
+        yield RegisterApiLoaded(
+            districts: districts,
+            regions: regions,
+            lpgmcs: lpgmcs,
+            deposites: deposites,
+            cylinderSizes: cylinderSizes);
       } catch (ex) {
         RegisterFailuer(error: ex.toString());
       }

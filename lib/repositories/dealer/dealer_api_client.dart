@@ -29,22 +29,22 @@ class DealerApiClient {
     return dealerList;
   }
 
-  // Future<List<Dealer>> fetchDealers(int id) async {
-  //   final dealersUrl = "$baseUrl/api/DealerApi/Dealers";
-  //   final dealersResponse = await this.httpClient.get(dealersUrl);
+  Future<List<Dealer>> fetchDealersByLpgmc(int id) async {
+    final dealersUrl = "$baseUrl/api/DealerApi/DealersByLpgmc/$id";
+    final dealersResponse = await this.httpClient.get(dealersUrl);
 
-  //   if (dealersResponse.statusCode != 200) {
-  //     print(dealersResponse.statusCode);
-  //     throw Exception('error getting dealers');
-  //   }
+    if (dealersResponse.statusCode != 200) {
+      print(dealersResponse.statusCode);
+      throw Exception('error getting dealers');
+    }
 
-  //   final reponse = jsonDecode(dealersResponse.body);
-  //   var dealers = reponse["model"];
-  //   List<Dealer> dealerList = [];
-  //   for (var d in dealers) {
-  //     dealerList.add(Dealer.fromJson(d));
-  //   }
+    final reponse = jsonDecode(dealersResponse.body);
+    var dealers = reponse["model"];
+    List<Dealer> dealerList = [];
+    for (var d in dealers) {
+      dealerList.add(Dealer.fromJson(d));
+    }
 
-  //   return dealerList;
-  // }
+    return dealerList;
+  }
 }

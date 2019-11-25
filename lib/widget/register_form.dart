@@ -13,6 +13,7 @@ import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/util/util.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widget.dart' as prefix0;
 
 class RegisterForm extends StatefulWidget {
   final UserRepository userRepository;
@@ -30,7 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   static var now = new DateTime.now();
   static var formatter = new DateFormat('yyyy-MM-dd hh:mm');
-  static String date = ('${now.year}/ ${now.month}/ ${now.day}');
+  static String date = ('${now.year}/${now.month}/${now.day}');
   static String formatedDate = formatter.format(now);
 
   final _dateController = TextEditingController(text: date);
@@ -40,7 +41,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final _streetNameController = TextEditingController();
   final _residentialAddressController = TextEditingController();
   final _gpsAddressController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  static final _phoneNumberController = TextEditingController();
   final _consumerIdController = TextEditingController();
   final _passwordController = TextEditingController();
   final _dealerController = TextEditingController();
@@ -48,31 +49,21 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Dealer _selectedDealer;
 
-  RegionRepository regionRepository = RegionRepository();
+  List _regions = [];
   Region _selectedRegion;
 
-  DistrictRepository districtRepository = DistrictRepository(
-      districtApiClient: DistrictApiClient(httpClient: http.Client()));
   District _selectedDistrict;
 
-  LpgmcRepository lpgmcRepository = LpgmcRepository(
-      lpgmcApiClient: LpgmcApiClient(httpClient: http.Client()));
   Lpgmc _selectedLpgmc;
 
-  CylinderRepository cylinderRepository = CylinderRepository(
-      cylinderApiClient: CylinderApiClient(httpClient: http.Client()));
-  Cylinder _selectedCylinder;
+  CylinderSize _selectedCylinderSize;
 
-  DepositeRepository depositeRepository = DepositeRepository(
-      depositeApiClient: DepositeApiClient(httpClient: http.Client()));
   Deposite _selectedDeposite;
 
   @override
   void initState() {
-    // _selectedRegion = regionRepository.getRegions[0];
-    // _selectedDistrict = districtRepository.getDistricts[0];
-    BlocProvider.of<RegisterBloc>(context)..dispatch(FetchAll());
     super.initState();
+    BlocProvider.of<RegisterBloc>(context).dispatch(FetchAll());
   }
 
   @override
@@ -84,7 +75,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _streetNameController.dispose();
     _residentialAddressController.dispose();
     _gpsAddressController.dispose();
-    _phoneNumberController.dispose();
+    // _phoneNumberController.dispose();
     _consumerIdController.dispose();
     _passwordController.dispose();
     _dealerController.dispose();
@@ -104,12 +95,29 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           );
         }
+
+        if (state is RegisterSuccess) {
+          Navigator.pushReplacement(
+              // replcet the curent layout unlike push that just creates new page
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext cotext) => LoginPage(
+                        userRepository: widget.userRepository,
+                      )));
+        }
       },
       child:
           BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
-        if (state is RegisterLoading) {
+        if (state is RegisterApiLoading) {
           return LoadingIndicator();
-        } else {
+        }
+        if (state is RegisterApiLoaded) {
+          final districts = state.districts;
+          final regions = state.regions;
+          _regions = regions;
+          final lpgmcs = state.lpgmcs;
+          final deposites = state.deposites;
+          final cylinderSizes = state.cylinderSizes;
           return Form(
             key: _formKey,
             child: Column(
@@ -138,7 +146,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildDistrictField(),
+                _buildDistrictField(dropdownMenuItems: districts),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -158,7 +166,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildLpgmcField(),
+                _buildLpgmcField(dropdownMenuItems: lpgmcs),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -187,11 +195,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildDepositeField(),
+                _buildDepositeField(dropdownMenuItems: deposites),
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildCylinderField(),
+                _buildCylinderField(dropdownMenuItems: cylinderSizes),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -272,14 +280,35 @@ class _RegisterFormState extends State<RegisterForm> {
     BlocProvider.of<RegisterBloc>(context)
       ..dispatch(
         RegisterButtonPressed(
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-            phoneNumber: _phoneNumberController.text.trim(),
-            password: _passwordController.text.trim(),
-            consumerId: "NPA-${_phoneNumberController.text.trim()}",
-            residentialAddress: _residentialAddressController.text,
-            dealerId: _selectedDealer.id),
+          dateOfRegistration: date,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          lpgmcId: _selectedLpgmc.id,
+          dealerId: _selectedDealer.id,
+          phoneNumber: _phoneNumberController.text.trim(),
+          password: _passwordController.text.trim(),
+          consumerId: getConsumerId(),
+          houseNumber: _houseNumberController.text,
+          streetName: _streetNameController.text,
+          residentialAddress: _residentialAddressController.text,
+          ghanaPostGpsaddress: _residentialAddressController.text,
+          districtId: _selectedDistrict.id,
+          regionId: _selectedRegion.id,
+          depositeId: _selectedDeposite.id,
+          cylinderSizeId: _selectedCylinderSize.id,
+          statusId: 1,
+          // latitude: _residentialAddressController.text,
+          // longitude: _residentialAddressController.text,
+        ),
       );
+  }
+
+  getConsumerId() {
+    var phoneNumber = _phoneNumberController.text;
+
+    var newNumber = phoneNumber.substring(phoneNumber.length - 4);
+
+    return "NPACR-${newNumber + now.year.toString()}";
   }
 
   _navigatrToMap(BuildContext context) async {
@@ -290,7 +319,8 @@ class _RegisterFormState extends State<RegisterForm> {
     print(" result from map: $result");
     if (result != null) {
       _selectedDealer = result;
-      _dealerController.text = _selectedDealer.ventureName;
+      _dealerController.text =
+          _selectedDealer.firstName + " " + _selectedDealer.lastName;
     }
   }
 
@@ -383,28 +413,28 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  Widget _buildRegionField() {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: colorPrimaryYellow, width: 2),
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-          shape: BoxShape.rectangle),
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.0,
-      ),
-      child: DropdownButton(
-        value: _selectedRegion,
-        items: regionRepository.getDropdownMenuItems(_selectedDistrict),
-        hint: Text(
-          "Select Region",
-          style: TextStyle(color: colorPrimary),
-        ),
-        onChanged: onChangeDropdownItemRegion,
-        style: formTextStyle,
-        isExpanded: true,
-      ),
-    );
-  }
+  // Widget _buildRegionField() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //         border: Border.all(color: colorPrimaryYellow, width: 2),
+  //         borderRadius: BorderRadius.all(Radius.circular(2)),
+  //         shape: BoxShape.rectangle),
+  //     padding: EdgeInsets.symmetric(
+  //       horizontal: 10.0,
+  //     ),
+  //     child: DropdownButton(
+  //       value: _selectedRegion,
+  //       items: regionRepository.getDropdownMenuItems(_selectedDistrict),
+  //       hint: Text(
+  //         "Select Region",
+  //         style: TextStyle(color: colorPrimary),
+  //       ),
+  //       onChanged: onChangeDropdownItemRegion,
+  //       style: formTextStyle,
+  //       isExpanded: true,
+  //     ),
+  //   );
+  // }
 
   Widget _buildRegionsField() {
     return TextFormField(
@@ -421,15 +451,24 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  Region getDistrictRegion(District district) {
+    final region = _regions.firstWhere((r) {
+      return r.id == district.regionId;
+    });
+
+    return region;
+  }
+
   onChangeDropdownItemDistrict(District selectedDistrict) {
     setState(() {
       _selectedDistrict = selectedDistrict;
-      _selectedRegion = regionRepository.getDistrictRegion(_selectedDistrict);
+      _selectedRegion = getDistrictRegion(_selectedDistrict);
       _regionController.text = _selectedRegion.name;
     });
   }
 
-  Widget _buildDistrictField() {
+  Widget _buildDistrictField(
+      {@required List<DropdownMenuItem<District>> dropdownMenuItems}) {
     return Container(
       // decoration: BoxDecoration(
       //     border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -440,7 +479,7 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       child: DropdownButton(
         value: _selectedDistrict,
-        items: districtRepository.getDropdownMenuItems(),
+        items: dropdownMenuItems,
         hint: Text(
           "Select District",
           style: TextStyle(color: colorPrimary),
@@ -501,7 +540,8 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  Widget _buildLpgmcField() {
+  Widget _buildLpgmcField(
+      {@required List<DropdownMenuItem<Lpgmc>> dropdownMenuItems}) {
     return Container(
       // decoration: BoxDecoration(
       //     border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -512,7 +552,7 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       child: DropdownButton(
         value: _selectedLpgmc,
-        items: lpgmcRepository.getDropdownMenuItems(),
+        items: dropdownMenuItems,
         hint: Text(
           "Select LPGMC",
           style: TextStyle(color: colorPrimary),
@@ -539,13 +579,14 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  onChangeDropdownItemCylinder(Cylinder selectedCylinder) {
+  onChangeDropdownItemCylinder(CylinderSize selectedCylinderSize) {
     setState(() {
-      _selectedCylinder = selectedCylinder;
+      _selectedCylinderSize = selectedCylinderSize;
     });
   }
 
-  Widget _buildCylinderField() {
+  Widget _buildCylinderField(
+      {@required List<DropdownMenuItem<CylinderSize>> dropdownMenuItems}) {
     return Container(
       // decoration: BoxDecoration(
       //     border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -555,8 +596,8 @@ class _RegisterFormState extends State<RegisterForm> {
         top: 15.0,
       ),
       child: DropdownButton(
-        value: _selectedCylinder,
-        items: cylinderRepository.getDropdownMenuItems(),
+        value: _selectedCylinderSize,
+        items: dropdownMenuItems,
         hint: Text(
           "Select Cylinder Type",
           style: TextStyle(color: colorPrimary),
@@ -574,7 +615,8 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
-  Widget _buildDepositeField() {
+  Widget _buildDepositeField(
+      {@required List<DropdownMenuItem<Deposite>> dropdownMenuItems}) {
     return Container(
       // decoration: BoxDecoration(
       //     border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -585,7 +627,7 @@ class _RegisterFormState extends State<RegisterForm> {
       ),
       child: DropdownButton(
         value: _selectedDeposite,
-        items: depositeRepository.getDropdownMenuItems(),
+        items: dropdownMenuItems,
         hint: Text(
           "Select Deposite",
           style: TextStyle(color: colorPrimary),

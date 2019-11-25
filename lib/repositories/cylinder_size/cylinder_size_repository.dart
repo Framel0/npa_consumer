@@ -9,7 +9,9 @@ class CylinderSizeRepository {
 
   List<CylinderSize> _cylinderSizes = [];
 
-  Future getCylinderSizes() async {}
+  Future getCylinderSizes() async {
+    _cylinderSizes = await cylinderSizeApiClient.fetchCylinderSizes();
+  }
 
   List<Lpgmc> get cylinderSizes {
     return List.from(_cylinderSizes);

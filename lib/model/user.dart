@@ -7,6 +7,7 @@ class User {
   String consumerId;
   String residentialAddress;
   String dateOfRegistration;
+  String token;
 
   User(
       {this.id,
@@ -19,13 +20,14 @@ class User {
       this.dateOfRegistration});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json[id];
-    firstName = json[firstName];
-    lastName = json[lastName];
-    phoneNumber = json[phoneNumber];
-    consumerId = json[consumerId];
-    residentialAddress = json[residentialAddress];
-    dateOfRegistration = json[dateOfRegistration];
+    id = json["id"];
+    firstName = json['firstName'];
+    lastName = json["lastName"];
+    phoneNumber = json["phoneNumber"];
+    consumerId = json["consumerId"];
+    residentialAddress = json["residentialAddress"];
+    dateOfRegistration = json["dateOfRegistration"];
+    token = json["token"];
   }
 
   Map toLoginMap() {

@@ -7,7 +7,7 @@ class Region {
 
   Region.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    id = json["code"];
-    id = json["name"];
+    code = json["code"];
+    name = json["name"];
   }
 }
