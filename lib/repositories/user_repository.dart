@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
+import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,7 @@ class UserRepository {
   }) async {
     User user =
         await userApiClient.login(phoneNumber: phoneNumber, password: password);
+    saveData(user);
     return user.token;
   }
 
@@ -61,6 +63,10 @@ class UserRepository {
       longitude: longitude,
     );
     await Future.delayed(Duration(seconds: 3));
+  }
+
+  Future<void> saveData(User user) async {
+    await saveUserData(user);
   }
 
   Future<void> deleteToken() async {

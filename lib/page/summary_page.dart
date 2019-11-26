@@ -6,16 +6,16 @@ import 'package:npa_user/values/color.dart';
 
 class SummaryPage extends StatefulWidget {
   final Address deliveryAddress;
-  final List<Cylinder> cylinders;
+  final List<Product> products;
   final DeliveryMethod deliveryMethod;
   final PaymentMethod paymentMethod;
-  final int subTotal;
-  final int deliveryPrice;
+  final double subTotal;
+  final double deliveryPrice;
 
   const SummaryPage({
     Key key,
     @required this.deliveryAddress,
-    @required this.cylinders,
+    @required this.products,
     @required this.deliveryMethod,
     @required this.paymentMethod,
     @required this.subTotal,
@@ -334,10 +334,10 @@ class _SummaryPageState extends State<SummaryPage> {
 
   Widget _buildCylinders() {
     List<Widget> widgets = List<Widget>();
-    for (Cylinder cylinder in widget.cylinders) {
+    for (Product product in widget.products) {
       widgets.add(
         Text(
-          "${cylinder.name} x ${cylinder.quantity}",
+          "${product.name} x ${product.quantity}",
           style: TextStyle(fontSize: 16),
         ),
       );

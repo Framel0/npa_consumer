@@ -13,3 +13,5 @@ export 'refill_type.dart';
 export 'lpgmc.dart';
 export 'deposite.dart';
 export 'upcoming_request.dart';
+export 'product.dart';
+export 'product_model.dart';

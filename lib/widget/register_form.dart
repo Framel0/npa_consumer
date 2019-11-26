@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:npa_user/bloc/bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/sign_in_page.dart';
-import 'package:npa_user/repositories/district/district.dart';
-import 'package:npa_user/repositories/lpgmc/lpgmc.dart';
-import 'package:npa_user/repositories/region/region.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/util/util.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widget.dart';
-import 'package:npa_user/widget/widget.dart' as prefix0;
 
 class RegisterForm extends StatefulWidget {
   final UserRepository userRepository;
@@ -109,8 +104,9 @@ class _RegisterFormState extends State<RegisterForm> {
       child:
           BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
         if (state is RegisterApiLoading) {
-          return LoadingIndicator();
+          return Center(child: LoadingIndicator());
         }
+
         if (state is RegisterApiLoaded) {
           final districts = state.districts;
           final regions = state.regions;

@@ -4,6 +4,7 @@ import 'package:npa_user/bloc/bloc.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/checkout_page.dart';
 import 'package:npa_user/values/color.dart';
+import 'package:npa_user/widget/widget.dart';
 
 class RequestPage extends StatefulWidget {
   @override
@@ -19,13 +20,19 @@ class _RequestPageState extends State<RequestPage> {
   final TextStyle headerTextStyle =
       TextStyle(color: colorPrimary, fontSize: 20, fontWeight: FontWeight.w600);
 
-  List<Cylinder> _cylinders = [
-    Cylinder(id: 1, code: "", name: "3 Kg", price: 10, quantity: 0),
-    Cylinder(id: 2, code: "", name: "6 Kg", price: 20, quantity: 0),
-    Cylinder(id: 3, code: "", name: "14 Kg", price: 40, quantity: 0),
-  ];
+  List<Product> _products;
+  //   Product(id: 1, code: "", name: "3 Kg", price: 10, quantity: 0),
+  //   Product(id: 2, code: "", name: "6 Kg", price: 20, quantity: 0),
+  //   Product(id: 3, code: "", name: "14 Kg", price: 40, quantity: 0),
+  // ];
 
-  List<Cylinder> _selecteCylinders = [];
+  List<Product> _selecteProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ProductBloc>(context).dispatch(FetchProducts());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,74 +40,86 @@ class _RequestPageState extends State<RequestPage> {
       appBar: AppBar(
         title: Text("Request"),
       ),
-      body: BlocBuilder<CounterBloc, int>(builder: (context, count) {
-        return SafeArea(
-          child: Container(
-            child: ListView(
-              padding: EdgeInsets.only(top: 15, bottom: 15),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Refill Type",
-                    style: headerTextStyle,
-                  ),
-                ),
-                ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: _cylinders.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildField(_cylinders[index]);
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider(
-                      thickness: 2,
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: RaisedButton(
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 12.0,
-                    ),
-                    onPressed: () => {
-                      if (_selecteCylinders.isNotEmpty)
-                        {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CheackoutPage(
-                                      cylinders: _selecteCylinders,
-                                    )),
-                          )
-                        }
-                      else
-                        {_showSnackbar(context)}
-                    },
-                    child: Text(
-                      "Proceed To Payment",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
+      body: BlocListener<ProductBloc, ProductState>(
+        listener: (context, state) {},
+        child:
+            BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+          if (state is ProductLoading) {
+            return Center(child: LoadingIndicator());
+          }
+
+          if (state is ProductLoaded) {
+            _products = state.products;
+            return SafeArea(
+              child: Container(
+                child: ListView(
+                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        "Refill Type",
+                        style: headerTextStyle,
                       ),
                     ),
-                  ),
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: _products.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _buildField(_products[index]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Divider(
+                          thickness: 2,
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 12.0,
+                        ),
+                        onPressed: () => {
+                          if (_selecteProducts.isNotEmpty)
+                            {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CheackoutPage(
+                                          products: _selecteProducts,
+                                        )),
+                              )
+                            }
+                          else
+                            {_showSnackbar(context)}
+                        },
+                        child: Text(
+                          "Proceed To Payment",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      }),
+              ),
+            );
+          }
+          if (state is ProductError) {}
+        }),
+      ),
     );
   }
 
@@ -117,50 +136,50 @@ class _RequestPageState extends State<RequestPage> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  _onCylinderSelected(bool selected, Cylinder cylinder) {
+  _onProductSelected(bool selected, Product product) {
     if (selected == true) {
       setState(() {
-        _selecteCylinders.add(cylinder);
-        final item = _selecteCylinders.firstWhere((c) => c.id == cylinder.id);
+        _selecteProducts.add(product);
+        final item = _selecteProducts.firstWhere((c) => c.id == product.id);
         item.quantity = 1;
-        print(_selecteCylinders);
+        print(_selecteProducts);
       });
     } else {
       setState(() {
-        final item = _selecteCylinders.firstWhere((c) => c.id == cylinder.id);
+        final item = _selecteProducts.firstWhere((c) => c.id == product.id);
         item.quantity = 0;
-        _selecteCylinders.remove(cylinder);
-        print(_selecteCylinders);
+        _selecteProducts.remove(product);
+        print(_selecteProducts);
       });
     }
   }
 
-  Widget _buildField(Cylinder cylinder) {
+  Widget _buildField(Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[_checkBox(cylinder), _buildQuantity(cylinder)],
+        children: <Widget>[_checkBox(product), _buildQuantity(product)],
       ),
     );
   }
 
-  Widget _checkBox(Cylinder cylinder) {
+  Widget _checkBox(Product product) {
     return Row(
       children: <Widget>[
         Checkbox(
-          value: _selecteCylinders.contains(cylinder),
+          value: _selecteProducts.contains(product),
           onChanged: (bool selected) {
-            _onCylinderSelected(selected, cylinder);
+            _onProductSelected(selected, product);
           },
           activeColor: colorPrimaryYellow,
         ),
-        Text(cylinder.name, style: checkboxTextStyle),
+        Text(product.name, style: checkboxTextStyle),
       ],
     );
   }
 
-  Widget _buildQuantity(Cylinder cylinder) {
+  Widget _buildQuantity(Product product) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -175,11 +194,11 @@ class _RequestPageState extends State<RequestPage> {
               style: TextStyle(fontSize: 35, color: colorPrimaryYellow),
             ),
             onPressed: () {
-              if (_selecteCylinders.isNotEmpty) {
+              if (_selecteProducts.isNotEmpty) {
                 final item =
-                    _selecteCylinders.firstWhere((c) => c.id == cylinder.id);
+                    _selecteProducts.firstWhere((c) => c.id == product.id);
 
-                if (_selecteCylinders.contains(item)) {
+                if (_selecteProducts.contains(item)) {
                   if (item.quantity != 1) {
                     setState(() {
                       item.quantity -= 1;
@@ -193,7 +212,7 @@ class _RequestPageState extends State<RequestPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            "${cylinder.quantity}",
+            "${product.quantity}",
             style: quantityTextStyle,
           ),
         ),
@@ -206,10 +225,10 @@ class _RequestPageState extends State<RequestPage> {
             child: Text("+",
                 style: TextStyle(fontSize: 30, color: colorPrimaryYellow)),
             onPressed: () {
-              if (_selecteCylinders.isNotEmpty) {
+              if (_selecteProducts.isNotEmpty) {
                 final item =
-                    _selecteCylinders.firstWhere((c) => c.id == cylinder.id);
-                if (_selecteCylinders.contains(item)) {
+                    _selecteProducts.firstWhere((c) => c.id == product.id);
+                if (_selecteProducts.contains(item)) {
                   setState(() {
                     item.quantity += 1;
                   });

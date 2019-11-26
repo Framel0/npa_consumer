@@ -4,14 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:npa_user/bloc/authentication/authentication.dart';
 import 'package:npa_user/bloc/bloc.dart';
-import 'package:npa_user/bloc/counter_bloc.dart';
 import 'package:npa_user/bloc/dealer/dealer.dart';
-import 'package:npa_user/bloc/district/district.dart';
-import 'package:npa_user/bloc/filtered_districts/filtered_districts.dart';
-import 'package:npa_user/bloc/region/region.dart';
 import 'package:npa_user/bloc/upcoming_request/upcoming_request.dart';
 import 'package:npa_user/page/home_page.dart';
-import 'package:npa_user/page/landing_page.dart';
 import 'package:npa_user/page/splash_page.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/route_generator.dart';
@@ -24,8 +19,8 @@ void main() {
   final userRepository = UserRepository();
   // final districtRepository = DistrictRepository(
   //     districtApiClient: DistrictApiClient(httpClient: http.Client()));
-  // final regionRepository = RegionRepository(
-  //     regionApiClient: RegionApiClient(httpClient: http.Client()));
+  final productRepository = ProductRepository(
+      productApiClient: ProductApiClient(httpClient: http.Client()));
   final dealerRepository = DealerRepository(
       dealerApiClient: DealerApiClient(
     httpClient: http.Client(),
@@ -55,11 +50,11 @@ void main() {
               upcomingRequestRepository: upcomingRequestRepository);
         },
       ),
-      // BlocProvider<RegionBloc>(
-      //   builder: (context) {
-      //     return RegionBloc(regionRepository: regionRepository);
-      //   },
-      // ),
+      BlocProvider<ProductBloc>(
+        builder: (context) {
+          return ProductBloc(productRepository: productRepository);
+        },
+      ),
       // BlocProvider<DistrictBloc>(
       //   builder: (context) {
       //     return DistrictBloc(districtRepository: districtRepository);
@@ -85,40 +80,35 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterBloc>(
-      builder: (context) {
-        return CounterBloc();
-      },
-      child: MaterialApp(
-        title: 'NPA User',
-        theme: _buildTheme(),
-        onGenerateRoute: RouteGenerator.generateRoute,
-        home: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
+    return MaterialApp(
+      title: 'NPA User',
+      theme: _buildTheme(),
+      onGenerateRoute: RouteGenerator.generateRoute,
+      home: BlocListener<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationAuthenticated) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, homeRoute, (Route<dynamic> route) => false);
+          }
+        },
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state is AuthenticationUninitialized) {
+              return SplashPage();
+            }
             if (state is AuthenticationAuthenticated) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, homeRoute, (Route<dynamic> route) => false);
+              return MyHomePage();
+            }
+            if (state is AuthenticationUnauthenticated) {
+              return MyHomePage();
+              // return LandingPage(
+              //   userRepository: userRepository,
+              // );
+            }
+            if (state is AuthenticationLoading) {
+              return LoadingIndicator();
             }
           },
-          child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) {
-              if (state is AuthenticationUninitialized) {
-                return SplashPage();
-              }
-              if (state is AuthenticationAuthenticated) {
-                return MyHomePage();
-              }
-              if (state is AuthenticationUnauthenticated) {
-                // return HomePage();
-                return LandingPage(
-                  userRepository: userRepository,
-                );
-              }
-              if (state is AuthenticationLoading) {
-                return LoadingIndicator();
-              }
-            },
-          ),
         ),
       ),
     );

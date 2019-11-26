@@ -8,9 +8,9 @@ import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
 class CheackoutPage extends StatefulWidget {
-  final List<Cylinder> cylinders;
+  final List<Product> products;
 
-  const CheackoutPage({Key key, @required this.cylinders}) : super(key: key);
+  const CheackoutPage({Key key, @required this.products}) : super(key: key);
   @override
   _CheackoutPageState createState() => _CheackoutPageState();
 }
@@ -31,8 +31,8 @@ class _CheackoutPageState extends State<CheackoutPage> {
   AddressRepository addressRepository = AddressRepository();
   Address _address;
 
-  int _subTotal = 0;
-  int _deliveryPrice = 5;
+  double _subTotal = 0;
+  double _deliveryPrice = 5;
 
   @override
   void initState() {
@@ -322,7 +322,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                               paymentMethod:
                                                   _selectedPaymentMethod,
                                               deliveryAddress: _address,
-                                              cylinders: widget.cylinders,
+                                              products: widget.products,
                                               subTotal: _subTotal,
                                               deliveryPrice: _deliveryPrice,
                                             )),
@@ -367,17 +367,17 @@ class _CheackoutPageState extends State<CheackoutPage> {
   }
 
   _getTotal() {
-    for (var cylinder in widget.cylinders) {
-      _subTotal += (cylinder.price * cylinder.quantity);
+    for (var product in widget.products) {
+      _subTotal += (product.price * product.quantity);
     }
   }
 
   Widget _buildCylinders() {
     List<Widget> widgets = List<Widget>();
-    for (Cylinder cylinder in widget.cylinders) {
+    for (Product product in widget.products) {
       widgets.add(
         Text(
-          "${cylinder.name} x ${cylinder.quantity}",
+          "${product.name} x ${product.quantity}",
           style: TextStyle(fontSize: 16),
         ),
       );

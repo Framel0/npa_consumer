@@ -9,3 +9,4 @@ export './lpgmc/lpgmc.dart';
 export './region/region.dart';
 export './upcoming_request/upcoming_request.dart';
 export './cylinder_size/cylinder_size.dart';
+export './product/product.dart';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/address.dart';
+import 'package:npa_user/model/models.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
@@ -9,12 +11,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  var user = User();
   Address address;
+
+  Future getUser() async {
+    user = await readUserData();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -31,13 +46,13 @@ class _ProfilePageState extends State<ProfilePage> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         children: <Widget>[
-          _buildListItem(title: "Consumer ID", subtitle: "NPAC-147852"),
+          _buildListItem(title: "Consumer ID", subtitle: user.consumerId),
           _divider(),
-          _buildListItem(title: "Name", subtitle: "John Doe"),
+          _buildListItem(
+              title: "Name",
+              subtitle: "${user.firstName} + " " ${user.lastName}"),
           _divider(),
-          _buildListItem(title: "Phone", subtitle: "+233 24 56 78 94"),
-          _divider(),
-          _buildListItem(title: "Delaer", subtitle: "ALO Gas"),
+          _buildListItem(title: "Phone", subtitle: user.phoneNumber),
           SizedBox(
             height: 24,
           ),
