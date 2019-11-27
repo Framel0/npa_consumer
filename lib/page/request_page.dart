@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/bloc.dart';
+import 'package:npa_user/bloc/request_refill/request_refill.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/checkout_page.dart';
 import 'package:npa_user/values/color.dart';
@@ -20,6 +21,8 @@ class _RequestPageState extends State<RequestPage> {
   final TextStyle headerTextStyle =
       TextStyle(color: colorPrimary, fontSize: 20, fontWeight: FontWeight.w600);
 
+  List<PaymentMethod> _paymentMethods;
+  List<DeliveryMethod> _deliveryMethods;
   List<Product> _products;
   //   Product(id: 1, code: "", name: "3 Kg", price: 10, quantity: 0),
   //   Product(id: 2, code: "", name: "6 Kg", price: 20, quantity: 0),
@@ -31,7 +34,7 @@ class _RequestPageState extends State<RequestPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProductBloc>(context).dispatch(FetchProducts());
+    BlocProvider.of<RequestRefillBloc>(context).dispatch(FetchApis());
   }
 
   @override
@@ -40,16 +43,18 @@ class _RequestPageState extends State<RequestPage> {
       appBar: AppBar(
         title: Text("Request"),
       ),
-      body: BlocListener<ProductBloc, ProductState>(
+      body: BlocListener<RequestRefillBloc, RequestRefillState>(
         listener: (context, state) {},
-        child:
-            BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
-          if (state is ProductLoading) {
+        child: BlocBuilder<RequestRefillBloc, RequestRefillState>(
+            builder: (context, state) {
+          if (state is RequestRefillApiLoading) {
             return Center(child: LoadingIndicator());
           }
 
-          if (state is ProductLoaded) {
+          if (state is RequestRefillApiLoaded) {
             _products = state.products;
+            _paymentMethods = state.paymentMethods;
+            _deliveryMethods = state.deliveryMethods;
             return SafeArea(
               child: Container(
                 child: ListView(
@@ -96,6 +101,8 @@ class _RequestPageState extends State<RequestPage> {
                                 MaterialPageRoute(
                                     builder: (context) => CheackoutPage(
                                           products: _selecteProducts,
+                                          paymentMethods: _paymentMethods,
+                                          deliveryMethods: _deliveryMethods,
                                         )),
                               )
                             }

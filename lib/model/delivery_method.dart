@@ -1,9 +1,15 @@
 class DeliveryMethod {
-  final int id;
-  final String code;
-  final String name;
+  int id;
+  String code;
+  String name;
 
   DeliveryMethod({this.id, this.code, this.name});
+
+  DeliveryMethod.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    code = json["code"];
+    name = json["name"];
+  }
 
   static List<DeliveryMethod> getDeliveryMethods() {
     return <DeliveryMethod>[

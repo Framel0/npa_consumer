@@ -17,10 +17,15 @@ import 'package:npa_user/widget/widget.dart';
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
-  // final districtRepository = DistrictRepository(
-  //     districtApiClient: DistrictApiClient(httpClient: http.Client()));
+
   final productRepository = ProductRepository(
       productApiClient: ProductApiClient(httpClient: http.Client()));
+  final paymentMethodRepository = PaymentMethodRepository(
+      paymentMethodApiClient:
+          PaymentMethodApiClient(httpClient: http.Client()));
+  final deliveryMethodRepository = DeliveryMethodRepository(
+      deliveryMethodApiClient:
+          DeliveryMethodApiClient(httpClient: http.Client()));
   final dealerRepository = DealerRepository(
       dealerApiClient: DealerApiClient(
     httpClient: http.Client(),
@@ -55,11 +60,14 @@ void main() {
           return ProductBloc(productRepository: productRepository);
         },
       ),
-      // BlocProvider<DistrictBloc>(
-      //   builder: (context) {
-      //     return DistrictBloc(districtRepository: districtRepository);
-      //   },
-      // ),
+      BlocProvider<RequestRefillBloc>(
+        builder: (context) {
+          return RequestRefillBloc(
+              productRepository: productRepository,
+              paymentMethodRepository: paymentMethodRepository,
+              deliveryMethodRepository: deliveryMethodRepository);
+        },
+      ),
       // BlocProvider<FiltereddistrictBloc>(
       //   builder: (context) {
       //     return FiltereddistrictBloc(

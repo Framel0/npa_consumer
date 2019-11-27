@@ -1,9 +1,15 @@
 class PaymentMethod {
-  final int id;
-  final String code;
-  final String name;
+  int id;
+  String code;
+  String name;
 
   PaymentMethod({this.id, this.code, this.name});
+
+  PaymentMethod.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    code = json["code"];
+    name = json["name"];
+  }
 
   static List<PaymentMethod> getPaymentMethods() {
     return <PaymentMethod>[

@@ -13,7 +13,7 @@ class _AddressListState extends State<AddressList> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildAddressList(addressRepository.getAddresses);
+    return _buildAddressList(addressRepository.addresses);
   }
 
   Widget _buildAddressListItem(int position, Address address) {

@@ -9,8 +9,15 @@ import 'package:npa_user/values/color.dart';
 
 class CheackoutPage extends StatefulWidget {
   final List<Product> products;
+  final List<PaymentMethod> paymentMethods;
+  final List<DeliveryMethod> deliveryMethods;
 
-  const CheackoutPage({Key key, @required this.products}) : super(key: key);
+  const CheackoutPage(
+      {Key key,
+      @required this.products,
+      @required this.paymentMethods,
+      @required this.deliveryMethods})
+      : super(key: key);
   @override
   _CheackoutPageState createState() => _CheackoutPageState();
 }
@@ -22,26 +29,25 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   final double cardElevation = 3;
 
-  List<DeliveryMethod> deliveryMethods;
+  // List<DeliveryMethod> deliveryMethods;
   DeliveryMethod _selectedDeliveryMethod;
 
-  List<PaymentMethod> paymentMethods;
+  // List<PaymentMethod> paymentMethods;
   PaymentMethod _selectedPaymentMethod;
 
   AddressRepository addressRepository = AddressRepository();
   Address _address;
 
-  double _subTotal = 0;
-  double _deliveryPrice = 5;
+  double _subTotal = 0.0;
+  double _deliveryPrice = 5.0;
+  // double _deliveryPric = _selectedDeliveryMethod.id;
 
   @override
   void initState() {
     super.initState();
-    deliveryMethods = DeliveryMethod.getDeliveryMethods();
-    _selectedDeliveryMethod = deliveryMethods[0];
-    paymentMethods = PaymentMethod.getPaymentMethods();
-    _selectedPaymentMethod = paymentMethods[0];
-    _address = addressRepository.getAddresses[0];
+    _selectedDeliveryMethod = widget.deliveryMethods[0];
+    _selectedPaymentMethod = widget.paymentMethods[0];
+    _address = addressRepository.addresses[0];
     _getTotal();
   }
 
@@ -406,7 +412,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   Widget _buildRadioListDeliveryMethod() {
     List<Widget> widgets = List<Widget>();
-    for (DeliveryMethod method in deliveryMethods) {
+    for (DeliveryMethod method in widget.deliveryMethods) {
       widgets.add(RadioListTile(
         value: method,
         groupValue: _selectedDeliveryMethod,
@@ -433,7 +439,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   Widget _buildRadioListPaymentMethod() {
     List<Widget> widgets = List<Widget>();
-    for (PaymentMethod method in paymentMethods) {
+    for (PaymentMethod method in widget.paymentMethods) {
       widgets.add(RadioListTile(
         value: method,
         groupValue: _selectedPaymentMethod,

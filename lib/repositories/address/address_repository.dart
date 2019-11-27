@@ -1,6 +1,11 @@
+import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
+import 'package:npa_user/repositories/address/address.dart';
 
 class AddressRepository {
+  final AddressApiClient addressApiClient;
+
+  AddressRepository({@required this.addressApiClient});
   List<Address> _addresses = [
     Address(
         id: 1,
@@ -16,7 +21,11 @@ class AddressRepository {
         gps: "NPACR-321419"),
   ];
 
-  List<Address> get getAddresses {
+  Future<void> getAddresses() async {
+    _addresses = await addressApiClient.fetchAddresses();
+  }
+
+  List<Address> get addresses {
     return List.from(_addresses);
   }
 

@@ -15,7 +15,7 @@ class AddressSelectPage extends StatelessWidget {
         ),
         body: ListView(
           children: <Widget>[
-            _buildAddressList(addressRepository.getAddresses),
+            _buildAddressList(addressRepository.addresses),
             SizedBox(
               height: 30,
             ),

@@ -8,4 +8,6 @@ class Address {
   String gps;
 
   Address({this.id, this.region, this.district, this.residential, this.gps});
+
+  Address.fromJson(Map<String, dynamic> json) {}
 }
