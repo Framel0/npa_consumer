@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:npa_user/bloc/dealer/dealer.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/values/color.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class DealersMapPage extends StatefulWidget {
   final Lpgmc lpgmc;

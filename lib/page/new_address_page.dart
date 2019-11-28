@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class NewAddressPage extends StatelessWidget {
   @override

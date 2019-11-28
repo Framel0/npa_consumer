@@ -11,10 +11,11 @@ class RefillRequestApiClient {
   RefillRequestApiClient({@required this.httpClient})
       : assert(httpClient != null);
 
-  Future<void> fetchRefillRequests() async {
+  Future<void> fetchRefillRequests(
+      {@required RefillRequest refillRequest}) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    final refillRequestsUrl = "$baseUrl/api/RefillRequestApi/RefillRequests";
-    final body = jsonEncode({});
+    final refillRequestsUrl = "$baseUrl/api/ConsumerRefillRequestApi/Create";
+    final body = jsonEncode(refillRequest.toJson());
 
     final refillRequestsResponse = await this
         .httpClient

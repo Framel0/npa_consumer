@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/authentication/authentication.dart';
 import 'package:npa_user/bloc/login/login.dart';
 import 'package:npa_user/repositories/repositories.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   final UserRepository userRepository;

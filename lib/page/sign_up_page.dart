@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:npa_user/bloc/bloc.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:http/http.dart' as http;
 import 'package:npa_user/repositories/repositories.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class RegisterPage extends StatefulWidget {
   final UserRepository userRepository;

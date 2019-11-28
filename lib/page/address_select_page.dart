@@ -3,7 +3,7 @@ import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class AddressSelectPage extends StatelessWidget {
   AddressRepository addressRepository = AddressRepository();

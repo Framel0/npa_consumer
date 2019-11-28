@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/util/text_input_util.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class ProfileEditPage extends StatefulWidget {
   @override

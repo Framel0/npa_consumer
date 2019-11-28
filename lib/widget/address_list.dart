@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class AddressList extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/model/safety_tip.dart';
 import 'package:npa_user/values/color.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class SafetyTipPage extends StatefulWidget {
   @override

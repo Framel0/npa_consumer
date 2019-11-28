@@ -62,7 +62,7 @@ class UserRepository {
       latitude: latitude,
       longitude: longitude,
     );
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
   }
 
   Future<void> saveData(User user) async {

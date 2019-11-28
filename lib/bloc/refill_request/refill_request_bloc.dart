@@ -3,26 +3,26 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
-import './request_refill.dart';
+import './refill_request.dart';
 
-class RequestRefillBloc extends Bloc<RequestRefillEvent, RequestRefillState> {
+class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
   final ProductRepository productRepository;
   final PaymentMethodRepository paymentMethodRepository;
   final DeliveryMethodRepository deliveryMethodRepository;
   final RefillRequestRepository refillRequestRepository;
 
-  RequestRefillBloc(
+  RefillRequestBloc(
       {@required this.refillRequestRepository,
       @required this.productRepository,
       @required this.paymentMethodRepository,
       @required this.deliveryMethodRepository});
 
   @override
-  RequestRefillState get initialState => RequestRefillInitail();
+  RefillRequestState get initialState => RequestRefillInitial();
 
   @override
-  Stream<RequestRefillState> mapEventToState(
-    RequestRefillEvent event,
+  Stream<RefillRequestState> mapEventToState(
+    RefillRequestEvent event,
   ) async* {
     if (event is FetchApis) {
       yield RequestRefillApiLoading();

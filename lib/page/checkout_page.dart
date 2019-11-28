@@ -29,24 +29,22 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   final double cardElevation = 3;
 
-  // List<DeliveryMethod> deliveryMethods;
-  DeliveryMethod _selectedDeliveryMethod;
+  static DeliveryMethod _selectedDeliveryMethod;
 
-  // List<PaymentMethod> paymentMethods;
   PaymentMethod _selectedPaymentMethod;
 
   AddressRepository addressRepository = AddressRepository();
   Address _address;
 
   double _subTotal = 0.0;
-  double _deliveryPrice = 5.0;
-  // double _deliveryPric = _selectedDeliveryMethod.id;
+  double _deliveryPrice = 0.0;
 
   @override
   void initState() {
     super.initState();
     _selectedDeliveryMethod = widget.deliveryMethods[0];
     _selectedPaymentMethod = widget.paymentMethods[0];
+    _deliveryPrice = _selectedDeliveryMethod.price;
     _address = addressRepository.addresses[0];
     _getTotal();
   }
@@ -397,17 +395,8 @@ class _CheackoutPageState extends State<CheackoutPage> {
   onChangedDeliveryMethod(DeliveryMethod selectedDeliveryMethod) {
     setState(() {
       _selectedDeliveryMethod = selectedDeliveryMethod;
+      _deliveryPrice = _selectedDeliveryMethod.price;
     });
-
-    if (_selectedDeliveryMethod.id == 1) {
-      setState(() {
-        _deliveryPrice = 5;
-      });
-    } else if (_selectedDeliveryMethod.id == 2) {
-      setState(() {
-        _deliveryPrice = 0;
-      });
-    }
   }
 
   Widget _buildRadioListDeliveryMethod() {

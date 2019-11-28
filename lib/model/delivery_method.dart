@@ -2,6 +2,7 @@ class DeliveryMethod {
   int id;
   String code;
   String name;
+  double price;
 
   DeliveryMethod({this.id, this.code, this.name});
 
@@ -9,6 +10,7 @@ class DeliveryMethod {
     id = json["id"];
     code = json["code"];
     name = json["name"];
+    price = json["price"];
   }
 
   static List<DeliveryMethod> getDeliveryMethods() {

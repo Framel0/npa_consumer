@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:npa_user/bloc/authentication/authentication.dart';
-import 'package:npa_user/bloc/bloc.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/bloc/dealer/dealer.dart';
 import 'package:npa_user/bloc/upcoming_request/upcoming_request.dart';
 import 'package:npa_user/page/home_page.dart';
@@ -12,24 +12,31 @@ import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/route_generator.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
+  final refillRequestRepository = RefillRequestRepository(
+      refillRequestApiClient:
+          RefillRequestApiClient(httpClient: http.Client()));
 
   final productRepository = ProductRepository(
       productApiClient: ProductApiClient(httpClient: http.Client()));
+
   final paymentMethodRepository = PaymentMethodRepository(
       paymentMethodApiClient:
           PaymentMethodApiClient(httpClient: http.Client()));
+
   final deliveryMethodRepository = DeliveryMethodRepository(
       deliveryMethodApiClient:
           DeliveryMethodApiClient(httpClient: http.Client()));
+
   final dealerRepository = DealerRepository(
       dealerApiClient: DealerApiClient(
     httpClient: http.Client(),
   ));
+
   final upcomingRequestRepository = UpcomingRequestRepository(
       upcomingRequestApiClient: UpcomingRequestApiClient(
     httpClient: http.Client(),
@@ -60,9 +67,10 @@ void main() {
           return ProductBloc(productRepository: productRepository);
         },
       ),
-      BlocProvider<RequestRefillBloc>(
+      BlocProvider<RefillRequestBloc>(
         builder: (context) {
-          return RequestRefillBloc(
+          return RefillRequestBloc(
+              refillRequestRepository: refillRequestRepository,
               productRepository: productRepository,
               paymentMethodRepository: paymentMethodRepository,
               deliveryMethodRepository: deliveryMethodRepository);

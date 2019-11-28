@@ -2,21 +2,22 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 
-abstract class RequestRefillState extends Equatable {
-  RequestRefillState([List props = const []]) : super(props);
+abstract class RefillRequestState extends Equatable {
+   RefillRequestState([List props = const []]) : super(props);
+
 }
 
-class RequestRefillInitail extends RequestRefillState {
+class RequestRefillInitial extends RefillRequestState {
   @override
   List<Object> get props => [];
 
   @override
   String toString() {
-    return "RequestRefillInitail";
+    return "RequestRefillInitial";
   }
 }
 
-class RequestRefillLoading extends RequestRefillState {
+class RequestRefillLoading extends RefillRequestState {
   @override
   List<Object> get props => [];
 
@@ -26,7 +27,7 @@ class RequestRefillLoading extends RequestRefillState {
   }
 }
 
-class RequestRefillLoaded extends RequestRefillState {
+class RequestRefillLoaded extends RefillRequestState {
   @override
   List<Object> get props => [];
 
@@ -36,7 +37,7 @@ class RequestRefillLoaded extends RequestRefillState {
   }
 }
 
-class RequestRefillError extends RequestRefillState {
+class RequestRefillError extends RefillRequestState {
   final String error;
 
   RequestRefillError({@required this.error});
@@ -49,7 +50,7 @@ class RequestRefillError extends RequestRefillState {
   }
 }
 
-class RequestRefillSuccess extends RequestRefillState {
+class RequestRefillSuccess extends RefillRequestState {
   @override
   List<Object> get props => [];
 
@@ -59,7 +60,7 @@ class RequestRefillSuccess extends RequestRefillState {
   }
 }
 
-class RequestRefillApiLoading extends RequestRefillState {
+class RequestRefillApiLoading extends RefillRequestState {
   @override
   List<Object> get props => [];
 
@@ -69,7 +70,7 @@ class RequestRefillApiLoading extends RequestRefillState {
   }
 }
 
-class RequestRefillApiLoaded extends RequestRefillState {
+class RequestRefillApiLoaded extends RefillRequestState {
   final List<Product> products;
   final List<PaymentMethod> paymentMethods;
   final List<DeliveryMethod> deliveryMethods;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/authentication/authentication.dart';
-import 'package:npa_user/bloc/bloc.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/page/contact_us_page.dart';
 import 'package:npa_user/page/home_page.dart';
 import 'package:npa_user/page/profile_page.dart';

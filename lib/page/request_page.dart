@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:npa_user/bloc/bloc.dart';
-import 'package:npa_user/bloc/request_refill/request_refill.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/checkout_page.dart';
 import 'package:npa_user/values/color.dart';
-import 'package:npa_user/widget/widget.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class RequestPage extends StatefulWidget {
   @override
@@ -34,7 +33,7 @@ class _RequestPageState extends State<RequestPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<RequestRefillBloc>(context).dispatch(FetchApis());
+    BlocProvider.of<RefillRequestBloc>(context).dispatch(FetchApis());
   }
 
   @override
@@ -43,90 +42,101 @@ class _RequestPageState extends State<RequestPage> {
       appBar: AppBar(
         title: Text("Request"),
       ),
-      body: BlocListener<RequestRefillBloc, RequestRefillState>(
-        listener: (context, state) {},
-        child: BlocBuilder<RequestRefillBloc, RequestRefillState>(
-            builder: (context, state) {
-          if (state is RequestRefillApiLoading) {
-            return Center(child: LoadingIndicator());
-          }
+      body:
+          // BlocListener<RequestRefillBloc, RequestRefillState>(
+          //   listener: (context, state) {
+          //     if (state is RequestRefillError) {
+          //       Scaffold.of(context).showSnackBar(
+          //         SnackBar(
+          //           content: Text('${state.error}'),
+          //           backgroundColor: Colors.red,
+          //         ),
+          //       );
+          //     }
+          //   },
+          //   child:
+          BlocBuilder<RefillRequestBloc, RefillRequestState>(
+              builder: (context, state) {
+        if (state is RequestRefillApiLoading) {
+          return Center(child: LoadingIndicator());
+        }
 
-          if (state is RequestRefillApiLoaded) {
-            _products = state.products;
-            _paymentMethods = state.paymentMethods;
-            _deliveryMethods = state.deliveryMethods;
-            return SafeArea(
-              child: Container(
-                child: ListView(
-                  padding: EdgeInsets.only(top: 15, bottom: 15),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        if (state is RequestRefillApiLoaded) {
+          _products = state.products;
+          _paymentMethods = state.paymentMethods;
+          _deliveryMethods = state.deliveryMethods;
+          return SafeArea(
+            child: Container(
+              child: ListView(
+                padding: EdgeInsets.only(top: 15, bottom: 15),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Refill Type",
+                      style: headerTextStyle,
+                    ),
+                  ),
+                  ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _products.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _buildField(_products[index]);
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(
+                        thickness: 2,
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: RaisedButton(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                      ),
+                      onPressed: () => {
+                        if (_selecteProducts.isNotEmpty)
+                          {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheackoutPage(
+                                        products: _selecteProducts,
+                                        paymentMethods: _paymentMethods,
+                                        deliveryMethods: _deliveryMethods,
+                                      )),
+                            )
+                          }
+                        else
+                          {_showSnackbar(context)}
+                      },
                       child: Text(
-                        "Refill Type",
-                        style: headerTextStyle,
-                      ),
-                    ),
-                    ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildField(_products[index]);
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Divider(
-                          thickness: 2,
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: RaisedButton(
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 12.0,
-                        ),
-                        onPressed: () => {
-                          if (_selecteProducts.isNotEmpty)
-                            {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CheackoutPage(
-                                          products: _selecteProducts,
-                                          paymentMethods: _paymentMethods,
-                                          deliveryMethods: _deliveryMethods,
-                                        )),
-                              )
-                            }
-                          else
-                            {_showSnackbar(context)}
-                        },
-                        child: Text(
-                          "Proceed To Payment",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
+                        "Proceed To Payment",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }
-          if (state is ProductError) {}
-        }),
-      ),
+            ),
+          );
+        }
+        if (state is ProductError) {}
+      }),
+      // ),
     );
   }
 
