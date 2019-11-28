@@ -9,9 +9,11 @@ class RequestRefillBloc extends Bloc<RequestRefillEvent, RequestRefillState> {
   final ProductRepository productRepository;
   final PaymentMethodRepository paymentMethodRepository;
   final DeliveryMethodRepository deliveryMethodRepository;
+  final RefillRequestRepository refillRequestRepository;
 
   RequestRefillBloc(
-      {@required this.productRepository,
+      {@required this.refillRequestRepository,
+      @required this.productRepository,
       @required this.paymentMethodRepository,
       @required this.deliveryMethodRepository});
 
@@ -39,6 +41,18 @@ class RequestRefillBloc extends Bloc<RequestRefillEvent, RequestRefillState> {
             products: products,
             paymentMethods: paymentMethods,
             deliveryMethods: deliveryMethods);
+      } catch (e) {
+        yield RequestRefillError(error: e.toString());
+      }
+    }
+
+    if (event is PostRefillRequest) {
+      yield RequestRefillLoading();
+
+      try {
+        await refillRequestRepository.refillRequest(
+            refillRequest: event.refillRequest);
+        yield RequestRefillSuccess();
       } catch (e) {
         yield RequestRefillError(error: e.toString());
       }

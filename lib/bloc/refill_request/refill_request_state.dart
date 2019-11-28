@@ -49,6 +49,16 @@ class RequestRefillError extends RequestRefillState {
   }
 }
 
+class RequestRefillSuccess extends RequestRefillState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "RequestRefillSuccess";
+  }
+}
+
 class RequestRefillApiLoading extends RequestRefillState {
   @override
   List<Object> get props => [];
