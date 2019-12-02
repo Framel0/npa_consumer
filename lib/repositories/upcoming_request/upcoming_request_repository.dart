@@ -6,7 +6,14 @@ class UpcomingRequestRepository {
   final UpcomingRequestApiClient upcomingRequestApiClient;
   UpcomingRequestRepository({@required this.upcomingRequestApiClient});
 
-  Future<List<UpcomingRequest>> getUpcomingRequests() async {
-    return null;
+  List<UpcomingRequest> _upcomingRequests = [];
+
+  Future<void> getUpcomingRequests({@required int userId}) async {
+    _upcomingRequests =
+        await upcomingRequestApiClient.fetchUpcomingRequests(userId: userId);
+  }
+
+  List<UpcomingRequest> get upcomingRequests {
+    return List.from(_upcomingRequests);
   }
 }

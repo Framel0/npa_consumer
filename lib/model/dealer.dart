@@ -16,13 +16,14 @@ class Dealer {
       this.latitude,
       this.longitude});
 
-  Dealer.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    firstName = json["firstName"];
-    lastName = json["lastName"];
-    phoneNumber = json["phoneNumber"];
-    address = json["address"];
-    latitude = json["latitude"];
-    longitude = json["longitude"];
+  factory Dealer.fromJson(Map<String, dynamic> json) {
+    return Dealer(
+        id: json["id"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        phoneNumber: json["phoneNumber"],
+        address: json["address"],
+        latitude: json["latitude"],
+        longitude: json["longitude"]);
   }
 }

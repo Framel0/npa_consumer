@@ -6,23 +6,10 @@ class AddressRepository {
   final AddressApiClient addressApiClient;
 
   AddressRepository({@required this.addressApiClient});
-  List<Address> _addresses = [
-    Address(
-        id: 1,
-        region: Region(),
-        district: District(),
-        residential: "Dworwulu",
-        gps: "NPACR-321419"),
-    Address(
-        id: 2,
-        region: Region(),
-        district: District(),
-        residential: "East egon",
-        gps: "NPACR-321419"),
-  ];
+  List<Address> _addresses = [];
 
-  Future<void> getAddresses() async {
-    _addresses = await addressApiClient.fetchAddresses();
+  Future<void> getAddresses({@required int id}) async {
+    _addresses = await addressApiClient.fetchAddresses(id: id);
   }
 
   List<Address> get addresses {
@@ -31,15 +18,5 @@ class AddressRepository {
 
   addAddress(Address address) {
     _addresses.add(address);
-  }
-
-  updateAddress(Address updateAddress) {
-    var address = _addresses.firstWhere((address) {
-      address.id == updateAddress.id;
-    });
-    address.region = updateAddress.region;
-    address.district = updateAddress.district;
-    address.residential = updateAddress.residential;
-    address.gps = updateAddress.gps;
   }
 }

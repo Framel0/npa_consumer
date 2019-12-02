@@ -4,7 +4,8 @@ import 'package:npa_user/model/models.dart';
 class UpcomingOrderListItem extends StatelessWidget {
   final UpcomingRequest upcomingOrder;
 
-  const UpcomingOrderListItem({Key key, this.upcomingOrder}) : super(key: key);
+  const UpcomingOrderListItem({Key key, @required this.upcomingOrder})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +14,22 @@ class UpcomingOrderListItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Dealer: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "Dealer 1"),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 2,
-          ),
+          // RichText(
+          //   maxLines: 2,
+          //   overflow: TextOverflow.ellipsis,
+          //   text: TextSpan(
+          //     style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
+          //     children: <TextSpan>[
+          //       TextSpan(
+          //           text: 'Dealer: ',
+          //           style: TextStyle(fontWeight: FontWeight.bold)),
+          //       TextSpan(text: "Dealer 1"),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 2,
+          // ),
           RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -54,7 +55,7 @@ class UpcomingOrderListItem extends StatelessWidget {
                 TextSpan(
                     text: 'Delivery Method: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "Home Delivery"),
+                TextSpan(text: "${upcomingOrder.deliveryMethod.name}"),
               ],
             ),
           ),
@@ -70,7 +71,7 @@ class UpcomingOrderListItem extends StatelessWidget {
                 TextSpan(
                     text: 'Payment Method: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "Cash on Delivery"),
+                TextSpan(text: "${upcomingOrder.paymentMethod.name}"),
               ],
             ),
           ),

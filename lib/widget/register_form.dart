@@ -218,15 +218,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (!_formKey.currentState.validate()) {
                         return;
                       } else {
-                        _onRegisterButtonPressed();
-                        Future.delayed(Duration(seconds: 3));
-                        Navigator.pushReplacement(
-                            // replcet the curent layout unlike push that just creates new page
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext cotext) => LoginPage(
-                                      userRepository: widget.userRepository,
-                                    )));
+                        onRegisterButtonPressed();
                       }
                     },
                   ),
@@ -272,7 +264,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _dealerController.text = "";
   }
 
-  _onRegisterButtonPressed() {
+  onRegisterButtonPressed() {
     BlocProvider.of<RegisterBloc>(context)
       ..dispatch(
         RegisterButtonPressed(

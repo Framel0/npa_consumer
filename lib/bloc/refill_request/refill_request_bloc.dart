@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import './refill_request.dart';
 

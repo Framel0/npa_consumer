@@ -16,11 +16,4 @@ class ProductRepository {
     return List.from(_products);
   }
 
-  List<ProductModel> getDropdownMenuItem() {
-    List<ProductModel> items = List();
-
-    for (Product district in _products) {}
-
-    return items;
-  }
 }

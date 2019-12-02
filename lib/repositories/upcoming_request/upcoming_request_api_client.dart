@@ -12,23 +12,25 @@ class UpcomingRequestApiClient {
   UpcomingRequestApiClient({@required this.httpClient})
       : assert(httpClient != null);
 
-  Future<List<UpcomingRequest>> fetchDealers() async {
-    final upcomingRequestsUrl = "$baseUrl/api/DealerApi/Dealers";
+  Future<List<UpcomingRequest>> fetchUpcomingRequests(
+      {@required int userId}) async {
+    final upcomingRequestsUrl =
+        "$baseUrl/api/ConsumerRefillRequestApi/ConsumerRefillRequestsByConsumer/2";
     final upcomingRequestsResponse =
         await this.httpClient.get(upcomingRequestsUrl);
 
     if (upcomingRequestsResponse.statusCode != 200) {
       print(upcomingRequestsResponse.statusCode);
-      throw Exception('error getting dealers');
+      throw Exception('error getting upcomingRequests');
     }
 
     final reponse = jsonDecode(upcomingRequestsResponse.body);
     var upcomingRequests = reponse["model"];
-    List<UpcomingRequest> dealerList = [];
-    // for (var d in dealers) {
-    //   dealerList.add(UpcomingRequest.fromJson(d));
-    // }
+    List<UpcomingRequest> upcomingRequestList = [];
+    for (var d in upcomingRequests) {
+      upcomingRequestList.add(UpcomingRequest.fromJson(d));
+    }
 
-    return dealerList;
+    return upcomingRequestList;
   }
 }

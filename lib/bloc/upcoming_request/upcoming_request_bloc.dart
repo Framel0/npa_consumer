@@ -16,6 +16,18 @@ class UpcomingRequestBloc
   Stream<UpcomingRequestState> mapEventToState(
     UpcomingRequestEvent event,
   ) async* {
-    if (event is FetchUpcomingRequests) {}
+    if (event is FetchUpcomingRequests) {
+      yield UpcomingRequestLoading();
+
+      try {
+        await upcomingRequestRepository.getUpcomingRequests(
+            userId: event.userId);
+
+        final upcomingRequests = upcomingRequestRepository.upcomingRequests;
+        yield UpcomingRequestLoaded(upcomingRequests: upcomingRequests);
+      } catch (e) {
+        yield UpcomingRequestError(error: e.toString());
+      }
+    }
   }
 }

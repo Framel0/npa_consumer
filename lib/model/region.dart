@@ -1,13 +1,11 @@
 class Region {
-  int id;
-  String code;
-  String name;
+  final int id;
+  final String code;
+  final String name;
 
   Region({this.id, this.code, this.name});
 
-  Region.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    code = json["code"];
-    name = json["name"];
+  factory Region.fromJson(Map<String, dynamic> json) {
+    return Region(id: json["id"], code: json["code"], name: json["name"]);
   }
 }

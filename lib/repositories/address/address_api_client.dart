@@ -10,8 +10,9 @@ class AddressApiClient {
 
   AddressApiClient({@required this.httpClient}) : assert(httpClient != null);
 
-  Future<List<Address>> fetchAddresses() async {
-    final addresssUrl = "$baseUrl/api/AddressApi/Addresss";
+  Future<List<Address>> fetchAddresses({@required int id}) async {
+    final addresssUrl =
+        "$baseUrl/api/ConsumerAddresseApi/ConsumerAddressesByConsumer/$id";
     final addresssResponse = await this.httpClient.get(addresssUrl);
 
     if (addresssResponse.statusCode != 200) {

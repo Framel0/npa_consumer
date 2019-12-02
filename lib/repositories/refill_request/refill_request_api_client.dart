@@ -20,7 +20,7 @@ class RefillRequestApiClient {
     final refillRequestsResponse = await this
         .httpClient
         .post(refillRequestsUrl, headers: headers, body: body);
-
+    
     if (refillRequestsResponse.statusCode != 200) {
       print(refillRequestsResponse.statusCode);
       throw Exception('error getting refillRequests');

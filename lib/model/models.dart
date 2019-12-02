@@ -1,5 +1,3 @@
-export 'login.dart';
-export 'register.dart';
 export 'dealer.dart';
 export 'user.dart';
 export 'address.dart';
@@ -14,6 +12,5 @@ export 'lpgmc.dart';
 export 'deposite.dart';
 export 'upcoming_request.dart';
 export 'product.dart';
-export 'product_model.dart';
 export 'refill_request.dart';
 export 'refill_request_product.dart';

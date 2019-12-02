@@ -12,6 +12,7 @@ class RefillRequest {
         "consmerAddressId": consmerAddressId,
         "paymentMethodId": paymentMethodId,
         "deliveryMethodId": deliveryMethodId,
-        "consumerRequestProduct": refillRequestProducts.map((p) => p.toJson()).toList()
+        "consumerRefillRequestProduct":
+            refillRequestProducts.map((p) => p.toJson()).toList()
       };
 }

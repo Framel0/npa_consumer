@@ -13,11 +13,11 @@ class AddressSelectListItem extends StatelessWidget {
         Navigator.pop(context, address);
       },
       title: Text(
-        address.residential,
+        address.residentialAddress,
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
       subtitle: Text(
-        address.gps,
+        address.ghanaPostGpsaddress,
         style: TextStyle(fontSize: 14),
       ),
     );

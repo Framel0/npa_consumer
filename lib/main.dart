@@ -7,6 +7,7 @@ import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/bloc/dealer/dealer.dart';
 import 'package:npa_user/bloc/upcoming_request/upcoming_request.dart';
 import 'package:npa_user/page/home_page.dart';
+import 'package:npa_user/page/pages.dart';
 import 'package:npa_user/page/splash_page.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/route_generator.dart';
@@ -42,6 +43,11 @@ void main() {
     httpClient: http.Client(),
   ));
 
+  final addressRepository = AddressRepository(
+      addressApiClient: AddressApiClient(
+    httpClient: http.Client(),
+  ));
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<AuthenticationBloc>(
@@ -65,6 +71,11 @@ void main() {
       BlocProvider<ProductBloc>(
         builder: (context) {
           return ProductBloc(productRepository: productRepository);
+        },
+      ),
+      BlocProvider<AddressBloc>(
+        builder: (context) {
+          return AddressBloc(addressRepository: addressRepository);
         },
       ),
       BlocProvider<RefillRequestBloc>(
@@ -116,10 +127,10 @@ class MyApp extends StatelessWidget {
               return MyHomePage();
             }
             if (state is AuthenticationUnauthenticated) {
-              return MyHomePage();
-              // return LandingPage(
-              //   userRepository: userRepository,
-              // );
+              // return MyHomePage();
+              return LandingPage(
+                userRepository: userRepository,
+              );
             }
             if (state is AuthenticationLoading) {
               return LoadingIndicator();

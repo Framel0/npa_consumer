@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
+import 'package:npa_user/repositories/repositories.dart';
 import './address.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
+  final AddressRepository addressRepository;
+
+  AddressBloc({@required this.addressRepository});
   @override
   AddressState get initialState => AddressLoading();
 
@@ -14,7 +19,9 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       yield AddressLoading();
 
       try {
-        yield AddressLoaded();
+        await addressRepository.getAddresses(id: event.id);
+        final addresses = addressRepository.addresses;
+        yield AddressLoaded(addresses: addresses);
       } catch (e) {
         yield AddressError(error: e.toString());
       }

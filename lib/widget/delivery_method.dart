@@ -17,7 +17,7 @@ class _DeliveryState extends State<Delivery> {
   @override
   void initState() {
     super.initState();
-    deliveryMethods = DeliveryMethod.getDeliveryMethods();
+    // deliveryMethods = DeliveryMethod.getDeliveryMethods();
   }
 
   @override

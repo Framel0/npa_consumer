@@ -33,8 +33,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   PaymentMethod _selectedPaymentMethod;
 
-  AddressRepository addressRepository = AddressRepository();
-  Address _address;
+  Address _address = Address();
 
   double _subTotal = 0.0;
   double _deliveryPrice = 0.0;
@@ -45,7 +44,6 @@ class _CheackoutPageState extends State<CheackoutPage> {
     _selectedDeliveryMethod = widget.deliveryMethods[0];
     _selectedPaymentMethod = widget.paymentMethods[0];
     _deliveryPrice = _selectedDeliveryMethod.price;
-    _address = addressRepository.addresses[0];
     _getTotal();
   }
 
@@ -109,20 +107,24 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      _address.residential,
+                                      _address.residentialAddress == null
+                                          ? ""
+                                          : _address.residentialAddress,
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500),
                                     ),
                                     Text(
-                                      _address.gps,
+                                      _address.ghanaPostGpsaddress == null
+                                          ? ""
+                                          : _address.ghanaPostGpsaddress,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
                                 OutlineButton(
                                   child: Text(
-                                    "change address",
+                                    "select address",
                                     style: TextStyle(color: colorPrimaryYellow),
                                   ),
                                   onPressed: () {
@@ -317,20 +319,25 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                   vertical: 12.0,
                                 ),
                                 onPressed: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SummaryPage(
-                                              deliveryMethod:
-                                                  _selectedDeliveryMethod,
-                                              paymentMethod:
-                                                  _selectedPaymentMethod,
-                                              deliveryAddress: _address,
-                                              products: widget.products,
-                                              subTotal: _subTotal,
-                                              deliveryPrice: _deliveryPrice,
-                                            )),
-                                  )
+                                  if (_address != null)
+                                    {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SummaryPage(
+                                                  deliveryMethod:
+                                                      _selectedDeliveryMethod,
+                                                  paymentMethod:
+                                                      _selectedPaymentMethod,
+                                                  deliveryAddress: _address,
+                                                  products: widget.products,
+                                                  subTotal: _subTotal,
+                                                  deliveryPrice: _deliveryPrice,
+                                                )),
+                                      )
+                                    }
+                                  else
+                                    {_showSnackbar(context)}
                                 },
                                 child: Text(
                                   "Proceed To Summary",
@@ -352,6 +359,19 @@ class _CheackoutPageState extends State<CheackoutPage> {
         ),
       ),
     );
+  }
+
+  _showSnackbar(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Please Select Address',
+          style: TextStyle(
+            color: Colors.white,
+          )),
+      backgroundColor: Colors.redAccent,
+      elevation: 10,
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   _navigatrAddressSelect(BuildContext context) async {
