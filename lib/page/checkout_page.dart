@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/delivery_method.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/model/payment_method.dart';
@@ -34,6 +35,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
   PaymentMethod _selectedPaymentMethod;
 
   Address _address = Address();
+  User _user = User();
 
   double _subTotal = 0.0;
   double _deliveryPrice = 0.0;
@@ -45,6 +47,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
     _selectedPaymentMethod = widget.paymentMethods[0];
     _deliveryPrice = _selectedDeliveryMethod.price;
     _getTotal();
+    getUser();
+  }
+
+  getUser() async {
+    _user = await readUserData();
   }
 
   @override
@@ -84,7 +91,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Name: \nJohn Doe",
+                              "Name: \n${_user.firstName} ${_user.lastName}",
                               style: Theme.of(context)
                                   .textTheme
                                   .title
@@ -137,7 +144,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                               height: 5,
                             ),
                             Text(
-                              "Phone Number: \n+233247894562",
+                              "Phone Number: \n ${_user.phoneNumber}",
                               style: Theme.of(context)
                                   .textTheme
                                   .title

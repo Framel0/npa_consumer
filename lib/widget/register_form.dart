@@ -268,7 +268,6 @@ class _RegisterFormState extends State<RegisterForm> {
     BlocProvider.of<RegisterBloc>(context)
       ..dispatch(
         RegisterButtonPressed(
-          dateOfRegistration: date,
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
           lpgmcId: _selectedLpgmc.id,
@@ -617,7 +616,7 @@ class _RegisterFormState extends State<RegisterForm> {
         value: _selectedDeposite,
         items: dropdownMenuItems,
         hint: Text(
-          "Select Deposite",
+          "Select Deposit",
           style: TextStyle(color: colorPrimary),
         ),
         onChanged: onChangeDropdownItemDeposite,

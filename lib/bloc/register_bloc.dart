@@ -30,7 +30,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield RegisterLoading();
       try {
         await userRepository.register(
-          dateOfRegistration: event.dateOfRegistration,
           firstName: event.firstName,
           lastName: event.lastName,
           lpgmcId: event.lpgmcId,

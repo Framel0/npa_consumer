@@ -55,7 +55,7 @@ class UpcomingOrderListItem extends StatelessWidget {
                 TextSpan(
                     text: 'Delivery Method: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "${upcomingOrder.deliveryMethod.name}"),
+                TextSpan(text: "${upcomingOrder.deliveryMethod}"),
               ],
             ),
           ),
@@ -71,7 +71,7 @@ class UpcomingOrderListItem extends StatelessWidget {
                 TextSpan(
                     text: 'Payment Method: ',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "${upcomingOrder.paymentMethod.name}"),
+                TextSpan(text: "${upcomingOrder.paymentMethod}"),
               ],
             ),
           ),

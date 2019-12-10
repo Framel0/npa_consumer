@@ -6,8 +6,13 @@ import './address.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   final AddressRepository addressRepository;
+  final DistrictRepository districtRepository;
+  final RegionRepository regionRepository;
 
-  AddressBloc({@required this.addressRepository});
+  AddressBloc(
+      {@required this.districtRepository,
+      @required this.regionRepository,
+      @required this.addressRepository});
   @override
   AddressState get initialState => AddressLoading();
 
@@ -16,6 +21,31 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     AddressEvent event,
   ) async* {
     if (event is FetchAddresses) {
+      yield AddressLoading();
+
+      try {
+        await addressRepository.getAddresses(id: event.id);
+        final addresses = addressRepository.addresses;
+        yield AddressLoaded(addresses: addresses);
+      } catch (e) {
+        yield AddressError(error: e.toString());
+      }
+    }
+    if (event is FetchAddresseApis) {
+      yield AddressApiLoading();
+
+      try {
+        await districtRepository.getDistricts();
+        final districts = districtRepository.getDropdownMenuItem();
+
+        await regionRepository.getRegions();
+        final regions = regionRepository.regions;
+        yield AddressApiLoaded(districts: districts, regions: regions);
+      } catch (e) {
+        yield AddressError(error: e.toString());
+      }
+    }
+    if (event is AddNewAddress) {
       yield AddressLoading();
 
       try {

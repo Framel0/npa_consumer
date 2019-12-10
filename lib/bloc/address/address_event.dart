@@ -14,3 +14,20 @@ class FetchAddresses extends AddressEvent {
     return "Fetch Addresses";
   }
 }
+
+class FetchAddresseApis extends AddressEvent {
+  @override
+  String toString() {
+    return "Fetch Addresses";
+  }
+}
+
+class AddNewAddress extends AddressEvent {
+  final int id;
+
+  AddNewAddress({@required this.id});
+  @override
+  String toString() {
+    return "Fetch Addresses";
+  }
+}

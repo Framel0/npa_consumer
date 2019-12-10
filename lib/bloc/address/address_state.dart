@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 
@@ -26,6 +27,31 @@ class AddressLoaded extends AddressState {
   @override
   String toString() {
     return "AddressLoaded";
+  }
+}
+
+class AddressApiLoading extends AddressState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "AddressApiLoading";
+  }
+}
+
+class AddressApiLoaded extends AddressState {
+  final List<DropdownMenuItem<District>> districts;
+  final List<Region> regions;
+
+  AddressApiLoaded({@required this.districts, @required this.regions});
+
+  @override
+  List<Object> get props => [districts, regions];
+
+  @override
+  String toString() {
+    return "AddressApiLoaded";
   }
 }
 

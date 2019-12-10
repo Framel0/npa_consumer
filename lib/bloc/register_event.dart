@@ -12,7 +12,6 @@ class FetchAll extends RegisterEvent {
 }
 
 class RegisterButtonPressed extends RegisterEvent {
-  final String dateOfRegistration;
   final String firstName;
   final String lastName;
   final int lpgmcId;
@@ -35,7 +34,6 @@ class RegisterButtonPressed extends RegisterEvent {
   RegisterButtonPressed({
     this.depositeId,
     this.cylinderSizeId,
-    this.dateOfRegistration,
     this.lpgmcId,
     this.houseNumber,
     this.streetName,

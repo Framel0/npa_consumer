@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/district/district.dart';
 import 'package:npa_user/repositories/region/region.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/util/text_input_util.dart';
 import 'package:npa_user/values/color.dart';
+import 'package:npa_user/widget/widgets.dart';
 
 class NewAddressForm extends StatefulWidget {
   @override
@@ -22,10 +25,10 @@ class _NewAddressFormState extends State<NewAddressForm> {
   final _regionController = TextEditingController();
   final _gpsAddressController = TextEditingController();
 
-  RegionRepository regionRepository = RegionRepository();
+  List<Region> _regions = [];
+
   Region _selectedRegion;
 
-  DistrictRepository districtRepository = DistrictRepository();
   District _selectedDistrict;
 
   @override
@@ -40,101 +43,85 @@ class _NewAddressFormState extends State<NewAddressForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          _buildHouseNumberField(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildStreetNameField(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildResidentialAddressField(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildDistrictField(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildRegionsField(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildGpsAddressField(),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: RaisedButton(
-              shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  side: BorderSide(color: Colors.white)),
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              // color: Theme.of(context).buttonColor,
-              textColor: Colors.white,
-              child: Text(
-                'Save',
-                style: TextStyle(fontSize: 18),
+    return BlocBuilder<AddressBloc, AddressState>(builder: (context, state) {
+      if (state is AddressApiLoading) {
+        return Center(
+          child: LoadingIndicator(),
+        );
+      }
+
+      if (state is AddressApiLoaded) {
+        final districts = state.districts;
+        _regions = state.regions;
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              _buildHouseNumberField(),
+              SizedBox(
+                height: 20,
               ),
-              onPressed: () {
-                _formKey.currentState.save();
+              _buildStreetNameField(),
+              SizedBox(
+                height: 20,
+              ),
+              _buildResidentialAddressField(),
+              SizedBox(
+                height: 20,
+              ),
+              _buildDistrictField(dropdownMenuItems: districts),
+              SizedBox(
+                height: 20,
+              ),
+              _buildRegionsField(),
+              SizedBox(
+                height: 20,
+              ),
+              _buildGpsAddressField(),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: RaisedButton(
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                      side: BorderSide(color: Colors.white)),
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  // color: Theme.of(context).buttonColor,
+                  textColor: Colors.white,
+                  child: Text(
+                    'Save',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onPressed: () {
+                    _formKey.currentState.save();
 
-                if (!_formKey.currentState.validate()) {
-                  return;
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-            ),
+                    if (!_formKey.currentState.validate()) {
+                      return;
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
-
-  onChangeDropdownItemRegion(Region selectedRgion) {
-    setState(() {
-      _selectedRegion = selectedRgion;
+        );
+      }
     });
-  }
-
-  Widget _buildRegionField() {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: colorPrimaryYellow, width: 2),
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-          shape: BoxShape.rectangle),
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.0,
-      ),
-      child: DropdownButton(
-        value: _selectedRegion,
-        items: regionRepository.getDropdownMenuItems(_selectedDistrict),
-        hint: Text(
-          "Select Region",
-          style: TextStyle(color: colorPrimary),
-        ),
-        onChanged: onChangeDropdownItemRegion,
-        style: formTextStyle,
-        isExpanded: true,
-      ),
-    );
   }
 
   onChangeDropdownItemDistrict(District selectedDistrict) {
     setState(() {
       _selectedDistrict = selectedDistrict;
-      _selectedRegion = regionRepository.getDistrictRegion(_selectedDistrict);
+      _selectedRegion = getDistrictRegion(_selectedDistrict);
       _regionController.text = _selectedRegion.name;
     });
   }
 
-  Widget _buildDistrictField() {
+  Widget _buildDistrictField(
+      {@required List<DropdownMenuItem<District>> dropdownMenuItems}) {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -145,7 +132,7 @@ class _NewAddressFormState extends State<NewAddressForm> {
       ),
       child: DropdownButton(
         value: _selectedDistrict,
-        items: (districtRepository.getDropdownMenuItems()),
+        items: dropdownMenuItems,
         hint: Text(
           "Select District",
           style: TextStyle(color: colorPrimary),
@@ -155,6 +142,14 @@ class _NewAddressFormState extends State<NewAddressForm> {
         isExpanded: true,
       ),
     );
+  }
+
+  Region getDistrictRegion(District district) {
+    final region = _regions.firstWhere((r) {
+      return r.id == district.regionId;
+    });
+
+    return region;
   }
 
   Widget _buildRegionsField() {

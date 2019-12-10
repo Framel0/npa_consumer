@@ -34,7 +34,6 @@ class UserApiClient {
   }
 
   Future<void> register({
-    @required String dateOfRegistration,
     @required String firstName,
     @required String lastName,
     @required int lpgmcId,
@@ -56,7 +55,6 @@ class UserApiClient {
   }) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
-      // "dateOfRegistration": "$dateOfRegistration",
       "firstName": "$firstName",
       "lastName": "$lastName",
       "lpgmcId": lpgmcId,

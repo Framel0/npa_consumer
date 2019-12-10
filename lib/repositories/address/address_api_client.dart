@@ -29,4 +29,23 @@ class AddressApiClient {
 
     return addressList;
   }
+  Future<List<Address>> addNewAddresses({@required int id}) async {
+    final addresssUrl =
+        "$baseUrl/api/ConsumerAddresseApi/ConsumerAddressesByConsumer/$id";
+    final addresssResponse = await this.httpClient.get(addresssUrl);
+
+    if (addresssResponse.statusCode != 200) {
+      print(addresssResponse.statusCode);
+      throw Exception('error getting addresss');
+    }
+
+    final reponse = jsonDecode(addresssResponse.body);
+    var addresss = reponse["model"];
+    List<Address> addressList = [];
+    for (var d in addresss) {
+      addressList.add(Address.fromJson(d));
+    }
+
+    return addressList;
+  }
 }

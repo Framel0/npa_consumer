@@ -21,7 +21,6 @@ class UserRepository {
   }
 
   Future<void> register({
-    @required String dateOfRegistration,
     @required String firstName,
     @required String lastName,
     @required int lpgmcId,
@@ -42,7 +41,6 @@ class UserRepository {
     @required double longitude,
   }) async {
     await userApiClient.register(
-      dateOfRegistration: dateOfRegistration,
       firstName: firstName,
       lastName: lastName,
       lpgmcId: lpgmcId,
