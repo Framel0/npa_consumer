@@ -14,3 +14,4 @@ export './delivery_method/delivery_method.dart';
 export './payment_method/payment_method.dart';
 export './refill_request/refill_request.dart';
 export './address/address.dart';
+export './refill_request_history/refill_request_history.dart';

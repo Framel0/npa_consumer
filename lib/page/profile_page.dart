@@ -14,21 +14,25 @@ class _ProfilePageState extends State<ProfilePage> {
   var user = User();
   Address address;
 
-  Future getUser() async {
-    user = await readUserData();
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getUser();
+
+    readUserData().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+    final String firstName = user.firstName ?? "";
+    final String lastName = user.lastName ?? "";
+    final String phoneNumber = user.phoneNumber ?? "";
+    final String consumerId = user.consumerId ?? "";
 
     return Scaffold(
       appBar: AppBar(
@@ -46,13 +50,11 @@ class _ProfilePageState extends State<ProfilePage> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         children: <Widget>[
-          _buildListItem(title: "Consumer ID", subtitle: user.consumerId),
+          _buildListItem(title: "Consumer ID", subtitle: consumerId),
           _divider(),
-          _buildListItem(
-              title: "Name",
-              subtitle: "${user.firstName} + " " ${user.lastName}"),
+          _buildListItem(title: "Name", subtitle: "${firstName} ${lastName}"),
           _divider(),
-          _buildListItem(title: "Phone", subtitle: user.phoneNumber),
+          _buildListItem(title: "Phone", subtitle: phoneNumber),
           SizedBox(
             height: 24,
           ),

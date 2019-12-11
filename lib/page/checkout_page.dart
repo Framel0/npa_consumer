@@ -4,7 +4,6 @@ import 'package:npa_user/model/delivery_method.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/model/payment_method.dart';
 import 'package:npa_user/page/summary_page.dart';
-import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
@@ -37,6 +36,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
   Address _address = Address();
   User _user = User();
 
+  String firstName = "";
+  String lastName = "";
+  String phoneNumber = "";
+  String consumerId = "";
+
   double _subTotal = 0.0;
   double _deliveryPrice = 0.0;
 
@@ -50,8 +54,16 @@ class _CheackoutPageState extends State<CheackoutPage> {
     getUser();
   }
 
-  getUser() async {
-    _user = await readUserData();
+  getUser() {
+    readUserData().then((value) {
+      setState(() {
+        _user = value;
+        firstName = _user.firstName ?? "";
+        lastName = _user.lastName ?? "";
+        phoneNumber = _user.phoneNumber ?? "";
+        consumerId = _user.consumerId ?? "";
+      });
+    });
   }
 
   @override
@@ -64,150 +76,15 @@ class _CheackoutPageState extends State<CheackoutPage> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "Details",
-                          style: headerTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                      elevation: cardElevation,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Name: \n${_user.firstName} ${_user.lastName}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(fontSize: 17),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "Address:",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(fontSize: 17),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      _address.residentialAddress == null
-                                          ? ""
-                                          : _address.residentialAddress,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      _address.ghanaPostGpsaddress == null
-                                          ? ""
-                                          : _address.ghanaPostGpsaddress,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ],
-                                ),
-                                OutlineButton(
-                                  child: Text(
-                                    "select address",
-                                    style: TextStyle(color: colorPrimaryYellow),
-                                  ),
-                                  onPressed: () {
-                                    _navigatrAddressSelect(context);
-                                  },
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "Phone Number: \n ${_user.phoneNumber}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(fontSize: 17),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "Refill Type",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(fontSize: 17),
-                            ),
-                            _buildCylinders()
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            buildDetails(context),
             SizedBox(
               height: 30,
             ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      "Select Delivery Method",
-                      style: headerTextStyle,
-                    ),
-                  ),
-                  Card(
-                      elevation: cardElevation,
-                      child: _buildRadioListDeliveryMethod())
-                ],
-              ),
-            ),
+            buildDeliveryMethod(),
             SizedBox(
               height: 30,
             ),
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Select Payment Method",
-                    style: headerTextStyle,
-                  ),
-                ),
-                Card(
-                    elevation: cardElevation,
-                    child: _buildRadioListPaymentMethod())
-              ],
-            )),
+            buildPaymentMethod(),
             SizedBox(
               height: 30,
             ),
@@ -326,7 +203,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                   vertical: 12.0,
                                 ),
                                 onPressed: () => {
-                                  if (_address != null)
+                                  if (_address.id != null)
                                     {
                                       Navigator.push(
                                         context,
@@ -368,7 +245,149 @@ class _CheackoutPageState extends State<CheackoutPage> {
     );
   }
 
-  _showSnackbar(BuildContext context) {
+  Widget buildPaymentMethod() {
+    return Container(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Select Payment Method",
+            style: headerTextStyle,
+          ),
+        ),
+        Card(elevation: cardElevation, child: _buildRadioListPaymentMethod())
+      ],
+    ));
+  }
+
+  Widget buildDeliveryMethod() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Select Delivery Method",
+              style: headerTextStyle,
+            ),
+          ),
+          Card(elevation: cardElevation, child: _buildRadioListDeliveryMethod())
+        ],
+      ),
+    );
+  }
+
+  Widget buildDetails(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "Details",
+                  style: headerTextStyle,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              elevation: cardElevation,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Name: \n${firstName} ${lastName}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(fontSize: 17),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Phone Number: \n${phoneNumber}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(fontSize: 17),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Address:",
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(fontSize: 17),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              _address.residentialAddress == null
+                                  ? ""
+                                  : _address.residentialAddress,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              _address.ghanaPostGpsaddress == null
+                                  ? ""
+                                  : _address.ghanaPostGpsaddress,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        OutlineButton(
+                          child: Text(
+                            "select address",
+                            style: TextStyle(color: colorPrimaryYellow),
+                          ),
+                          onPressed: () {
+                            _navigatrAddressSelect(context);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Refill Type",
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(fontSize: 17),
+                    ),
+                    _buildCylinders()
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _showSnackbar(BuildContext buildContext) {
     final snackBar = SnackBar(
       content: Text('Please Select Address',
           style: TextStyle(
@@ -378,7 +397,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
       elevation: 10,
     );
 
-    Scaffold.of(context).showSnackBar(snackBar);
+    Scaffold.of(buildContext).showSnackBar(snackBar);
   }
 
   _navigatrAddressSelect(BuildContext context) async {

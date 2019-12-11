@@ -92,6 +92,15 @@ class _RegisterFormState extends State<RegisterForm> {
         }
 
         if (state is RegisterSuccess) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Registration successful'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+            ),
+          );
+
+          Future.delayed(Duration(seconds: 4));
           Navigator.pushReplacement(
               // replcet the curent layout unlike push that just creates new page
               context,
@@ -294,8 +303,9 @@ class _RegisterFormState extends State<RegisterForm> {
     var phoneNumber = _phoneNumberController.text;
 
     var newNumber = phoneNumber.substring(phoneNumber.length - 4);
+    var yer = now.year.toString().substring(now.year.toString().length - 3);
 
-    return "NPACR-${newNumber + now.year.toString()}";
+    return "NPACR-${newNumber + yer}";
   }
 
   _navigatrToMap(BuildContext context) async {

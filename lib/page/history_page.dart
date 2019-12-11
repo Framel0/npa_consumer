@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/model/history.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widgets.dart';
@@ -9,26 +11,6 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  List<History> histories = [
-    History(
-        date: "12/08/2019",
-        deliveryMethod: "Home Delivery",
-        paymentMethod: "Cash on Delivery",
-        refillType: "45kg",
-        orderNumber: "0123456"),
-    History(
-        date: "20/09/2019",
-        deliveryMethod: "Home Delivery",
-        paymentMethod: "Mobile Money",
-        refillType: "45kg",
-        orderNumber: "0123456"),
-    History(
-        date: "30/09/2019",
-        deliveryMethod: "Pick Up",
-        paymentMethod: "Mobile Money",
-        refillType: "90kg",
-        orderNumber: "0123456"),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +19,20 @@ class _HistoryPageState extends State<HistoryPage> {
           "Order History",
         ),
       ),
-      body: _buildHistoryList(histories),
+      body: BlocBuilder<RefillRequestHistoryBloc, RefillRequestHistoryState>(
+          builder: (context, state) {
+        if (state is RefillRequestHistoryLoading) {
+          return Container();
+        }
+        if (state is RefillRequestHistoryLoaded) {
+          final history = state.histories;
+
+          return _buildHistoryList(history);
+        }
+        if (state is RefillRequestHistoryError) {
+          return Container();
+        }
+      }),
     );
   }
 

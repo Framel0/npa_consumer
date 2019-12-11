@@ -22,6 +22,10 @@ void main() {
       refillRequestApiClient:
           RefillRequestApiClient(httpClient: http.Client()));
 
+  final refillRequestHistoryRepository = RefillRequestHistoryRepository(
+      refillRequestHistoryApiClient:
+          RefillRequestHistoryApiClient(httpClient: http.Client()));
+
   final productRepository = ProductRepository(
       productApiClient: ProductApiClient(httpClient: http.Client()));
 
@@ -87,12 +91,12 @@ void main() {
               deliveryMethodRepository: deliveryMethodRepository);
         },
       ),
-      // BlocProvider<FiltereddistrictBloc>(
-      //   builder: (context) {
-      //     return FiltereddistrictBloc(
-      //         districtBloc: BlocProvider.of<DistrictBloc>(context));
-      //   },
-      // ),
+      BlocProvider<RefillRequestHistoryBloc>(
+        builder: (context) {
+          return RefillRequestHistoryBloc(
+              refillRequestHistoryRepository: refillRequestHistoryRepository);
+        },
+      ),
     ],
     child: MyApp(
       userRepository: userRepository,

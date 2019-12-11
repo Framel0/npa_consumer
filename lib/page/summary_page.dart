@@ -34,7 +34,31 @@ class _SummaryPageState extends State<SummaryPage> {
 
   final double cardElevation = 3;
 
-  // User user;
+  User _user = User();
+
+  String firstName = "";
+  String lastName = "";
+  String phoneNumber = "";
+  String consumerId = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
+
+  getUser() {
+    readUserData().then((value) {
+      setState(() {
+        _user = value;
+        firstName = _user.firstName ?? "";
+        lastName = _user.lastName ?? "";
+        phoneNumber = _user.phoneNumber ?? "";
+        consumerId = _user.consumerId ?? "";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +226,17 @@ class _SummaryPageState extends State<SummaryPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Name: \nJohn Doe",
+                                "Name: \n${firstName} ${lastName}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .title
+                                    .copyWith(fontSize: 17),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Phone Number: \n${phoneNumber}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .title
@@ -232,16 +266,6 @@ class _SummaryPageState extends State<SummaryPage> {
                                     style: TextStyle(fontSize: 14),
                                   ),
                                 ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Phone Number: \n+233247894562 ",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(fontSize: 17),
                               ),
                               SizedBox(
                                 height: 5,
