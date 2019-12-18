@@ -32,7 +32,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         await userRepository.register(
           firstName: event.firstName,
           lastName: event.lastName,
-          lpgmcId: event.lpgmcId,
           dealerId: event.dealerId,
           phoneNumber: event.phoneNumber,
           password: event.password,
@@ -41,7 +40,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           streetName: event.streetName,
           residentialAddress: event.residentialAddress,
           districtId: event.districtId,
-          regionId: event.regionId,
           depositeId: event.depositeId,
           cylinderSizeId: event.cylinderSizeId,
           statusId: event.statusId,

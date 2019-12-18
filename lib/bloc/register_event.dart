@@ -14,7 +14,6 @@ class FetchAll extends RegisterEvent {
 class RegisterButtonPressed extends RegisterEvent {
   final String firstName;
   final String lastName;
-  final int lpgmcId;
   final int dealerId;
   final String phoneNumber;
   final String consumerId;
@@ -24,7 +23,6 @@ class RegisterButtonPressed extends RegisterEvent {
   final String residentialAddress;
   final String ghanaPostGpsaddress;
   final int districtId;
-  final int regionId;
   final int depositeId;
   final int statusId;
   final int cylinderSizeId;
@@ -34,12 +32,10 @@ class RegisterButtonPressed extends RegisterEvent {
   RegisterButtonPressed({
     this.depositeId,
     this.cylinderSizeId,
-    this.lpgmcId,
     this.houseNumber,
     this.streetName,
     this.ghanaPostGpsaddress,
     this.districtId,
-    this.regionId,
     this.statusId,
     this.firstName,
     this.lastName,
@@ -51,12 +47,10 @@ class RegisterButtonPressed extends RegisterEvent {
     this.longitude,
     this.dealerId,
   }) : super([
-          lpgmcId,
           houseNumber,
           streetName,
           ghanaPostGpsaddress,
           districtId,
-          regionId,
           statusId,
           firstName,
           lastName,
@@ -68,10 +62,6 @@ class RegisterButtonPressed extends RegisterEvent {
           longitude,
           dealerId,
         ]);
-
-  // RegisterButtonPressed(
-  //     {this.fullName, this.email, this.phoneNumber, this.password})
-  //     : super([fullName, email, phoneNumber, password]);
 
   @override
   String toString() {

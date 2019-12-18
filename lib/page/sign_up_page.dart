@@ -50,25 +50,27 @@ class _RegisterPageState extends State<RegisterPage> {
 
               ),
           child: SafeArea(
-            child: ListView(children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: _width / 17, vertical: 10.0),
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    FormLogo(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    RegisterForm(
-                      userRepository: UserRepository(),
-                    )
-                  ],
+            child: Center(
+              child: ListView(shrinkWrap: true, children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: _width / 17, vertical: 10.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      FormLogo(),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      RegisterForm(
+                        userRepository: UserRepository(),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           ),
         )),
       ),

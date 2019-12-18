@@ -39,7 +39,7 @@ class _UpcomingOrderPageState extends State<UpcomingOrderPage> {
           final upcomingRequests = state.upcomingRequests;
 
           if (upcomingRequests.isEmpty) {
-            return Center(child: Text("No Upcoming Ordes Available"));
+            return Center(child: Text("No Upcoming Orders Available"));
           } else {
             return _buildUpcomingOrderList(upcomingRequests);
           }

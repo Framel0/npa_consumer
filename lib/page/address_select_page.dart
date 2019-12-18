@@ -13,15 +13,18 @@ class AddressSelectPage extends StatefulWidget {
 }
 
 class _AddressSelectPageState extends State<AddressSelectPage> {
+  User user;
+  int userId;
   @override
   void initState() {
     super.initState();
-    userId();
+    getUser();
   }
 
-  userId() async {
-    final user = await readUserData();
-    BlocProvider.of<AddressBloc>(context).dispatch(FetchAddresses(id: user.id));
+  getUser() async {
+    user = await readUserData();
+    userId = user.id;
+    BlocProvider.of<AddressBloc>(context).dispatch(FetchAddresses(id: userId));
   }
 
   @override

@@ -355,13 +355,7 @@ class _SummaryPageState extends State<SummaryPage> {
                   padding: EdgeInsets.symmetric(
                     vertical: 12.0,
                   ),
-                  onPressed: () => {
-                    onConfirmButtonPressed()
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => MyHomePage()),
-                    // )
-                  },
+                  onPressed: () => {onConfirmButtonPressed()},
                   child: Text(
                     "Confirm",
                     textAlign: TextAlign.center,

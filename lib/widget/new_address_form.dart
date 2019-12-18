@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/blocs.dart';
+import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
-import 'package:npa_user/repositories/district/district.dart';
-import 'package:npa_user/repositories/region/region.dart';
-import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/util/text_input_util.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widgets.dart';
@@ -30,6 +28,8 @@ class _NewAddressFormState extends State<NewAddressForm> {
   Region _selectedRegion;
 
   District _selectedDistrict;
+  User user;
+  int userId;
 
   @override
   void dispose() {
@@ -42,74 +42,128 @@ class _NewAddressFormState extends State<NewAddressForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AddressBloc, AddressState>(builder: (context, state) {
-      if (state is AddressApiLoading) {
-        return Center(
-          child: LoadingIndicator(),
-        );
-      }
+  void initState() {
+    super.initState();
+    BlocProvider.of<AddressBloc>(context).dispatch(FetchAddresseApis());
+    getUser();
+  }
 
-      if (state is AddressApiLoaded) {
-        final districts = state.districts;
-        _regions = state.regions;
-        return Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              _buildHouseNumberField(),
-              SizedBox(
-                height: 20,
-              ),
-              _buildStreetNameField(),
-              SizedBox(
-                height: 20,
-              ),
-              _buildResidentialAddressField(),
-              SizedBox(
-                height: 20,
-              ),
-              _buildDistrictField(dropdownMenuItems: districts),
-              SizedBox(
-                height: 20,
-              ),
-              _buildRegionsField(),
-              SizedBox(
-                height: 20,
-              ),
-              _buildGpsAddressField(),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                      side: BorderSide(color: Colors.white)),
-                  padding: EdgeInsets.symmetric(vertical: 12.0),
-                  // color: Theme.of(context).buttonColor,
-                  textColor: Colors.white,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  onPressed: () {
-                    _formKey.currentState.save();
-
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      }
+  getUser() {
+    readUserData().then((value) {
+      setState(() {
+        user = value;
+        userId = user.id;
+      });
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AddressBloc, AddressState>(
+      listener: (context, state) {
+        if (state is AddressSuccess) {
+          BlocProvider.of<AddressBloc>(context)
+              .dispatch(FetchAddresses(id: userId));
+          Navigator.pop(context);
+        }
+      },
+      child: BlocBuilder<AddressBloc, AddressState>(builder: (context, state) {
+        if (state is AddressApiLoading) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+
+        if (state is AddressLoading) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+
+        if (state is AddressApiLoaded) {
+          final districts = state.districts;
+          _regions = state.regions;
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                _buildHouseNumberField(),
+                _buildStreetNameField(),
+                _buildResidentialAddressField(),
+                SizedBox(
+                  height: 15,
+                ),
+                _buildDistrictField(dropdownMenuItems: districts),
+                _buildRegionsField(),
+                _buildGpsAddressField(),
+                SizedBox(
+                  height: 35,
+                ),
+                buildButton(context),
+              ],
+            ),
+          );
+        }
+
+        if (state is AddressApiLoading) {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Text("Please try again"),
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    BlocProvider.of<AddressBloc>(context)
+                        .dispatch(FetchAddresseApis());
+                  },
+                )
+              ],
+            ),
+          );
+        }
+      }),
+    );
+  }
+
+  Container buildButton(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: RaisedButton(
+        shape: new RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(0.0)),
+            side: BorderSide(color: Colors.white)),
+        padding: EdgeInsets.symmetric(vertical: 12.0),
+        // color: Theme.of(context).buttonColor,
+        textColor: Colors.white,
+        child: Text(
+          'Add Address',
+          style: TextStyle(fontSize: 18),
+        ),
+        onPressed: () {
+          _formKey.currentState.save();
+
+          if (!_formKey.currentState.validate()) {
+            return;
+          } else {
+            onAddAddressButtonPressed();
+          }
+        },
+      ),
+    );
+  }
+
+  onAddAddressButtonPressed() {
+    BlocProvider.of<AddressBloc>(context)
+      ..dispatch(
+        AddNewAddress(
+          consumerId: userId,
+          houseNumber: _houseNumberController.text.trim(),
+          streetName: _streetNameController.text.trim(),
+          residentialAddress: _residentialAddressController.text.trim(),
+          districtId: _selectedDistrict.id,
+          ghanaPostGpsaddress: _gpsAddressController.text.trim(),
+        ),
+      );
   }
 
   onChangeDropdownItemDistrict(District selectedDistrict) {
@@ -123,13 +177,10 @@ class _NewAddressFormState extends State<NewAddressForm> {
   Widget _buildDistrictField(
       {@required List<DropdownMenuItem<District>> dropdownMenuItems}) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: colorPrimaryYellow, width: 2),
-          borderRadius: BorderRadius.all(Radius.circular(2)),
-          shape: BoxShape.rectangle),
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.0,
-      ),
+      // decoration: BoxDecoration(
+      //     border: Border.all(color: colorPrimaryYellow, width: 2),
+      //     borderRadius: BorderRadius.all(Radius.circular(2)),
+      //     shape: BoxShape.rectangle),
       child: DropdownButton(
         value: _selectedDistrict,
         items: dropdownMenuItems,
@@ -198,14 +249,13 @@ class _NewAddressFormState extends State<NewAddressForm> {
   Widget _buildResidentialAddressField() {
     return TextFormField(
       validator: (String value) {
-        if (value.trim().isEmpty)
-          return 'Please enter Residential/Street Address.';
+        if (value.trim().isEmpty) return 'Please enter Residential Address.';
         return null;
       },
       style: formTextStyle,
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.text,
-      decoration: inputDecoration("Residential/Street Address"),
+      decoration: inputDecoration("Residential Address"),
       controller: _residentialAddressController,
     );
   }

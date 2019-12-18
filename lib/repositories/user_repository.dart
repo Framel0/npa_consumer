@@ -10,20 +10,19 @@ class UserRepository {
   final storage = new FlutterSecureStorage();
   final String tokenKey = "cghMOrBKfN97FbG8661ztXwvaS46gnjz_EAl5vYdzyA=";
 
-  Future<String> authenticate({
+  Future<User> authenticate({
     @required String phoneNumber,
     @required String password,
   }) async {
     User user =
         await userApiClient.login(phoneNumber: phoneNumber, password: password);
     saveData(user);
-    return user.token;
+    return user;
   }
 
   Future<void> register({
     @required String firstName,
     @required String lastName,
-    @required int lpgmcId,
     @required int dealerId,
     @required String phoneNumber,
     @required String consumerId,
@@ -33,7 +32,6 @@ class UserRepository {
     @required String residentialAddress,
     @required String ghanaPostGpsaddress,
     @required int districtId,
-    @required int regionId,
     @required int depositeId,
     @required int cylinderSizeId,
     @required int statusId,
@@ -43,7 +41,6 @@ class UserRepository {
     await userApiClient.register(
       firstName: firstName,
       lastName: lastName,
-      lpgmcId: lpgmcId,
       dealerId: dealerId,
       phoneNumber: phoneNumber,
       password: password,
@@ -53,7 +50,6 @@ class UserRepository {
       residentialAddress: residentialAddress,
       ghanaPostGpsaddress: ghanaPostGpsaddress,
       districtId: districtId,
-      regionId: regionId,
       depositeId: depositeId,
       cylinderSizeId: cylinderSizeId,
       statusId: statusId,

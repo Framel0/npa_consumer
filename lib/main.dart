@@ -52,6 +52,16 @@ void main() {
     httpClient: http.Client(),
   ));
 
+  final districtRepository = DistrictRepository(
+      districtApiClient: DistrictApiClient(
+    httpClient: http.Client(),
+  ));
+
+  final regionRepository = RegionRepository(
+      regionApiClient: RegionApiClient(
+    httpClient: http.Client(),
+  ));
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<AuthenticationBloc>(
@@ -79,7 +89,10 @@ void main() {
       ),
       BlocProvider<AddressBloc>(
         builder: (context) {
-          return AddressBloc(addressRepository: addressRepository);
+          return AddressBloc(
+              addressRepository: addressRepository,
+              districtRepository: districtRepository,
+              regionRepository: regionRepository);
         },
       ),
       BlocProvider<RefillRequestBloc>(

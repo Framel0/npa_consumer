@@ -36,7 +36,6 @@ class UserApiClient {
   Future<void> register({
     @required String firstName,
     @required String lastName,
-    @required int lpgmcId,
     @required int dealerId,
     @required String phoneNumber,
     @required String consumerId,
@@ -46,7 +45,6 @@ class UserApiClient {
     @required String residentialAddress,
     @required String ghanaPostGpsaddress,
     @required int districtId,
-    @required int regionId,
     @required int depositeId,
     @required int cylinderSizeId,
     @required int statusId,
@@ -57,7 +55,6 @@ class UserApiClient {
     final body = jsonEncode({
       "firstName": "$firstName",
       "lastName": "$lastName",
-      "lpgmcId": lpgmcId,
       "dealerId": dealerId,
       "phoneNumber": "$phoneNumber",
       "consumerId": "$consumerId",
@@ -66,7 +63,6 @@ class UserApiClient {
       "streetName": "$streetName",
       "residentialAddress": "$residentialAddress",
       "districtId": districtId,
-      "regionId": regionId,
       "depositeId": depositeId,
       "cylinderSizeId": cylinderSizeId,
       "statusId": statusId,

@@ -176,9 +176,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 //   height: 20,
                 // ),
                 _buildDealerField(),
-                // SizedBox(
-                //   height: 20,
-                // ),
+                SizedBox(
+                  height: 20,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton(
@@ -193,7 +193,12 @@ class _RegisterFormState extends State<RegisterForm> {
                       style: TextStyle(fontSize: 18),
                     ),
                     onPressed: () {
-                      _navigatrToMap(context);
+                      if (_selectedLpgmc != null) {
+                        _navigatrToMap(context);
+                      } else {
+                        _showSnackbar(
+                            mContext: context, text: "Please Select LPGMC");
+                      }
                     },
                   ),
                 ),
@@ -205,9 +210,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 //   height: 20,
                 // ),
                 _buildCylinderField(dropdownMenuItems: cylinderSizes),
-                // SizedBox(
-                //   height: 20,
-                // ),
+                SizedBox(
+                  height: 30,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton(
@@ -225,6 +230,19 @@ class _RegisterFormState extends State<RegisterForm> {
                       _formKey.currentState.save();
 
                       if (!_formKey.currentState.validate()) {
+                        return;
+                      } else if (_selectedDistrict == null) {
+                        _showSnackbar(
+                            mContext: context, text: "Please Select District");
+                        return;
+                      } else if (_selectedDeposite == null) {
+                        _showSnackbar(
+                            mContext: context, text: "Please Select Deposite");
+                        return;
+                      } else if (_selectedCylinderSize == null) {
+                        _showSnackbar(
+                            mContext: context,
+                            text: "Please Select Cylinder Size");
                         return;
                       } else {
                         onRegisterButtonPressed();
@@ -279,7 +297,6 @@ class _RegisterFormState extends State<RegisterForm> {
         RegisterButtonPressed(
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
-          lpgmcId: _selectedLpgmc.id,
           dealerId: _selectedDealer.id,
           phoneNumber: _phoneNumberController.text.trim(),
           password: _passwordController.text.trim(),
@@ -289,7 +306,6 @@ class _RegisterFormState extends State<RegisterForm> {
           residentialAddress: _residentialAddressController.text,
           ghanaPostGpsaddress: _residentialAddressController.text,
           districtId: _selectedDistrict.id,
-          regionId: _selectedRegion.id,
           depositeId: _selectedDeposite.id,
           cylinderSizeId: _selectedCylinderSize.id,
           statusId: 1,
@@ -306,6 +322,19 @@ class _RegisterFormState extends State<RegisterForm> {
     var yer = now.year.toString().substring(now.year.toString().length - 3);
 
     return "NPACR-${newNumber + yer}";
+  }
+
+  _showSnackbar({@required BuildContext mContext, @required String text}) {
+    final snackBar = SnackBar(
+      content: Text(text,
+          style: TextStyle(
+            color: Colors.white,
+          )),
+      backgroundColor: Colors.redAccent,
+      elevation: 10,
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   _navigatrToMap(BuildContext context) async {

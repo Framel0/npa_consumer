@@ -55,6 +55,13 @@ class AddressApiLoaded extends AddressState {
   }
 }
 
+class AddressSuccess extends AddressState {
+  @override
+  String toString() {
+    return "AddressSuccess";
+  }
+}
+
 class AddressError extends AddressState {
   final String error;
 

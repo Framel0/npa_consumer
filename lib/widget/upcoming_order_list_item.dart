@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/model/models.dart';
+import 'package:npa_user/model/request_product.dart';
 
 class UpcomingOrderListItem extends StatelessWidget {
   final UpcomingRequest upcomingOrder;
@@ -30,69 +31,37 @@ class UpcomingOrderListItem extends StatelessWidget {
           // SizedBox(
           //   height: 2,
           // ),
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Refill Type: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "90 Kg"),
-              ],
-            ),
-          ),
+          Text('Refill Type: ', style: TextStyle(fontWeight: FontWeight.bold)),
+          _buildProducts(products: upcomingOrder.products, mContext: context),
           SizedBox(
             height: 2,
           ),
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Delivery Method: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "${upcomingOrder.deliveryMethod}"),
-              ],
-            ),
-          ),
+          Text('Delivery Method: ',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${upcomingOrder.deliveryMethod}"),
           SizedBox(
             height: 2,
           ),
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Payment Method: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "${upcomingOrder.paymentMethod}"),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 2,
-          ),
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'Order Reference number: ',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "2626432"),
-              ],
-            ),
-          ),
+          Text('Payment Method: ',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("${upcomingOrder.paymentMethod}"),
         ],
       ),
+    );
+  }
+
+  Widget _buildProducts(
+      {List<RequestProduct> products, BuildContext mContext}) {
+    List<Widget> widgets = List<Widget>();
+    for (RequestProduct product in products) {
+      widgets.add(
+        Text("${product.size} x ${product.quantity}"),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
     );
   }
 }

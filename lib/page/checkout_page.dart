@@ -245,6 +245,93 @@ class _CheackoutPageState extends State<CheackoutPage> {
     );
   }
 
+  _getTotal() {
+    for (var product in widget.products) {
+      _subTotal += (product.price * product.quantity);
+    }
+  }
+
+  _showSnackbar(BuildContext buildContext) {
+    final snackBar = SnackBar(
+      content: Text('Please Select Address',
+          style: TextStyle(
+            color: Colors.white,
+          )),
+      backgroundColor: Colors.redAccent,
+      elevation: 10,
+    );
+
+    Scaffold.of(buildContext).showSnackBar(snackBar);
+  }
+
+  Widget _buildCylinders() {
+    List<Widget> widgets = List<Widget>();
+    for (Product product in widget.products) {
+      widgets.add(
+        Text(
+          "${product.name} x ${product.quantity}",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    return Column(
+      children: widgets,
+    );
+  }
+
+  onChangedDeliveryMethod(DeliveryMethod selectedDeliveryMethod) {
+    setState(() {
+      _selectedDeliveryMethod = selectedDeliveryMethod;
+      _deliveryPrice = _selectedDeliveryMethod.price;
+    });
+  }
+
+  Widget _buildRadioListDeliveryMethod() {
+    List<Widget> widgets = List<Widget>();
+    for (DeliveryMethod method in widget.deliveryMethods) {
+      widgets.add(RadioListTile(
+        value: method,
+        groupValue: _selectedDeliveryMethod,
+        title: Text(
+          method.name,
+          style: radioButtonTextStyle,
+        ),
+        onChanged: onChangedDeliveryMethod,
+        selected: _selectedDeliveryMethod == method,
+        activeColor: colorAccentYellow,
+      ));
+    }
+
+    return Column(
+      children: widgets,
+    );
+  }
+
+  onChangedPaymentMethod(PaymentMethod selectedPaymentMethod) {
+    setState(() {
+      _selectedPaymentMethod = selectedPaymentMethod;
+    });
+  }
+
+  Widget _buildRadioListPaymentMethod() {
+    List<Widget> widgets = List<Widget>();
+    for (PaymentMethod method in widget.paymentMethods) {
+      widgets.add(RadioListTile(
+        value: method,
+        groupValue: _selectedPaymentMethod,
+        title: Text(method.name, style: radioButtonTextStyle),
+        onChanged: onChangedPaymentMethod,
+        selected: _selectedPaymentMethod == method,
+        activeColor: colorAccentYellow,
+      ));
+    }
+
+    return Column(
+      children: widgets,
+    );
+  }
+
   Widget buildPaymentMethod() {
     return Container(
         child: Column(
@@ -357,7 +444,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                         ),
                         OutlineButton(
                           child: Text(
-                            "select address",
+                            "select or add address",
                             style: TextStyle(color: colorPrimaryYellow),
                           ),
                           onPressed: () {
@@ -387,19 +474,6 @@ class _CheackoutPageState extends State<CheackoutPage> {
     );
   }
 
-  _showSnackbar(BuildContext buildContext) {
-    final snackBar = SnackBar(
-      content: Text('Please Select Address',
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: Colors.redAccent,
-      elevation: 10,
-    );
-
-    Scaffold.of(buildContext).showSnackBar(snackBar);
-  }
-
   _navigatrAddressSelect(BuildContext context) async {
     var result = await Navigator.pushNamed(context, addressChangeRoute);
     print(" result from map: $result");
@@ -413,80 +487,6 @@ class _CheackoutPageState extends State<CheackoutPage> {
   Widget _divider() {
     return Divider(
       thickness: 2,
-    );
-  }
-
-  _getTotal() {
-    for (var product in widget.products) {
-      _subTotal += (product.price * product.quantity);
-    }
-  }
-
-  Widget _buildCylinders() {
-    List<Widget> widgets = List<Widget>();
-    for (Product product in widget.products) {
-      widgets.add(
-        Text(
-          "${product.name} x ${product.quantity}",
-          style: TextStyle(fontSize: 16),
-        ),
-      );
-    }
-
-    return Column(
-      children: widgets,
-    );
-  }
-
-  onChangedDeliveryMethod(DeliveryMethod selectedDeliveryMethod) {
-    setState(() {
-      _selectedDeliveryMethod = selectedDeliveryMethod;
-      _deliveryPrice = _selectedDeliveryMethod.price;
-    });
-  }
-
-  Widget _buildRadioListDeliveryMethod() {
-    List<Widget> widgets = List<Widget>();
-    for (DeliveryMethod method in widget.deliveryMethods) {
-      widgets.add(RadioListTile(
-        value: method,
-        groupValue: _selectedDeliveryMethod,
-        title: Text(
-          method.name,
-          style: radioButtonTextStyle,
-        ),
-        onChanged: onChangedDeliveryMethod,
-        selected: _selectedDeliveryMethod == method,
-        activeColor: colorAccentYellow,
-      ));
-    }
-
-    return Column(
-      children: widgets,
-    );
-  }
-
-  onChangedPaymentMethod(PaymentMethod selectedPaymentMethod) {
-    setState(() {
-      _selectedPaymentMethod = selectedPaymentMethod;
-    });
-  }
-
-  Widget _buildRadioListPaymentMethod() {
-    List<Widget> widgets = List<Widget>();
-    for (PaymentMethod method in widget.paymentMethods) {
-      widgets.add(RadioListTile(
-        value: method,
-        groupValue: _selectedPaymentMethod,
-        title: Text(method.name, style: radioButtonTextStyle),
-        onChanged: onChangedPaymentMethod,
-        selected: _selectedPaymentMethod == method,
-        activeColor: colorAccentYellow,
-      ));
-    }
-
-    return Column(
-      children: widgets,
     );
   }
 }

@@ -36,9 +36,24 @@ class _LoginFormState extends State<LoginForm> {
                 SnackBar(
                   content: Text(
                       "Login failed, Please check Phone number or Password"),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.redAccent,
                 ),
               );
+            }
+
+            if (state is LoginSuccess) {
+              final user = state.user;
+              // if (user.statusId == 1) {
+              //   Scaffold.of(context).showSnackBar(
+              //     SnackBar(
+              //       content: Text("Complete Registration with Dealer"),
+              //       backgroundColor: Colors.redAccent,
+              //     ),
+              //   );
+              // } else if (user.statusId == 2) {
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .dispatch(LoggedIn(token: user.token));
+              // }
             }
           },
         ),

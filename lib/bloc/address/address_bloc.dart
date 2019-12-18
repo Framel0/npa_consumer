@@ -41,6 +41,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         await regionRepository.getRegions();
         final regions = regionRepository.regions;
         yield AddressApiLoaded(districts: districts, regions: regions);
+        yield AddressLoading();
       } catch (e) {
         yield AddressError(error: e.toString());
       }
@@ -49,9 +50,15 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       yield AddressLoading();
 
       try {
-        await addressRepository.getAddresses(id: event.id);
-        final addresses = addressRepository.addresses;
-        yield AddressLoaded(addresses: addresses);
+        await addressRepository.addNewAddresses(
+          consumerId: event.consumerId,
+          houseNumber: event.houseNumber,
+          streetName: event.streetName,
+          residentialAddress: event.residentialAddress,
+          districtId: event.districtId,
+          ghanaPostGpsaddress: event.ghanaPostGpsaddress,
+        );
+        yield AddressSuccess();
       } catch (e) {
         yield AddressError(error: e.toString());
       }

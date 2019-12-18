@@ -29,10 +29,26 @@ class AddressApiClient {
 
     return addressList;
   }
-  Future<List<Address>> addNewAddresses({@required int id}) async {
-    final addresssUrl =
-        "$baseUrl/api/ConsumerAddresseApi/ConsumerAddressesByConsumer/$id";
-    final addresssResponse = await this.httpClient.get(addresssUrl);
+
+  Future<void> addNewAddress(
+      {@required int consumerId,
+      @required String houseNumber,
+      @required String streetName,
+      @required String residentialAddress,
+      @required int districtId,
+      @required String ghanaPostGpsaddress}) async {
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      "consumerId": consumerId,
+      "houseNumber": houseNumber,
+      "streetName": streetName,
+      "residentialAddress": residentialAddress,
+      "districtId": districtId,
+      "ghanaPostGpsaddress": ghanaPostGpsaddress
+    });
+    final addressUrl = "$baseUrl/api/ConsumerAddresseApi/Create";
+    final addresssResponse =
+        await this.httpClient.post(addressUrl, headers: headers, body: body);
 
     if (addresssResponse.statusCode != 200) {
       print(addresssResponse.statusCode);
@@ -40,12 +56,5 @@ class AddressApiClient {
     }
 
     final reponse = jsonDecode(addresssResponse.body);
-    var addresss = reponse["model"];
-    List<Address> addressList = [];
-    for (var d in addresss) {
-      addressList.add(Address.fromJson(d));
-    }
-
-    return addressList;
   }
 }

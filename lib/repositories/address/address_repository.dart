@@ -12,6 +12,23 @@ class AddressRepository {
     _addresses = await addressApiClient.fetchAddresses(id: id);
   }
 
+  Future<void> addNewAddresses(
+      {@required int consumerId,
+      @required String houseNumber,
+      @required String streetName,
+      @required String residentialAddress,
+      @required int districtId,
+      @required String ghanaPostGpsaddress}) async {
+    await addressApiClient.addNewAddress(
+      consumerId: consumerId,
+      houseNumber: houseNumber,
+      streetName: streetName,
+      residentialAddress: residentialAddress,
+      districtId: districtId,
+      ghanaPostGpsaddress: ghanaPostGpsaddress,
+    );
+  }
+
   List<Address> get addresses {
     return List.from(_addresses);
   }

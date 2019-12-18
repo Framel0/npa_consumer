@@ -1,20 +1,22 @@
 import 'package:npa_user/model/models.dart';
+import 'package:npa_user/model/request_product.dart';
 
 class UpcomingRequest {
-  final int id;
-  final String date;
-  final String consumerId;
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
-  final String houseNumber;
-  final String streetName;
-  final String residentialAddress;
-  final String ghanaPostGpsaddress;
-  final int deliveryMethodId;
-  final String deliveryMethod;
-  final int paymentMethodId;
-  final String paymentMethod;
+  int id;
+  String date;
+  String consumerId;
+  String firstName;
+  String lastName;
+  String phoneNumber;
+  String houseNumber;
+  String streetName;
+  String residentialAddress;
+  String ghanaPostGpsaddress;
+  int deliveryMethodId;
+  String deliveryMethod;
+  int paymentMethodId;
+  String paymentMethod;
+  List<RequestProduct> products;
 
   UpcomingRequest(
       {this.id,
@@ -30,24 +32,26 @@ class UpcomingRequest {
       this.deliveryMethodId,
       this.deliveryMethod,
       this.paymentMethodId,
-      this.paymentMethod});
+      this.paymentMethod,
+      this.products});
 
-  factory UpcomingRequest.fromJson(Map<String, dynamic> json) {
-    return UpcomingRequest(
-      id: json["id"],
-      date: json["date"],
-      consumerId: json["consumerId"],
-      firstName: json["firstName"],
-      lastName: json["lastName"],
-      phoneNumber: json["phoneNumber"],
-      houseNumber: json["houseNumber"],
-      streetName: json["streetName"],
-      residentialAddress: json["residentialAddress"],
-      ghanaPostGpsaddress: json["ghanaPostGpsaddress"],
-      deliveryMethodId: json["deliveryMethodId"],
-      deliveryMethod: json["deliveryMethod"],
-      paymentMethodId: json["paymentMethodId"],
-      paymentMethod: json["paymentMethod"],
-    );
+  UpcomingRequest.fromJson(Map<String, dynamic> json) {
+    // return UpcomingRequest(
+    id = json["id"];
+    date = json["date"];
+    consumerId = json["consumerId"];
+    firstName = json["consumerFirstName"];
+    lastName = json["consumerLastName"];
+    phoneNumber = json["consumerPhoneNumber"];
+    houseNumber = json["houseNumber"];
+    streetName = json["streetName"];
+    residentialAddress = json["residentialAddress"];
+    ghanaPostGpsaddress = json["ghanaPostGpsaddress"];
+    deliveryMethodId = json["deliveryMethodId"];
+    deliveryMethod = json["deliveryMethod"];
+    paymentMethodId = json["paymentMethodId"];
+    paymentMethod = json["paymentMethod"];
+    var list = json["consumerRefillRequestProduct"] as List;
+    products = list.map((i) => RequestProduct.fromJson(i)).toList();
   }
 }

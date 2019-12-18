@@ -1,39 +1,38 @@
 class User {
-  int id;
-  String firstName;
-  String lastName;
-  String phoneNumber;
-  String password;
-  String consumerId;
-  String residentialAddress;
-  String dateOfRegistration;
-  String token;
+  final int id;
+  final String consumerId;
+  final String dateOfRegistration;
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+  final int dealerId;
+  final int depositeId;
+  final int statusId;
+  final String token;
 
   User(
       {this.id,
+      this.consumerId,
+      this.dateOfRegistration,
       this.firstName,
       this.lastName,
       this.phoneNumber,
-      this.password,
-      this.consumerId,
-      this.residentialAddress,
-      this.dateOfRegistration});
+      this.dealerId,
+      this.depositeId,
+      this.statusId,
+      this.token});
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    firstName = json['firstName'];
-    lastName = json["lastName"];
-    phoneNumber = json["phoneNumber"];
-    consumerId = json["consumerId"];
-    residentialAddress = json["residentialAddress"];
-    dateOfRegistration = json["dateOfRegistration"];
-    token = json["token"];
-  }
-
-  Map toLoginMap() {
-    var map = new Map<String, dynamic>();
-    map["phoneNumber"] = phoneNumber;
-    map["password"] = password;
-    return map;
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+        id: json["id"],
+        consumerId: json["consumerId"],
+        dateOfRegistration: json["dateOfRegistration"],
+        firstName: json['firstName'],
+        lastName: json["lastName"],
+        phoneNumber: json["phoneNumber"],
+        dealerId: json["dealerId"],
+        depositeId: json["depositeId"],
+        statusId: json["statusId"],
+        token: json["token"]);
   }
 }
