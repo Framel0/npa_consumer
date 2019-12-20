@@ -23,7 +23,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
 
   static CameraPosition _initPos = CameraPosition(
     target: LatLng(5.601452, -0.184879),
-    zoom: 5,
+    zoom: 9,
   );
 
   final Geolocator _geolocator = Geolocator();
@@ -152,7 +152,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
     setState(() {
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-          zoom: 10)));
+          zoom: 11)));
     });
   }
 

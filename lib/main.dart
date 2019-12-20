@@ -95,6 +95,14 @@ void main() {
               regionRepository: regionRepository);
         },
       ),
+      BlocProvider<AddNewAddressBloc>(
+        builder: (context) {
+          return AddNewAddressBloc(
+              addressRepository: addressRepository,
+              districtRepository: districtRepository,
+              regionRepository: regionRepository);
+        },
+      ),
       BlocProvider<RefillRequestBloc>(
         builder: (context) {
           return RefillRequestBloc(

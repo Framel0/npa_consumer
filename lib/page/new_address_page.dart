@@ -56,21 +56,18 @@ class _NewAddressPageState extends State<NewAddressPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Add New Address"),
-        ),
-        body: Container(
-          child: Center(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-              children: <Widget>[
-                NewAddressForm(),
-              ],
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add New Address"),
+      ),
+      body: Container(
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            children: <Widget>[
+              NewAddressForm(),
+            ],
           ),
         ),
       ),

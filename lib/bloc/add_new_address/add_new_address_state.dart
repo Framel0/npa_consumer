@@ -16,21 +16,6 @@ class AddNewAddressLoading extends AddNewAddressState {
   }
 }
 
-class AddNewAddressApiLoaded extends AddNewAddressState {
-  final List<DropdownMenuItem<District>> districts;
-  final List<Region> regions;
-
-  AddNewAddressApiLoaded({@required this.districts, @required this.regions});
-
-  @override
-  List<Object> get props => [districts, regions];
-
-  @override
-  String toString() {
-    return "AddressApiLoaded";
-  }
-}
-
 class AddNewAddressSuccess extends AddNewAddressState {
   @override
   List<Object> get props => [];
@@ -52,5 +37,30 @@ class AddNewAddressError extends AddNewAddressState {
   @override
   String toString() {
     return "AddNewAddressError";
+  }
+}
+
+class AddNewAddressApiLoading extends AddNewAddressState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "AddNewAddressApiLoading";
+  }
+}
+
+class AddNewAddressApiLoaded extends AddNewAddressState {
+  final List<DropdownMenuItem<District>> districts;
+  final List<Region> regions;
+
+  AddNewAddressApiLoaded({@required this.districts, @required this.regions});
+
+  @override
+  List<Object> get props => [districts, regions];
+
+  @override
+  String toString() {
+    return "AddNewAddressApiLoaded";
   }
 }

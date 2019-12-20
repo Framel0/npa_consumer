@@ -31,6 +31,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         yield AddressError(error: e.toString());
       }
     }
+
     if (event is FetchAddresseApis) {
       yield AddressApiLoading();
 
@@ -41,27 +42,27 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         await regionRepository.getRegions();
         final regions = regionRepository.regions;
         yield AddressApiLoaded(districts: districts, regions: regions);
-        yield AddressLoading();
       } catch (e) {
         yield AddressError(error: e.toString());
       }
     }
-    if (event is AddNewAddress) {
-      yield AddressLoading();
 
-      try {
-        await addressRepository.addNewAddresses(
-          consumerId: event.consumerId,
-          houseNumber: event.houseNumber,
-          streetName: event.streetName,
-          residentialAddress: event.residentialAddress,
-          districtId: event.districtId,
-          ghanaPostGpsaddress: event.ghanaPostGpsaddress,
-        );
-        yield AddressSuccess();
-      } catch (e) {
-        yield AddressError(error: e.toString());
-      }
-    }
+    // if (event is AddNewAddress) {
+    //   yield AddressLoading();
+
+    //   try {
+    //     await addressRepository.addNewAddresses(
+    //       consumerId: event.consumerId,
+    //       houseNumber: event.houseNumber,
+    //       streetName: event.streetName,
+    //       residentialAddress: event.residentialAddress,
+    //       districtId: event.districtId,
+    //       ghanaPostGpsaddress: event.ghanaPostGpsaddress,
+    //     );
+    //     yield AddressSuccess();
+    //   } catch (e) {
+    //     yield AddressError(error: e.toString());
+    //   }
+    // }
   }
 }

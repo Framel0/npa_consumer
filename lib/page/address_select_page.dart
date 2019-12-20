@@ -63,7 +63,13 @@ class _AddressSelectPageState extends State<AddressSelectPage> {
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, newAddressRoute);
+                      Navigator.pushNamed(context, newAddressRoute)
+                          .then((onValue) {
+                        setState(() {
+                          BlocProvider.of<AddressBloc>(context)
+                              .dispatch(FetchAddresses(id: userId));
+                        });
+                      });
                     },
                   ),
                 ),

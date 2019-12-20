@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/authentication/authentication.dart';
 import 'package:npa_user/bloc/blocs.dart';
+import 'package:npa_user/data/consumer_info.dart';
+import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/contact_us_page.dart';
 import 'package:npa_user/page/home_page.dart';
 import 'package:npa_user/page/profile_page.dart';
@@ -9,17 +11,43 @@ import 'package:npa_user/page/safety_tip_page.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  var user = User();
+
+  @override
+  void initState() {
+    super.initState();
+
+    readUserData().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String firstName = user.firstName ?? "";
+    final String lastName = user.lastName ?? "";
+    final String phoneNumber = user.phoneNumber ?? "";
+    final String consumerId = user.consumerId ?? "";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          _createHeader(onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfilePage()));
-          }),
+          _createHeader(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()));
+              },
+              firstName: firstName,
+              lastName: lastName,
+              phoneNumber: phoneNumber),
           _createDrawerItem(
             icon: Icons.home,
             text: 'Home',
@@ -67,19 +95,23 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget _createHeader({GestureTapCallback onTap}) {
+  Widget _createHeader(
+      {GestureTapCallback onTap,
+      @required String firstName,
+      @required String lastName,
+      @required String phoneNumber}) {
     return UserAccountsDrawerHeader(
       margin: EdgeInsets.zero,
       decoration: BoxDecoration(color: colorPrimary),
       accountName: InkWell(
         onTap: onTap,
         child: Text(
-          "John Doe",
+          "$firstName $lastName",
           style: TextStyle(color: colorAccentYellow),
         ),
       ),
       accountEmail: Text(
-        "02314567",
+        phoneNumber,
         style: TextStyle(
           color: Colors.white,
         ),

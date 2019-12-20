@@ -22,24 +22,24 @@ class FetchAddresseApis extends AddressEvent {
   }
 }
 
-class AddNewAddress extends AddressEvent {
-  final int consumerId;
-  final String houseNumber;
-  final String streetName;
-  final String residentialAddress;
-  final int districtId;
-  final String ghanaPostGpsaddress;
+// class AddNewAddress extends AddressEvent {
+//   final int consumerId;
+//   final String houseNumber;
+//   final String streetName;
+//   final String residentialAddress;
+//   final int districtId;
+//   final String ghanaPostGpsaddress;
 
-  AddNewAddress(
-      {@required this.consumerId,
-      @required this.houseNumber,
-      @required this.streetName,
-      @required this.residentialAddress,
-      @required this.districtId,
-      @required this.ghanaPostGpsaddress});
+//   AddNewAddress(
+//       {@required this.consumerId,
+//       @required this.houseNumber,
+//       @required this.streetName,
+//       @required this.residentialAddress,
+//       @required this.districtId,
+//       @required this.ghanaPostGpsaddress});
 
-  @override
-  String toString() {
-    return "AddNewAddress";
-  }
-}
+//   @override
+//   String toString() {
+//     return "AddNewAddress";
+//   }
+// }

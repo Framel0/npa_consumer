@@ -44,7 +44,8 @@ class _NewAddressFormState extends State<NewAddressForm> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AddressBloc>(context).dispatch(FetchAddresseApis());
+    BlocProvider.of<AddNewAddressBloc>(context)
+        .dispatch(FetchAddNewAddresseApis());
     getUser();
   }
 
@@ -59,28 +60,31 @@ class _NewAddressFormState extends State<NewAddressForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AddressBloc, AddressState>(
+    return BlocListener<AddNewAddressBloc, AddNewAddressState>(
       listener: (context, state) {
-        if (state is AddressSuccess) {
-          BlocProvider.of<AddressBloc>(context)
-              .dispatch(FetchAddresses(id: userId));
+        if (state is AddNewAddressSuccess) {
           Navigator.pop(context);
         }
       },
-      child: BlocBuilder<AddressBloc, AddressState>(builder: (context, state) {
-        if (state is AddressApiLoading) {
+      child: BlocBuilder<AddNewAddressBloc, AddNewAddressState>(
+          builder: (context, state) {
+        if (state is AddNewAddressApiLoading) {
           return Center(
             child: LoadingIndicator(),
           );
         }
 
-        if (state is AddressLoading) {
+        if (state is AddNewAddressLoading) {
           return Center(
             child: LoadingIndicator(),
           );
         }
 
-        if (state is AddressApiLoaded) {
+        if (state is AddNewAddressSuccess) {
+          return Container();
+        }
+
+        if (state is AddNewAddressApiLoaded) {
           final districts = state.districts;
           _regions = state.regions;
           return Form(
@@ -105,7 +109,7 @@ class _NewAddressFormState extends State<NewAddressForm> {
           );
         }
 
-        if (state is AddressApiLoading) {
+        if (state is AddNewAddressError) {
           return Center(
             child: Column(
               children: <Widget>[
@@ -113,8 +117,8 @@ class _NewAddressFormState extends State<NewAddressForm> {
                 IconButton(
                   icon: Icon(Icons.refresh),
                   onPressed: () {
-                    BlocProvider.of<AddressBloc>(context)
-                        .dispatch(FetchAddresseApis());
+                    BlocProvider.of<AddNewAddressBloc>(context)
+                        .dispatch(FetchAddNewAddresseApis());
                   },
                 )
               ],
@@ -153,7 +157,7 @@ class _NewAddressFormState extends State<NewAddressForm> {
   }
 
   onAddAddressButtonPressed() {
-    BlocProvider.of<AddressBloc>(context)
+    BlocProvider.of<AddNewAddressBloc>(context)
       ..dispatch(
         AddNewAddress(
           consumerId: userId,
