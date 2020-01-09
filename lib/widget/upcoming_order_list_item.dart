@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/model/request_product.dart';
+import 'package:npa_user/routes/routes.dart';
 
 class UpcomingOrderListItem extends StatelessWidget {
-  final UpcomingRequest upcomingOrder;
+  final UpcomingRequest upcomingRequest;
 
-  const UpcomingOrderListItem({Key key, @required this.upcomingOrder})
+  const UpcomingOrderListItem({Key key, @required this.upcomingRequest})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final consumerFirstName = upcomingOrder.firstName ?? "";
-    final consumerLastName = upcomingOrder.lastName ?? "";
-    final deliveryMethod = upcomingOrder.deliveryMethod ?? "";
-    final paymentMethod = upcomingOrder.paymentMethod ?? "";
+    final firstName = upcomingRequest.firstName ?? "";
+    final lastName = upcomingRequest.lastName ?? "";
+    final deliveryMethod = upcomingRequest.deliveryMethod ?? "";
+    final paymentMethod = upcomingRequest.paymentMethod ?? "";
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, upcomingRequestDetailRoute,
+            arguments: upcomingRequest);
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -24,7 +28,8 @@ class UpcomingOrderListItem extends StatelessWidget {
           children: <Widget>[
             Text('Refill Type: ',
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            _buildProducts(products: upcomingOrder.products, mContext: context),
+            _buildProducts(
+                products: upcomingRequest.products, mContext: context),
             SizedBox(
               height: 2,
             ),

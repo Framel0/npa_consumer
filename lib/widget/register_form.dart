@@ -62,7 +62,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void initState() {
-
     _firebaseMessaging.getToken().then((_key) {
       print(_key);
       firebaseToken = _key;

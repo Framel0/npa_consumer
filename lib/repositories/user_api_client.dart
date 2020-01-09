@@ -68,6 +68,7 @@ class UserApiClient {
       "cylinderSizeId": cylinderSizeId,
       "statusId": statusId,
       "ghanaPostGpsaddress": "$ghanaPostGpsaddress",
+      "firebaseToken": "$firebaseToken",
       // "latitude": latitude,
       // "longitude": longitude,
     });

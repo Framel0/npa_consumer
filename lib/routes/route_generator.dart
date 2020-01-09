@@ -58,6 +58,12 @@ class RouteGenerator {
       case upcomingOrderRoute:
         return MaterialPageRoute(builder: (_) => UpcomingOrderPage());
         break;
+      case upcomingRequestDetailRoute:
+        return MaterialPageRoute(
+            builder: (_) => UpcomingRequestDetailPage(
+                  upcomingRequest: args,
+                ));
+        break;
       case addressChangeRoute:
         return MaterialPageRoute(builder: (_) => AddressSelectPage());
         break;

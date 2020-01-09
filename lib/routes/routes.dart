@@ -13,5 +13,6 @@ const String loginRoute = "/login";
 const String registerRoute = "/register";
 const String summaryRoute = "/summary";
 const String upcomingOrderRoute = "/upcomingOrder";
+const String upcomingRequestDetailRoute = "/upcomingRequestDetail";
 const String addressChangeRoute = "/addressChange";
 const String dealersMapRoute = "/dealersMap";

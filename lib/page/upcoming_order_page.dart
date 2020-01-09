@@ -55,7 +55,7 @@ class _UpcomingOrderPageState extends State<UpcomingOrderPage> {
   Widget _buildUpcomingOrderItems(
       BuildContext context, int position, UpcomingRequest upcomingOrder) {
     return UpcomingOrderListItem(
-      upcomingOrder: upcomingOrder,
+      upcomingRequest: upcomingOrder,
     );
   }
 
