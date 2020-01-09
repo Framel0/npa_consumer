@@ -28,6 +28,7 @@ class RegisterButtonPressed extends RegisterEvent {
   final int cylinderSizeId;
   final double latitude;
   final double longitude;
+  final String firebaseToken;
 
   RegisterButtonPressed({
     this.depositeId,
@@ -46,6 +47,7 @@ class RegisterButtonPressed extends RegisterEvent {
     this.latitude,
     this.longitude,
     this.dealerId,
+    this.firebaseToken,
   }) : super([
           houseNumber,
           streetName,
@@ -61,6 +63,7 @@ class RegisterButtonPressed extends RegisterEvent {
           latitude,
           longitude,
           dealerId,
+          firebaseToken,
         ]);
 
   @override

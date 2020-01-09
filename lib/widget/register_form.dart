@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,8 @@ class _RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextStyle formTextStyle = TextStyle(fontSize: 18.0, color: Colors.black);
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   static var now = new DateTime.now();
   static var formatter = new DateFormat('yyyy-MM-dd hh:mm');
@@ -55,8 +58,16 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Deposite _selectedDeposite;
 
+  String firebaseToken = "";
+
   @override
   void initState() {
+
+    _firebaseMessaging.getToken().then((_key) {
+      print(_key);
+      firebaseToken = _key;
+    });
+
     super.initState();
     BlocProvider.of<RegisterBloc>(context).dispatch(FetchAll());
   }

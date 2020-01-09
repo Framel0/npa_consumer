@@ -46,6 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           ghanaPostGpsaddress: event.ghanaPostGpsaddress,
           latitude: event.latitude,
           longitude: event.longitude,
+          firebaseToken: event.firebaseToken,
         );
 
         yield RegisterSuccess();

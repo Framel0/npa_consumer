@@ -50,6 +50,7 @@ class UserApiClient {
     @required int statusId,
     @required double latitude,
     @required double longitude,
+    @required String firebaseToken,
   }) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({

@@ -37,25 +37,26 @@ class UserRepository {
     @required int statusId,
     @required double latitude,
     @required double longitude,
+    @required String firebaseToken,
   }) async {
     await userApiClient.register(
-      firstName: firstName,
-      lastName: lastName,
-      dealerId: dealerId,
-      phoneNumber: phoneNumber,
-      password: password,
-      consumerId: consumerId,
-      houseNumber: houseNumber,
-      streetName: streetName,
-      residentialAddress: residentialAddress,
-      ghanaPostGpsaddress: ghanaPostGpsaddress,
-      districtId: districtId,
-      depositeId: depositeId,
-      cylinderSizeId: cylinderSizeId,
-      statusId: statusId,
-      latitude: latitude,
-      longitude: longitude,
-    );
+        firstName: firstName,
+        lastName: lastName,
+        dealerId: dealerId,
+        phoneNumber: phoneNumber,
+        password: password,
+        consumerId: consumerId,
+        houseNumber: houseNumber,
+        streetName: streetName,
+        residentialAddress: residentialAddress,
+        ghanaPostGpsaddress: ghanaPostGpsaddress,
+        districtId: districtId,
+        depositeId: depositeId,
+        cylinderSizeId: cylinderSizeId,
+        statusId: statusId,
+        latitude: latitude,
+        longitude: longitude,
+        firebaseToken: firebaseToken);
     // await Future.delayed(Duration(seconds: 3));
   }
 

@@ -16,6 +16,11 @@ class UpcomingRequest {
   String deliveryMethod;
   int paymentMethodId;
   String paymentMethod;
+  String dispatchId;
+  String dispatchFirstName;
+  String dispatchLastName;
+  String dispatchPhoneNumber;
+  int statusId;
   List<RequestProduct> products;
 
   UpcomingRequest(
@@ -51,6 +56,11 @@ class UpcomingRequest {
     deliveryMethod = json["deliveryMethod"];
     paymentMethodId = json["paymentMethodId"];
     paymentMethod = json["paymentMethod"];
+    dispatchId = json["dispatchId"];
+    dispatchFirstName = json["dispatchFirstName"];
+    dispatchLastName = json["dispatchLastName"];
+    dispatchPhoneNumber = json["dispatchPhoneNumber"];
+    statusId = json["statusId"];
     var list = json["consumerRefillRequestProduct"] as List;
     products = list.map((i) => RequestProduct.fromJson(i)).toList();
   }

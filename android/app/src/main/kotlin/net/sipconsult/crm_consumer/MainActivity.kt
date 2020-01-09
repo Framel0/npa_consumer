@@ -1,4 +1,4 @@
-package com.example.npa_user
+package net.sipconsult.crm_consumer
 
 import android.os.Bundle
 
