@@ -2,11 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
-import 'package:npa_user/page/complaint_page.dart';
-import 'package:npa_user/page/history_page.dart';
-import 'package:npa_user/page/request_page.dart';
-import 'package:npa_user/page/safety_tip_page.dart';
-import 'package:npa_user/page/upcoming_order_page.dart';
+import 'package:npa_user/page/pages.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/drawer.dart';
 
@@ -114,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HistoryPage()),
+                                    builder: (context) => RequestHistoryPage()),
                               );
                             }),
                       ],

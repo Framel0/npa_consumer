@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:npa_user/model/models.dart';
 
 class UpcomingRequestApiClient {
-  static const baseUrl = "http://173.248.135.167/NpaTest";
+  static const baseUrl = "http://173.248.135.167/Npa";
   final http.Client httpClient;
 
   UpcomingRequestApiClient({@required this.httpClient})

@@ -15,8 +15,14 @@ class RouteGenerator {
       case contactUsRoute:
         return MaterialPageRoute(builder: (_) => ContactPage());
         break;
-      case historyRoute:
-        return MaterialPageRoute(builder: (_) => HistoryPage());
+      case requestHistoryRoute:
+        return MaterialPageRoute(builder: (_) => RequestHistoryPage());
+        break;
+      case requestHistoryDetailRoute:
+        return MaterialPageRoute(
+            builder: (_) => RequestHistoryDetailPage(
+                  requestHistory: args,
+                ));
         break;
       case homeRoute:
         return MaterialPageRoute(builder: (_) => MyHomePage());

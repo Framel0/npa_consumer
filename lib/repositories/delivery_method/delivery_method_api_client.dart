@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 
 class DeliveryMethodApiClient {
-  static const baseUrl = "http://173.248.135.167/NpaTest";
+  static const baseUrl = "http://173.248.135.167/Npa";
   final http.Client httpClient;
 
   DeliveryMethodApiClient({@required this.httpClient})

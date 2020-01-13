@@ -62,6 +62,11 @@ void main() {
     httpClient: http.Client(),
   ));
 
+  final firebaseRepository = FirebaseRepository(
+      firebaseApiClient: FirebaseApiClient(
+    httpClient: http.Client(),
+  ));
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<AuthenticationBloc>(
@@ -116,6 +121,11 @@ void main() {
         builder: (context) {
           return RefillRequestHistoryBloc(
               refillRequestHistoryRepository: refillRequestHistoryRepository);
+        },
+      ),
+      BlocProvider<FirebaseBloc>(
+        builder: (context) {
+          return FirebaseBloc(firebaseRepository: firebaseRepository);
         },
       ),
     ],

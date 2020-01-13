@@ -20,7 +20,7 @@ class RefillRequestHistoryLoading extends RefillRequestHistoryState {
 }
 
 class RefillRequestHistoryLoaded extends RefillRequestHistoryState {
-  final List<History> histories;
+  final List<RequestHistory> histories;
 
   RefillRequestHistoryLoaded({@required this.histories});
 

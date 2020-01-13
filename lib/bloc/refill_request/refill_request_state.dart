@@ -3,8 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 
 abstract class RefillRequestState extends Equatable {
-   RefillRequestState([List props = const []]) : super(props);
-
+  RefillRequestState([List props = const []]) : super(props);
 }
 
 class RequestRefillInitial extends RefillRequestState {
@@ -86,5 +85,35 @@ class RequestRefillApiLoaded extends RefillRequestState {
   @override
   String toString() {
     return "RequestRefillApiLoaded";
+  }
+}
+
+class ConfirmDeliveryLoading extends RefillRequestState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "ConfirmDeliveryLoading";
+  }
+}
+
+class ConfirmDeliverySuccess extends RefillRequestState {
+  @override
+  String toString() {
+    return "ConfirmDeliverySuccess";
+  }
+}
+
+class ConfirmDeliveryError extends RefillRequestState {
+  final String error;
+
+  ConfirmDeliveryError({@required this.error});
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() {
+    return "ConfirmDeliveryError";
   }
 }

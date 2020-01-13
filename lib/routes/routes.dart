@@ -1,7 +1,8 @@
 const String addressesRoute = "/addresses";
 const String checkoutRoute = "/checkout";
 const String contactUsRoute = "/contactUs";
-const String historyRoute = "/history";
+const String requestHistoryRoute = "/requestHistory";
+const String requestHistoryDetailRoute = "/requestHistoryDetail";
 const String homeRoute = "/home";
 const String newAddressRoute = "/newAddress";
 const String profileEditRoute = "/profileEdit";

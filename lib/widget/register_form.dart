@@ -318,6 +318,7 @@ class _RegisterFormState extends State<RegisterForm> {
           districtId: _selectedDistrict.id,
           depositeId: _selectedDeposite.id,
           cylinderSizeId: _selectedCylinderSize.id,
+          firebaseToken: firebaseToken,
           statusId: 1,
           // latitude: _residentialAddressController.text,
           // longitude: _residentialAddressController.text,

@@ -12,6 +12,9 @@ class UpcomingOrderPage extends StatefulWidget {
 }
 
 class _UpcomingOrderPageState extends State<UpcomingOrderPage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +27,10 @@ class _UpcomingOrderPageState extends State<UpcomingOrderPage> {
 
     BlocProvider.of<UpcomingRequestBloc>(context)
         .dispatch(FetchUpcomingRequests(userId: user.id));
+  }
+
+  Future<Null> _refresh() {
+    getRequests();
   }
 
   @override
@@ -54,7 +61,7 @@ class _UpcomingOrderPageState extends State<UpcomingOrderPage> {
 
   Widget _buildUpcomingOrderItems(
       BuildContext context, int position, UpcomingRequest upcomingOrder) {
-    return UpcomingOrderListItem(
+    return UpcomingRequestListItem(
       upcomingRequest: upcomingOrder,
     );
   }

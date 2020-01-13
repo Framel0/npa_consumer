@@ -8,7 +8,8 @@ class RefillRequestHistoryRepository {
   RefillRequestHistoryRepository({@required this.refillRequestHistoryApiClient})
       : assert(refillRequestHistoryApiClient != null);
 
-  Future<List<History>> getRefillRequestHistory({@required int userId}) async {
+  Future<List<RequestHistory>> getRefillRequestHistory(
+      {@required int userId}) async {
     return await refillRequestHistoryApiClient.fetchRefillRequestHistorys(
         userId: userId);
   }

@@ -12,4 +12,10 @@ class RefillRequestRepository {
     await refillRequestApiClient.fetchRefillRequests(
         refillRequest: refillRequest);
   }
+
+  Future<void> confirmDelivery(
+      {@required int refillRequestId,}) async {
+    return await refillRequestApiClient.confirmDelivery(
+        refillRequestId: refillRequestId, );
+  }
 }

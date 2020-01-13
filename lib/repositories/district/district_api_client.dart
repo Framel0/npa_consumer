@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 
 class DistrictApiClient {
-  static const baseUrl = "http://173.248.135.167/NpaTest";
+  static const baseUrl = "http://173.248.135.167/Npa";
   final http.Client httpClient;
 
   DistrictApiClient({@required this.httpClient}) : assert(httpClient != null);

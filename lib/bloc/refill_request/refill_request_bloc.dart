@@ -56,5 +56,18 @@ class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
         yield RequestRefillError(error: e.toString());
       }
     }
+
+    if (event is ConfirmDelivery) {
+      yield ConfirmDeliveryLoading();
+
+      try {
+        await refillRequestRepository.confirmDelivery(
+            refillRequestId: event.refillRequestId,);
+
+        yield ConfirmDeliverySuccess();
+      } catch (e) {
+        yield ConfirmDeliveryError(error: e.toString());
+      }
+    }
   }
 }

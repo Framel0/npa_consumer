@@ -23,3 +23,16 @@ class PostRefillRequest extends RefillRequestEvent {
     return "PostRefillRequest";
   }
 }
+
+class ConfirmDelivery extends RefillRequestEvent {
+  final int refillRequestId;
+
+  ConfirmDelivery({
+    @required this.refillRequestId,
+  });
+
+  @override
+  String toString() {
+    return "ConfirmDelivery";
+  }
+}

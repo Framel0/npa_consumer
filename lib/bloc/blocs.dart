@@ -10,3 +10,4 @@ export './address/address.dart';
 export './upcoming_request/upcoming_request.dart';
 export './refill_request_history/refill_request_history.dart';
 export './add_new_address/add_new_address.dart';
+export './firebase/firebase.dart';
