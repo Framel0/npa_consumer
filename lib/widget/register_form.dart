@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -93,31 +94,24 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state is RegisterFailuer) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${state.error}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          FlushbarHelper.createError(
+            title: "Error",
+            message: "Unable to register Please try again",
+          )..show(context);
         }
 
         if (state is RegisterSuccess) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Registration successful'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 3),
-            ),
-          );
-
-          Future.delayed(Duration(seconds: 4));
-          Navigator.pushReplacement(
-              // replcet the curent layout unlike push that just creates new page
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext cotext) => LoginPage(
-                        userRepository: widget.userRepository,
-                      )));
+          FlushbarHelper.createSuccess(
+            title: "Success",
+            message: "Registration Successful",
+          )..show(context).then((result) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext cotext) => LoginPage(
+                            userRepository: widget.userRepository,
+                          )));
+            });
         }
       },
       child:

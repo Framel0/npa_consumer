@@ -30,7 +30,9 @@ class _RequestHistoryListState extends State<RequestHistoryList> {
     return BlocBuilder<RefillRequestHistoryBloc, RefillRequestHistoryState>(
         builder: (context, state) {
       if (state is RefillRequestHistoryLoading) {
-        return Container();
+        return Center(
+          child: LoadingIndicator(),
+        );
       }
       if (state is RefillRequestHistoryLoaded) {
         final history = state.histories;

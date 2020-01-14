@@ -17,3 +17,16 @@ class FetchUpcomingRequests extends UpcomingRequestEvent {
     return "FetcherUpcomingRequest";
   }
 }
+
+class RefreshUpcomingRequest extends UpcomingRequestEvent {
+  final int userId;
+
+  RefreshUpcomingRequest({@required this.userId});
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "Refresh Upcoming Request";
+  }
+}

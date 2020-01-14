@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/delivery_method.dart';
@@ -72,176 +73,186 @@ class _CheackoutPageState extends State<CheackoutPage> {
       appBar: AppBar(
         title: Text("Delivery"),
       ),
-      body: Container(
-        child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          children: <Widget>[
-            buildDetails(context),
-            SizedBox(
-              height: 30,
-            ),
-            buildDeliveryMethod(),
-            SizedBox(
-              height: 30,
-            ),
-            buildPaymentMethod(),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Card(
-                      elevation: cardElevation,
-                      // shape: new RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                      // ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "Subtotal",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .title
-                                      .copyWith(fontSize: 17),
-                                ),
-                                RichText(
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
+      body: Builder(builder: (context) {
+        return Container(
+          child: ListView(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            children: <Widget>[
+              buildDetails(context),
+              SizedBox(
+                height: 30,
+              ),
+              buildDeliveryMethod(),
+              SizedBox(
+                height: 30,
+              ),
+              buildPaymentMethod(),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Card(
+                        elevation: cardElevation,
+                        // shape: new RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        // ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Subtotal",
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
                                         .copyWith(fontSize: 17),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'GHC ',
-                                      ),
-                                      TextSpan(text: "$_subTotal"),
-                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "Delivery",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .title
-                                      .copyWith(fontSize: 17),
-                                ),
-                                RichText(
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
+                                  RichText(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .title
+                                          .copyWith(fontSize: 17),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'GHC ',
+                                        ),
+                                        TextSpan(text: "$_subTotal"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Delivery",
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
                                         .copyWith(fontSize: 17),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'GHC ',
-                                      ),
-                                      TextSpan(text: "$_deliveryPrice"),
-                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              thickness: 2,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "Total",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .title
-                                      .copyWith(fontSize: 17),
-                                ),
-                                RichText(
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
+                                  RichText(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .title
+                                          .copyWith(fontSize: 17),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'GHC ',
+                                        ),
+                                        TextSpan(text: "$_deliveryPrice"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Divider(
+                                thickness: 2,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Total",
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
                                         .copyWith(fontSize: 17),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'GHC ',
-                                      ),
-                                      TextSpan(
-                                          text:
-                                              "${_subTotal + _deliveryPrice}"),
-                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: RaisedButton(
-                                shape: new RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2.0)),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                ),
-                                onPressed: () => {
-                                  if (_address.id != null)
-                                    {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SummaryPage(
-                                                  deliveryMethod:
-                                                      _selectedDeliveryMethod,
-                                                  paymentMethod:
-                                                      _selectedPaymentMethod,
-                                                  deliveryAddress: _address,
-                                                  products: widget.products,
-                                                  subTotal: _subTotal,
-                                                  deliveryPrice: _deliveryPrice,
-                                                )),
-                                      )
-                                    }
-                                  else
-                                    {_showSnackbar(context)}
-                                },
-                                child: Text(
-                                  "Proceed To Summary",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
+                                  RichText(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .title
+                                          .copyWith(fontSize: 17),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'GHC ',
+                                        ),
+                                        TextSpan(
+                                            text:
+                                                "${_subTotal + _deliveryPrice}"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: RaisedButton(
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(2.0)),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                  ),
+                                  onPressed: () => {
+                                    if (_address.id != null)
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => SummaryPage(
+                                                    deliveryMethod:
+                                                        _selectedDeliveryMethod,
+                                                    paymentMethod:
+                                                        _selectedPaymentMethod,
+                                                    deliveryAddress: _address,
+                                                    products: widget.products,
+                                                    subTotal: _subTotal,
+                                                    deliveryPrice:
+                                                        _deliveryPrice,
+                                                  )),
+                                        )
+                                      }
+                                    else
+                                      {
+                                        FlushbarHelper.createInformation(
+                                            message: "Please Select Address")
+                                          ..show(context)
+                                      }
+                                  },
+                                  child: Text(
+                                    "Proceed To Summary",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ))
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                            ],
+                          ),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -249,19 +260,6 @@ class _CheackoutPageState extends State<CheackoutPage> {
     for (var product in widget.products) {
       _subTotal += (product.price * product.quantity);
     }
-  }
-
-  _showSnackbar(BuildContext buildContext) {
-    final snackBar = SnackBar(
-      content: Text('Please Select Address',
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: Colors.redAccent,
-      elevation: 10,
-    );
-
-    Scaffold.of(buildContext).showSnackBar(snackBar);
   }
 
   Widget _buildCylinders() {

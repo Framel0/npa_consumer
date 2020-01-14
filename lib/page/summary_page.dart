@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -69,8 +70,19 @@ class _SummaryPageState extends State<SummaryPage> {
       body: BlocListener<RefillRequestBloc, RefillRequestState>(
         listener: (context, state) {
           if (state is RequestRefillSuccess) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, homeRoute, (Route<dynamic> route) => false);
+            FlushbarHelper.createSuccess(
+              title: "Success",
+              message: "Refill Request Sent",
+            )..show(context).then((result) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, homeRoute, (Route<dynamic> route) => false);
+              });
+          }
+          if (state is RequestRefillError) {
+            FlushbarHelper.createError(
+              title: "Error",
+              message: "Refill Request Not Sent, Try again",
+            )..show(context);
           }
         },
         child: BlocBuilder<RefillRequestBloc, RefillRequestState>(

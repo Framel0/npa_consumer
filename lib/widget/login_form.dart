@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/authentication/authentication.dart';
@@ -32,13 +33,10 @@ class _LoginFormState extends State<LoginForm> {
         BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginFailure) {
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      "Login failed, Please check Phone number or Password"),
-                  backgroundColor: Colors.redAccent,
-                ),
-              );
+              FlushbarHelper.createError(
+                title: "Error",
+                message: "Login failed, Please check Phone number or Password",
+              )..show(context);
             }
 
             if (state is LoginSuccess) {
@@ -51,8 +49,13 @@ class _LoginFormState extends State<LoginForm> {
               //     ),
               //   );
               // } else if (user.statusId == 2) {
-              BlocProvider.of<AuthenticationBloc>(context)
-                  .dispatch(LoggedIn(token: user.token));
+              FlushbarHelper.createSuccess(
+                title: "Success",
+                message: "Login",
+              )..show(context).then((result) {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .dispatch(LoggedIn(token: user.token));
+                });
               // }
             }
           },

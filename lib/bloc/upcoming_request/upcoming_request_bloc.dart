@@ -29,5 +29,17 @@ class UpcomingRequestBloc
         yield UpcomingRequestError(error: e.toString());
       }
     }
+
+    if (event is RefreshUpcomingRequest) {
+      try {
+        await upcomingRequestRepository.getUpcomingRequests(
+            userId: event.userId);
+
+        final upcomingRequests = upcomingRequestRepository.upcomingRequests;
+        yield UpcomingRequestLoaded(upcomingRequests: upcomingRequests);
+      } catch (e) {
+        yield UpcomingRequestError(error: e.toString());
+      }
+    }
   }
 }

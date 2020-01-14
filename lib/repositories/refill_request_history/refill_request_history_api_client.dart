@@ -15,7 +15,7 @@ class RefillRequestHistoryApiClient {
       {@required int userId}) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final refillRequestHistorysUrl =
-        "$baseUrl/api/ConsumerRefillRequestApi/ConsumerRefillRequestsByDeliveredConsumer/$userId";
+        "$baseUrl/api/ConsumerRefillRequestApi/ConsumerRefillRequestsByConsumerHistory/$userId";
 
     final refillRequestHistorysResponse =
         await this.httpClient.get(refillRequestHistorysUrl, headers: headers);
