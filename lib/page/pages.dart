@@ -20,3 +20,4 @@ export 'upcoming_request_page.dart';
 export 'upcoming_request_details_page.dart';
 export 'address_change_page.dart';
 export 'dealers_map_page.dart';
+export 'notification_page.dart';

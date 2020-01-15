@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +19,16 @@ import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widgets.dart';
 
 void main() {
+
+  // Set `enableInDevMode` to true to see reports while in debug mode
+  // This is only to be used for confirming that reports are being
+  // submitted as expected. It is not intended to be used for everyday
+  // development.
+  Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
   final refillRequestRepository = RefillRequestRepository(
@@ -139,13 +152,17 @@ class MyApp extends StatelessWidget {
   final UserRepository userRepository;
 
   const MyApp({Key key, @required this.userRepository}) : super(key: key);
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    FirebaseAnalytics analytics = FirebaseAnalytics();
     return MaterialApp(
       title: 'NPA User',
       theme: _buildTheme(),
       onGenerateRoute: RouteGenerator.generateRoute,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       home: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is AuthenticationAuthenticated) {

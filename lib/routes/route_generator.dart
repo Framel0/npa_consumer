@@ -79,6 +79,9 @@ class RouteGenerator {
                   lpgmc: args,
                 ));
         break;
+      case notificationRoute:
+        return MaterialPageRoute(builder: (_) => NotifiactionPage());
+        break;
       default:
     }
   }

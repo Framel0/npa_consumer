@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/pages.dart';
+import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/drawer.dart';
 
@@ -18,10 +22,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    if (Platform.isIOS) {
+      _firebaseMessaging.requestNotificationPermissions(
+          const IosNotificationSettings(sound: true, alert: true, badge: true));
+    }
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        //  _showItemDialog(message);
+        final notification = message["notification"];
+        FlushbarHelper.createInformation(
+          title: notification["title"],
+          message: notification["body"],
+        )..show(context);
       },
       //  onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
@@ -33,9 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
         //  _navigateToItemDetail(message);
       },
     );
-
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, alert: true, badge: true));
 
     readUserData().then((value) {
       setState(() {
@@ -142,9 +152,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             );
                           }),
                       _buildItem(
-                        icon: Icons.notifications,
-                        text: "Notification",
-                      ),
+                          icon: Icons.notifications,
+                          text: "Notification",
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              notificationRoute,
+                            );
+                          }),
                     ],
                   ),
                 ],
