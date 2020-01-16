@@ -48,6 +48,7 @@ dependencies:
   firebase_crashlytics: ^0.1.2+4
   firebase_messaging: ^6.0.9
   flushbar: ^1.9.1
+  flutter_background_geolocation: ^1.6.0
 
 dev_dependencies:
   flutter_test:

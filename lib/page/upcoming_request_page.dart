@@ -104,7 +104,7 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
                 itemCount: upcomingOrders.length,
                 separatorBuilder: (BuildContext context, int index) {
                   return Divider(
-                    height: 4,
+                    height: 2,
                     thickness: 2,
                     color: colorAccentYellow,
                   );
