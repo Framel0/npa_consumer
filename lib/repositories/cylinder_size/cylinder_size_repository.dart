@@ -13,7 +13,7 @@ class CylinderSizeRepository {
     _cylinderSizes = await cylinderSizeApiClient.fetchCylinderSizes();
   }
 
-  List<Lpgmc> get cylinderSizes {
+  List<CylinderSize> get cylinderSizes {
     return List.from(_cylinderSizes);
   }
 

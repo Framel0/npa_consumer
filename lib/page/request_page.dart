@@ -1,6 +1,9 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/blocs.dart';
+import 'package:npa_user/data/consumer_info.dart';
+import 'package:npa_user/model/consumer_product.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/checkout_page.dart';
 import 'package:npa_user/values/color.dart';
@@ -22,18 +25,22 @@ class _RequestPageState extends State<RequestPage> {
 
   List<PaymentMethod> _paymentMethods;
   List<DeliveryMethod> _deliveryMethods;
-  List<Product> _products;
-  //   Product(id: 1, code: "", name: "3 Kg", price: 10, quantity: 0),
-  //   Product(id: 2, code: "", name: "6 Kg", price: 20, quantity: 0),
-  //   Product(id: 3, code: "", name: "14 Kg", price: 40, quantity: 0),
-  // ];
+  List<ConsumerProduct> _consumerProducts;
 
-  List<Product> _selecteProducts = [];
+  List<ConsumerProduct> _selecteConsumerProducts = [];
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<RefillRequestBloc>(context).dispatch(FetchApis());
+
+    getRequests();
+  }
+
+  getRequests() async {
+    final user = await readUserData();
+
+    BlocProvider.of<RefillRequestBloc>(context)
+        .dispatch(FetchApis(userId: user.id));
   }
 
   @override
@@ -62,7 +69,7 @@ class _RequestPageState extends State<RequestPage> {
         }
 
         if (state is RequestRefillApiLoaded) {
-          _products = state.products;
+          _consumerProducts = state.consumerProducts;
           _paymentMethods = state.paymentMethods;
           _deliveryMethods = state.deliveryMethods;
           return SafeArea(
@@ -80,9 +87,9 @@ class _RequestPageState extends State<RequestPage> {
                   ListView.separated(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: _products.length,
+                    itemCount: _consumerProducts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _buildField(_products[index]);
+                      return _buildField(_consumerProducts[index]);
                     },
                     separatorBuilder: (BuildContext context, int index) {
                       return Divider(
@@ -104,20 +111,25 @@ class _RequestPageState extends State<RequestPage> {
                         vertical: 12.0,
                       ),
                       onPressed: () => {
-                        if (_selecteProducts.isNotEmpty)
+                        if (_selecteConsumerProducts.isNotEmpty)
                           {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => CheackoutPage(
-                                        products: _selecteProducts,
+                                        products: _selecteConsumerProducts,
                                         paymentMethods: _paymentMethods,
                                         deliveryMethods: _deliveryMethods,
                                       )),
                             )
                           }
                         else
-                          {_showSnackbar(context)}
+                          {
+                            FlushbarHelper.createInformation(
+                                message:
+                                    "Please Select Refill Type and Quantity")
+                              ..show(context)
+                          }
                       },
                       child: Text(
                         "Proceed To Payment",
@@ -134,69 +146,65 @@ class _RequestPageState extends State<RequestPage> {
             ),
           );
         }
-        if (state is ProductError) {}
+        if (state is RequestRefillApiError) {
+          return Center(
+            child: Text("Something went wrong"),
+          );
+        }
       }),
       // ),
     );
   }
 
-  _showSnackbar(BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text('Please Select Refill Type and Quantity',
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: Colors.redAccent,
-      elevation: 10,
-    );
-
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  _onProductSelected(bool selected, Product product) {
+  _onConsumerProductSelected(bool selected, ConsumerProduct consumerProduct) {
     if (selected == true) {
       setState(() {
-        _selecteProducts.add(product);
-        final item = _selecteProducts.firstWhere((c) => c.id == product.id);
+        _selecteConsumerProducts.add(consumerProduct);
+        final item = _selecteConsumerProducts
+            .firstWhere((c) => c.id == consumerProduct.id);
         item.quantity = 1;
-        print(_selecteProducts);
+        print(_selecteConsumerProducts);
       });
     } else {
       setState(() {
-        final item = _selecteProducts.firstWhere((c) => c.id == product.id);
+        final item = _selecteConsumerProducts
+            .firstWhere((c) => c.id == consumerProduct.id);
         item.quantity = 0;
-        _selecteProducts.remove(product);
-        print(_selecteProducts);
+        _selecteConsumerProducts.remove(consumerProduct);
+        print(_selecteConsumerProducts);
       });
     }
   }
 
-  Widget _buildField(Product product) {
+  Widget _buildField(ConsumerProduct consumerProduct) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[_checkBox(product), _buildQuantity(product)],
+        children: <Widget>[
+          _checkBox(consumerProduct),
+          _buildQuantity(consumerProduct)
+        ],
       ),
     );
   }
 
-  Widget _checkBox(Product product) {
+  Widget _checkBox(ConsumerProduct consumerProduct) {
     return Row(
       children: <Widget>[
         Checkbox(
-          value: _selecteProducts.contains(product),
+          value: _selecteConsumerProducts.contains(consumerProduct),
           onChanged: (bool selected) {
-            _onProductSelected(selected, product);
+            _onConsumerProductSelected(selected, consumerProduct);
           },
           activeColor: colorPrimaryYellow,
         ),
-        Text(product.name, style: checkboxTextStyle),
+        Text(consumerProduct.name, style: checkboxTextStyle),
       ],
     );
   }
 
-  Widget _buildQuantity(Product product) {
+  Widget _buildQuantity(ConsumerProduct consumerProduct) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -211,11 +219,11 @@ class _RequestPageState extends State<RequestPage> {
               style: TextStyle(fontSize: 35, color: colorPrimaryYellow),
             ),
             onPressed: () {
-              if (_selecteProducts.isNotEmpty) {
-                final item =
-                    _selecteProducts.firstWhere((c) => c.id == product.id);
+              if (_selecteConsumerProducts.isNotEmpty) {
+                final item = _selecteConsumerProducts
+                    .firstWhere((c) => c.id == consumerProduct.id);
 
-                if (_selecteProducts.contains(item)) {
+                if (_selecteConsumerProducts.contains(item)) {
                   if (item.quantity != 1) {
                     setState(() {
                       item.quantity -= 1;
@@ -229,7 +237,7 @@ class _RequestPageState extends State<RequestPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            "${product.quantity}",
+            "${consumerProduct.quantity}",
             style: quantityTextStyle,
           ),
         ),
@@ -242,10 +250,10 @@ class _RequestPageState extends State<RequestPage> {
             child: Text("+",
                 style: TextStyle(fontSize: 30, color: colorPrimaryYellow)),
             onPressed: () {
-              if (_selecteProducts.isNotEmpty) {
-                final item =
-                    _selecteProducts.firstWhere((c) => c.id == product.id);
-                if (_selecteProducts.contains(item)) {
+              if (_selecteConsumerProducts.isNotEmpty) {
+                final item = _selecteConsumerProducts
+                    .firstWhere((c) => c.id == consumerProduct.id);
+                if (_selecteConsumerProducts.contains(item)) {
                   setState(() {
                     item.quantity += 1;
                   });

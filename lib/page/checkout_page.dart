@@ -1,6 +1,7 @@
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:npa_user/data/consumer_info.dart';
+import 'package:npa_user/model/consumer_product.dart';
 import 'package:npa_user/model/delivery_method.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/model/payment_method.dart';
@@ -9,7 +10,7 @@ import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
 class CheackoutPage extends StatefulWidget {
-  final List<Product> products;
+  final List<ConsumerProduct> products;
   final List<PaymentMethod> paymentMethods;
   final List<DeliveryMethod> deliveryMethods;
 
@@ -264,7 +265,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   Widget _buildCylinders() {
     List<Widget> widgets = List<Widget>();
-    for (Product product in widget.products) {
+    for (ConsumerProduct product in widget.products) {
       widgets.add(
         Text(
           "${product.name} x ${product.quantity}",

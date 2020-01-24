@@ -20,9 +20,8 @@ class ProductApiClient {
     }
 
     final reponse = jsonDecode(productsResponse.body);
-    var products = reponse["model"];
     List<Product> productList = [];
-    for (var d in products) {
+    for (var d in reponse) {
       productList.add(Product.fromJson(d));
     }
 

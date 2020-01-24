@@ -16,7 +16,15 @@ class UserRepository {
   }) async {
     User user =
         await userApiClient.login(phoneNumber: phoneNumber, password: password);
-    saveData(user);
+    await saveData(user);
+    return user;
+  }
+
+  Future<User> getUserInfo({
+    @required int userId,
+  }) async {
+    User user = await userApiClient.getUserInfo(userId: userId);
+    await saveData(user);
     return user;
   }
 
@@ -33,8 +41,7 @@ class UserRepository {
     @required String ghanaPostGpsaddress,
     @required int districtId,
     @required int depositeId,
-    @required int cylinderSizeId,
-    @required int statusId,
+    @required int productId,
     @required double latitude,
     @required double longitude,
     @required String firebaseToken,
@@ -52,8 +59,7 @@ class UserRepository {
         ghanaPostGpsaddress: ghanaPostGpsaddress,
         districtId: districtId,
         depositeId: depositeId,
-        cylinderSizeId: cylinderSizeId,
-        statusId: statusId,
+        productId: productId,
         latitude: latitude,
         longitude: longitude,
         firebaseToken: firebaseToken);

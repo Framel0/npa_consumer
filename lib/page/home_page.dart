@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/pages.dart';
+import 'package:npa_user/repositories/user_repository.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/drawer.dart';
@@ -17,12 +19,30 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  User user;
+  static User user;
+
+  int userId;
+  int userStatus;
+
+  final UserRepository userRepository = UserRepository();
 
   @override
   void initState() {
     super.initState();
 
+    _getUserInfo();
+
+    readUserData().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
+
+    _firebaseListener();
+  }
+
+  _firebaseListener() {
+    // DatabaseHelper.instance.deleteAll();
     if (Platform.isIOS) {
       _firebaseMessaging.requestNotificationPermissions(
           const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -31,26 +51,57 @@ class _MyHomePageState extends State<MyHomePage> {
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         final notification = message["notification"];
-        FlushbarHelper.createInformation(
-          title: notification["title"],
-          message: notification["body"],
-        )..show(context);
+        final title = notification["title"];
+        final body = notification["body"];
+        _setMessage(title: title, body: body);
       },
       //  onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        //  _navigateToItemDetail(message);
+        final notification = message["data"];
+        final title = notification["title"];
+        final body = notification["body"];
+        _setMessage(title: title, body: body);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        //  _navigateToItemDetail(message);
+        final notification = message["data"];
+        final title = notification["title"];
+        final body = notification["body"];
+        _setMessage(title: title, body: body);
       },
     );
+  }
 
-    readUserData().then((value) {
-      setState(() {
-        user = value;
-      });
+  void _setMessage({@required title, @required body}) {
+    var now = new DateTime.now();
+    String date =
+        ('${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}');
+    var id = int.parse(date);
+    // setState(() {
+    DatabaseHelper.instance.insert(Message(
+      id: id,
+      title: title,
+      body: body,
+    ));
+    // });
+  }
+
+  _getUserInfo() {
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      print("Timer:${DateTime.now()}");
+      if (userStatus != 2) {
+        readUserData().then((value) {
+          setState(() {
+            user = value;
+          });
+        });
+        userId = user.id;
+        userStatus = user.statusId;
+        userRepository.getUserInfo(userId: userId);
+        print("Get user Info:${DateTime.now()}");
+        print("Status id:${userStatus}");
+      }
     });
   }
 
@@ -145,11 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: Icons.error,
                           text: "Safety Tips",
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SafetyTipPage()),
-                            );
+                            Navigator.pushNamed(
+                                context, requestTrackingMapRoute);
                           }),
                       _buildItem(
                           icon: Icons.notifications,

@@ -82,6 +82,9 @@ class RouteGenerator {
       case notificationRoute:
         return MaterialPageRoute(builder: (_) => NotifiactionPage());
         break;
+      case requestTrackingMapRoute:
+        return MaterialPageRoute(builder: (_) => RequestTrackingMapPage());
+        break;
       default:
     }
   }

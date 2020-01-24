@@ -24,20 +24,18 @@ class RegisterButtonPressed extends RegisterEvent {
   final String ghanaPostGpsaddress;
   final int districtId;
   final int depositeId;
-  final int statusId;
-  final int cylinderSizeId;
+  final int productId;
   final double latitude;
   final double longitude;
   final String firebaseToken;
 
   RegisterButtonPressed({
     this.depositeId,
-    this.cylinderSizeId,
+    this.productId,
     this.houseNumber,
     this.streetName,
     this.ghanaPostGpsaddress,
     this.districtId,
-    this.statusId,
     this.firstName,
     this.lastName,
     this.phoneNumber,
@@ -53,7 +51,6 @@ class RegisterButtonPressed extends RegisterEvent {
           streetName,
           ghanaPostGpsaddress,
           districtId,
-          statusId,
           firstName,
           lastName,
           phoneNumber,

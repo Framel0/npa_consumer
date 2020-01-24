@@ -55,7 +55,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Lpgmc _selectedLpgmc;
 
-  CylinderSize _selectedCylinderSize;
+  Product _selectedProduct;
 
   Deposite _selectedDeposite;
 
@@ -126,7 +126,7 @@ class _RegisterFormState extends State<RegisterForm> {
           _regions = regions;
           final lpgmcs = state.lpgmcs;
           final deposites = state.deposites;
-          final cylinderSizes = state.cylinderSizes;
+          final cylinderSizes = state.products;
           return Form(
             key: _formKey,
             child: Column(
@@ -213,7 +213,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildCylinderField(dropdownMenuItems: cylinderSizes),
+                _buildProductField(dropdownMenuItems: cylinderSizes),
                 SizedBox(
                   height: 30,
                 ),
@@ -243,7 +243,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         _showSnackbar(
                             mContext: context, text: "Please Select Deposite");
                         return;
-                      } else if (_selectedCylinderSize == null) {
+                      } else if (_selectedProduct == null) {
                         _showSnackbar(
                             mContext: context,
                             text: "Please Select Cylinder Size");
@@ -311,9 +311,8 @@ class _RegisterFormState extends State<RegisterForm> {
           ghanaPostGpsaddress: _residentialAddressController.text,
           districtId: _selectedDistrict.id,
           depositeId: _selectedDeposite.id,
-          cylinderSizeId: _selectedCylinderSize.id,
+          productId: _selectedProduct.id,
           firebaseToken: firebaseToken,
-          statusId: 1,
           // latitude: _residentialAddressController.text,
           // longitude: _residentialAddressController.text,
         ),
@@ -610,14 +609,14 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-  onChangeDropdownItemCylinder(CylinderSize selectedCylinderSize) {
+  onChangeDropdownItemProduct(Product selectedProduct) {
     setState(() {
-      _selectedCylinderSize = selectedCylinderSize;
+      _selectedProduct = selectedProduct;
     });
   }
 
-  Widget _buildCylinderField(
-      {@required List<DropdownMenuItem<CylinderSize>> dropdownMenuItems}) {
+  Widget _buildProductField(
+      {@required List<DropdownMenuItem<Product>> dropdownMenuItems}) {
     return Container(
       // decoration: BoxDecoration(
       //     border: Border.all(color: colorPrimaryYellow, width: 2),
@@ -627,13 +626,13 @@ class _RegisterFormState extends State<RegisterForm> {
         top: 15.0,
       ),
       child: DropdownButton(
-        value: _selectedCylinderSize,
+        value: _selectedProduct,
         items: dropdownMenuItems,
         hint: Text(
           "Select Cylinder Type",
           style: TextStyle(color: colorPrimary),
         ),
-        onChanged: onChangeDropdownItemCylinder,
+        onChanged: onChangeDropdownItemProduct,
         style: formTextStyle,
         isExpanded: true,
       ),

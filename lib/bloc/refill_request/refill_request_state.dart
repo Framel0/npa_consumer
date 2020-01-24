@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:npa_user/model/consumer_product.dart';
 import 'package:npa_user/model/models.dart';
 
 abstract class RefillRequestState extends Equatable {
@@ -70,21 +71,31 @@ class RequestRefillApiLoading extends RefillRequestState {
 }
 
 class RequestRefillApiLoaded extends RefillRequestState {
-  final List<Product> products;
+  final List<ConsumerProduct> consumerProducts;
   final List<PaymentMethod> paymentMethods;
   final List<DeliveryMethod> deliveryMethods;
 
   RequestRefillApiLoaded(
-      {@required this.products,
+      {@required this.consumerProducts,
       @required this.paymentMethods,
       @required this.deliveryMethods});
 
   @override
-  List<Object> get props => [products, paymentMethods, deliveryMethods];
+  List<Object> get props => [consumerProducts, paymentMethods, deliveryMethods];
 
   @override
   String toString() {
     return "RequestRefillApiLoaded";
+  }
+}
+
+class RequestRefillApiError extends RefillRequestState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "ConfirmDeliveryLoading";
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/repositories/product/product.dart';
@@ -16,4 +17,15 @@ class ProductRepository {
     return List.from(_products);
   }
 
+  List<DropdownMenuItem<Product>> getDropdownMenuItems() {
+    List<DropdownMenuItem<Product>> items = List();
+
+    for (Product product in _products) {
+      items.add(DropdownMenuItem(
+        value: product,
+        child: Text(product.name),
+      ));
+    }
+    return items;
+  }
 }

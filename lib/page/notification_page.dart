@@ -12,12 +12,15 @@ class NotifiactionPage extends StatefulWidget {
 class _NotifiactionPageState extends State<NotifiactionPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  final List<Message> messages = [];
-
   @override
   void initState() {
     super.initState();
 
+    _firebaseListener();
+  }
+
+  _firebaseListener() {
+    DatabaseHelper.instance.deleteAll();
     if (Platform.isIOS) {
       _firebaseMessaging.requestNotificationPermissions(
           const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -26,26 +29,25 @@ class _NotifiactionPageState extends State<NotifiactionPage> {
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         final notification = message["notification"];
-        setState(() {
-          messages.add(Message(
-            title: notification["title"],
-            body: notification["body"],
-          ));
-        });
-      },
-      //  onBackgroundMessage: myBackgroundMessageHandler,
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        final notification = message["notification"];
-        setState(() {
-          messages.add(Message.fromJson(notification));
-        });
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        //  _navigateToItemDetail(message);
+        final title = notification["title"];
+        final body = notification["body"];
+        _setMessage(title: title, body: body);
       },
     );
+  }
+
+  void _setMessage({@required title, @required body}) {
+    var now = new DateTime.now();
+    String date =
+        ('${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}');
+    var id = int.parse(date);
+    setState(() {
+      DatabaseHelper.instance.insert(Message(
+        id: id,
+        title: title,
+        body: body,
+      ));
+    });
   }
 
   @override
@@ -54,27 +56,51 @@ class _NotifiactionPageState extends State<NotifiactionPage> {
         appBar: AppBar(
           title: Text("Notification"),
         ),
-        body: _buildMessageList(messages));
+        body: FutureBuilder(
+            future: DatabaseHelper.instance.queryAllMessages(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _buildMessageList(snapshot.data);
+              } else {
+                return Center(
+                  child: Text("No Notification Available"),
+                );
+              }
+            }));
   }
 
   Widget _buildMessageListItem(int position, Message message) {
     return ListTile(
       title: Text(message.title),
       subtitle: Text(message.body),
+      trailing: IconButton(
+        onPressed: () {
+          DatabaseHelper.instance.delete(message.id);
+          setState(() {});
+        },
+        icon: Icon(
+          Icons.delete,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 
   Widget _buildMessageList(List<Message> messages) {
-    return ListView.separated(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: messages.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildMessageListItem(index, messages[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(thickness: 2.0);
-      },
-    );
+    return messages.isEmpty
+        ? Center(
+            child: Text("No Notification Available"),
+          )
+        : ListView.separated(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: messages.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildMessageListItem(index, messages[index]);
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider(thickness: 2.0);
+            },
+          );
   }
 }

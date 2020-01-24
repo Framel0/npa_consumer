@@ -38,14 +38,14 @@ class RegisterApiLoaded extends RegisterState {
   final List<Region> regions;
   final List<DropdownMenuItem<Lpgmc>> lpgmcs;
   final List<DropdownMenuItem<Deposite>> deposites;
-  final List<DropdownMenuItem<CylinderSize>> cylinderSizes;
+  final List<DropdownMenuItem<Product>> products;
 
   RegisterApiLoaded(
       {@required this.districts,
       @required this.regions,
       @required this.lpgmcs,
       @required this.deposites,
-      @required this.cylinderSizes});
+      @required this.products});
 
   @override
   String toString() {

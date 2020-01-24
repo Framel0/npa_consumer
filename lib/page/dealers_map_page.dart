@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:npa_user/bloc/dealer/dealer.dart';
 import 'package:npa_user/model/models.dart';
-import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widgets.dart';
 
 class DealersMapPage extends StatefulWidget {
@@ -21,10 +20,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
   Completer<GoogleMapController> _mapController = Completer();
   GoogleMapController mapController;
 
-  static CameraPosition _initPos = CameraPosition(
-    target: LatLng(5.601452, -0.184879),
-    zoom: 9,
-  );
+  static LatLng _initPos;
 
   final Geolocator _geolocator = Geolocator();
 
@@ -34,6 +30,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
   void initState() {
     super.initState();
     // BlocProvider.of<DealerBloc>(context)..dispatch(FetchDealers());
+    _getUserLocation();
     if (widget.lpgmc.id != null) {
       BlocProvider.of<DealerBloc>(context)
         ..dispatch(FetchDealers(id: widget.lpgmc.id));
@@ -56,62 +53,44 @@ class _DealersMapPageState extends State<DealersMapPage> {
       ),
       body: BlocBuilder<DealerBloc, DealerState>(builder: (context, state) {
         if (state is DealerLoading) {
-          return LoadingIndicator();
+          return Center(child: LoadingIndicator());
         }
 
         if (state is DealerLoaded) {
           final dealers = state.dealers;
-          return Container(
-            child: Stack(
-              children: <Widget>[
-                GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: _initPos,
-                  onMapCreated: (GoogleMapController controller) {
-                    _mapController.complete(controller);
-                    mapController = controller;
-                  },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  markers: dealers
-                      .map((d) => _registerMarker(
-                          onTap: () async {
-                            _showBottomSheet(buildContext: context, dealer: d);
-                          },
-                          markerId: d.id.toString(),
-                          lat: d.latitude,
-                          lng: d.longitude,
-                          name: d.firstName + " " + d.lastName,
-                          address: d.address))
-                      .toSet(),
-                ),
-                Positioned(
-                  bottom: 50,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: OutlineButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      ),
-                      borderSide:
-                          BorderSide(color: colorAccentYellow, width: 2),
-                      padding: EdgeInsets.symmetric(vertical: 14.0),
-                      child: Text(
-                        "Current Position",
-                        style: TextStyle(
-                            color: colorPrimary,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        _getCurrentLocation();
-                      },
-                    ),
-                  ),
-                ),
-              ],
+          var googleMap = GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _initPos,
+              zoom: 10,
             ),
+            onMapCreated: onCreated,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            compassEnabled: true,
+            mapType: MapType.normal,
+            markers: dealers
+                .map((d) => _registerMarker(
+                    onTap: () async {
+                      _showBottomSheet(buildContext: context, dealer: d);
+                    },
+                    markerId: d.id.toString(),
+                    lat: d.latitude,
+                    lng: d.longitude,
+                    name: d.firstName + " " + d.lastName,
+                    address: d.address))
+                .toSet(),
           );
+          return _initPos == null
+              ? Center(
+                  child: LoadingIndicator(),
+                )
+              : Container(
+                  child: Stack(
+                    children: <Widget>[
+                      googleMap,
+                    ],
+                  ),
+                );
         }
 
         if (state is DealerError) {
@@ -139,20 +118,21 @@ class _DealersMapPageState extends State<DealersMapPage> {
     );
   }
 
-  Future<Position> _initCurrentLocation() async {
-    Position pos = await _geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    );
-    return pos;
+  onCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+    });
   }
 
-  _getCurrentLocation() async {
-    _currentPosition = await _initCurrentLocation();
-    mapController = await _mapController.future;
+  onCameraMove(CameraPosition position) {}
+
+  void _getUserLocation() async {
+    Position pos = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemark = await Geolocator()
+        .placemarkFromCoordinates(pos.latitude, pos.longitude);
     setState(() {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-          zoom: 11)));
+      _initPos = LatLng(pos.latitude, pos.longitude);
     });
   }
 

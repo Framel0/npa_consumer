@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/bloc/blocs.dart';
 import 'package:npa_user/data/consumer_info.dart';
+import 'package:npa_user/model/consumer_product.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 
 class SummaryPage extends StatefulWidget {
   final Address deliveryAddress;
-  final List<Product> products;
+  final List<ConsumerProduct> products;
   final DeliveryMethod deliveryMethod;
   final PaymentMethod paymentMethod;
   final double subTotal;
@@ -416,7 +417,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
   Widget _buildCylinders() {
     List<Widget> widgets = List<Widget>();
-    for (Product product in widget.products) {
+    for (ConsumerProduct product in widget.products) {
       widgets.add(
         Text(
           "${product.name} x ${product.quantity}",

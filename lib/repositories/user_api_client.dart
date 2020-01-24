@@ -33,6 +33,27 @@ class UserApiClient {
     return user;
   }
 
+  Future<User> getUserInfo({
+    @required int userId,
+  }) async {
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    final loginUrl = "$baseUrl/api/ConsumerApi/Consumer/$userId";
+
+    final loginResponse = await this.httpClient.get(
+          loginUrl,
+        );
+
+    if (loginResponse.statusCode != 200) {
+      print(loginResponse.statusCode);
+      throw Exception("Login failed, Please check Phone number or Password");
+    }
+
+    final responseJson = jsonDecode(loginResponse.body);
+    var userJson = responseJson["model"];
+    var user = User.fromJson(userJson);
+    return user;
+  }
+
   Future<void> register({
     @required String firstName,
     @required String lastName,
@@ -46,8 +67,7 @@ class UserApiClient {
     @required String ghanaPostGpsaddress,
     @required int districtId,
     @required int depositeId,
-    @required int cylinderSizeId,
-    @required int statusId,
+    @required int productId,
     @required double latitude,
     @required double longitude,
     @required String firebaseToken,
@@ -65,8 +85,7 @@ class UserApiClient {
       "residentialAddress": "$residentialAddress",
       "districtId": districtId,
       "depositeId": depositeId,
-      "cylinderSizeId": cylinderSizeId,
-      "statusId": statusId,
+      "productId": productId,
       "ghanaPostGpsaddress": "$ghanaPostGpsaddress",
       "firebaseToken": "$firebaseToken",
       // "latitude": latitude,

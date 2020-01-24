@@ -10,14 +10,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final DistrictRepository districtRepository;
   final RegionRepository regionRepository;
   final DepositeRepository depositeRepository;
-  final CylinderSizeRepository cylinderSizeRepository;
+  final ProductRepository productRepository;
 
   RegisterBloc(
       {@required this.lpgmcRepository,
       @required this.districtRepository,
       @required this.regionRepository,
       @required this.depositeRepository,
-      @required this.cylinderSizeRepository,
+      @required this.productRepository,
       @required this.userRepository});
   @override
   RegisterState get initialState => InitialRegisterState();
@@ -41,8 +41,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           residentialAddress: event.residentialAddress,
           districtId: event.districtId,
           depositeId: event.depositeId,
-          cylinderSizeId: event.cylinderSizeId,
-          statusId: event.statusId,
+          productId: event.productId,
           ghanaPostGpsaddress: event.ghanaPostGpsaddress,
           latitude: event.latitude,
           longitude: event.longitude,
@@ -70,15 +69,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         await depositeRepository.getDeposites();
         final deposites = depositeRepository.getDropdownMenuItems();
 
-        await cylinderSizeRepository.getCylinderSizes();
-        final cylinderSizes = cylinderSizeRepository.getDropdownMenuItems();
+        await productRepository.getProducts();
+        final products = productRepository.getDropdownMenuItems();
 
         yield RegisterApiLoaded(
             districts: districts,
             regions: regions,
             lpgmcs: lpgmcs,
             deposites: deposites,
-            cylinderSizes: cylinderSizes);
+            products: products);
       } catch (ex) {
         RegisterFailuer(error: ex.toString());
       }

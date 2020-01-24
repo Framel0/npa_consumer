@@ -18,3 +18,4 @@ const String upcomingRequestDetailRoute = "/upcomingRequestDetail";
 const String addressChangeRoute = "/addressChange";
 const String dealersMapRoute = "/dealersMap";
 const String notificationRoute = "/notification";
+const String requestTrackingMapRoute = "/requestTrackingMap";

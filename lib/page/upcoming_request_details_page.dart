@@ -54,17 +54,6 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       homeRoute, (Route<dynamic> route) => false);
                 });
-
-              // _showFloatingFlushbar(
-              //   mContext: context,
-              //   icon: Icons.done_outline,
-              //   backgroundColor: Colors.green,
-              //   title: "Success",
-              //   message: "Delivery Confirmed",
-              // )..show(context).then((result) {
-              //     Navigator.of(context).pushNamedAndRemoveUntil(
-              //         homeRoute, (Route<dynamic> route) => false);
-              //   });
             }
             if (state is ConfirmDeliveryError) {
               FlushbarHelper.createError(
@@ -122,58 +111,6 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         );
       }),
     );
-  }
-
-  _showFloatingFlushbar({
-    @required BuildContext mContext,
-    @required Color backgroundColor,
-    @required IconData icon,
-    @required String title,
-    @required String message,
-  }) {
-    Flushbar<bool>(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(10),
-      borderRadius: 8,
-      backgroundColor: backgroundColor,
-      boxShadows: [
-        BoxShadow(
-          color: Colors.black45,
-          offset: Offset(3, 3),
-          blurRadius: 3,
-        ),
-      ],
-      // All of the previous Flushbars could be dismissed by swiping down
-      // now we want to swipe to the sides
-      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-      // The default curve is Curves.easeOut
-      forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      flushbarStyle: FlushbarStyle.FLOATING,
-      title: title,
-      message: message,
-      duration: Duration(seconds: 3),
-      icon: Icon(
-        icon,
-        size: 28,
-        color: Colors.white,
-      ),
-    )..show(mContext);
-  }
-
-  _showSnackbar(
-      {@required BuildContext mContext,
-      @required Color backgroundColor,
-      @required String text}) {
-    final snackBar = SnackBar(
-      content: Text(text,
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: backgroundColor,
-      elevation: 10,
-    );
-
-    Scaffold.of(mContext).showSnackBar(snackBar);
   }
 
   Widget _space() {

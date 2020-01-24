@@ -16,3 +16,4 @@ export './refill_request/refill_request.dart';
 export './address/address.dart';
 export './refill_request_history/refill_request_history.dart';
 export './Firebase/firebase.dart';
+export './consumer_product/consumer_product.dart';

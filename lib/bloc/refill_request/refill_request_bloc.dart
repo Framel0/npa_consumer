@@ -5,14 +5,14 @@ import 'package:npa_user/repositories/repositories.dart';
 import './refill_request.dart';
 
 class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
-  final ProductRepository productRepository;
+  final ConsumerProductRepository consumerProductRepository;
   final PaymentMethodRepository paymentMethodRepository;
   final DeliveryMethodRepository deliveryMethodRepository;
   final RefillRequestRepository refillRequestRepository;
 
   RefillRequestBloc(
       {@required this.refillRequestRepository,
-      @required this.productRepository,
+      @required this.consumerProductRepository,
       @required this.paymentMethodRepository,
       @required this.deliveryMethodRepository});
 
@@ -27,8 +27,10 @@ class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
       yield RequestRefillApiLoading();
 
       try {
-        await productRepository.getProducts();
-        final products = productRepository.products;
+        await consumerProductRepository.getConsumerProducts(
+            userId: event.userId);
+        final consumerProducts =
+            consumerProductRepository.consumerConsumerProducts;
 
         await paymentMethodRepository.getPaymentMethods();
         final paymentMethods = paymentMethodRepository.paymentMethods;
@@ -37,11 +39,11 @@ class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
         final deliveryMethods = deliveryMethodRepository.deliveryMethods;
 
         yield RequestRefillApiLoaded(
-            products: products,
+            consumerProducts: consumerProducts,
             paymentMethods: paymentMethods,
             deliveryMethods: deliveryMethods);
       } catch (e) {
-        yield RequestRefillError(error: e.toString());
+        yield RequestRefillApiError();
       }
     }
 
@@ -62,7 +64,8 @@ class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
 
       try {
         await refillRequestRepository.confirmDelivery(
-            refillRequestId: event.refillRequestId,);
+          refillRequestId: event.refillRequestId,
+        );
 
         yield ConfirmDeliverySuccess();
       } catch (e) {

@@ -19,7 +19,6 @@ import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/widgets.dart';
 
 void main() {
-
   // Set `enableInDevMode` to true to see reports while in debug mode
   // This is only to be used for confirming that reports are being
   // submitted as expected. It is not intended to be used for everyday
@@ -28,7 +27,7 @@ void main() {
 
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  
+
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository();
   final refillRequestRepository = RefillRequestRepository(
@@ -39,8 +38,9 @@ void main() {
       refillRequestHistoryApiClient:
           RefillRequestHistoryApiClient(httpClient: http.Client()));
 
-  final productRepository = ProductRepository(
-      productApiClient: ProductApiClient(httpClient: http.Client()));
+  final productRepository = ConsumerProductRepository(
+      consumerProductApiClient:
+          ConsumerProductApiClient(httpClient: http.Client()));
 
   final paymentMethodRepository = PaymentMethodRepository(
       paymentMethodApiClient:
@@ -100,11 +100,6 @@ void main() {
               upcomingRequestRepository: upcomingRequestRepository);
         },
       ),
-      BlocProvider<ProductBloc>(
-        builder: (context) {
-          return ProductBloc(productRepository: productRepository);
-        },
-      ),
       BlocProvider<AddressBloc>(
         builder: (context) {
           return AddressBloc(
@@ -125,7 +120,7 @@ void main() {
         builder: (context) {
           return RefillRequestBloc(
               refillRequestRepository: refillRequestRepository,
-              productRepository: productRepository,
+              consumerProductRepository: productRepository,
               paymentMethodRepository: paymentMethodRepository,
               deliveryMethodRepository: deliveryMethodRepository);
         },

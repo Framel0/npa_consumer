@@ -49,6 +49,7 @@ dependencies:
   firebase_messaging: ^6.0.9
   flushbar: ^1.9.1
   flutter_background_geolocation: ^1.6.0
+  location: ^2.3.5
 
 dev_dependencies:
   flutter_test:
