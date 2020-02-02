@@ -58,7 +58,7 @@ class _DeliveryState extends State<Delivery> {
         title: Text(method.name),
         onChanged: onChangedDeliveryMethod,
         selected: widget.selectedDeliveryMethod == method,
-        activeColor: colorAccentYellow,
+        activeColor: colorSecondaryOrange,
       ));
     }
 

@@ -27,7 +27,7 @@ class _ServicesPageState extends State<ServicesPage> {
   Widget _divider() {
     return Divider(
       thickness: 2,
-      color: colorAccentYellow,
+      color: colorSecondaryOrange,
     );
   }
 

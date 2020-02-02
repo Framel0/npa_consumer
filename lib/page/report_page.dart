@@ -33,7 +33,7 @@ class _ReportPageState extends State<ReportPage> {
     return Divider(
       height: 4,
       thickness: 2,
-      color: colorAccentYellow,
+      color: colorSecondaryOrange,
     );
   }
 

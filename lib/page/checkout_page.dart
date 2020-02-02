@@ -25,11 +25,14 @@ class CheackoutPage extends StatefulWidget {
 }
 
 class _CheackoutPageState extends State<CheackoutPage> {
-  final TextStyle radioButtonTextStyle = TextStyle(color: Colors.black);
-  final TextStyle headerTextStyle =
-      TextStyle(color: colorPrimary, fontSize: 20, fontWeight: FontWeight.w600);
+  final TextStyle radioButtonTextStyle = TextStyle(
+    fontWeight: FontWeight.w600,
+    color: colorPrimary,
+  );
+  final TextStyle headerTextStyle = TextStyle(
+      color: colorSecondaryOrange, fontSize: 21, fontWeight: FontWeight.bold);
 
-  final double cardElevation = 3;
+  final double cardElevation = 4;
 
   static DeliveryMethod _selectedDeliveryMethod;
 
@@ -96,9 +99,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                   children: <Widget>[
                     Card(
                         elevation: cardElevation,
-                        // shape: new RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                        // ),
+                        // color: colorPrimary100,
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -112,7 +113,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -121,7 +126,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -141,7 +150,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -150,7 +163,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -173,7 +190,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -182,7 +203,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -269,7 +294,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
       widgets.add(
         Text(
           "${product.name} x ${product.quantity}",
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: colorPrimary,
+          ),
         ),
       );
     }
@@ -298,7 +327,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
         ),
         onChanged: onChangedDeliveryMethod,
         selected: _selectedDeliveryMethod == method,
-        activeColor: colorAccentYellow,
+        activeColor: colorSecondaryOrange,
       ));
     }
 
@@ -322,7 +351,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
         title: Text(method.name, style: radioButtonTextStyle),
         onChanged: onChangedPaymentMethod,
         selected: _selectedPaymentMethod == method,
-        activeColor: colorAccentYellow,
+        activeColor: colorSecondaryOrange,
       ));
     }
 
@@ -343,7 +372,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
             style: headerTextStyle,
           ),
         ),
-        Card(elevation: cardElevation, child: _buildRadioListPaymentMethod())
+        Card(
+          elevation: cardElevation,
+          // color: colorPrimary100,
+          child: _buildRadioListPaymentMethod(),
+        )
       ],
     ));
   }
@@ -360,7 +393,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
               style: headerTextStyle,
             ),
           ),
-          Card(elevation: cardElevation, child: _buildRadioListDeliveryMethod())
+          Card(
+            elevation: cardElevation,
+            // color: colorPrimary100,
+            child: _buildRadioListDeliveryMethod(),
+          )
         ],
       ),
     );
@@ -387,6 +424,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
             width: MediaQuery.of(context).size.width,
             child: Card(
               elevation: cardElevation,
+              // color: colorPrimary100,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 16.0),
@@ -395,30 +433,33 @@ class _CheackoutPageState extends State<CheackoutPage> {
                   children: <Widget>[
                     Text(
                       "Name: \n${firstName} ${lastName}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(fontSize: 17),
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     Text(
                       "Phone Number: \n${phoneNumber}",
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(fontSize: 17),
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     Text(
                       "Address:",
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(fontSize: 17),
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -431,20 +472,27 @@ class _CheackoutPageState extends State<CheackoutPage> {
                                   ? ""
                                   : _address.residentialAddress,
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: colorPrimary,
+                              ),
                             ),
                             Text(
                               _address.ghanaPostGpsaddress == null
                                   ? ""
                                   : _address.ghanaPostGpsaddress,
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: colorPrimary,
+                              ),
                             ),
                           ],
                         ),
                         OutlineButton(
                           child: Text(
                             "select or add address",
-                            style: TextStyle(color: colorPrimaryYellow),
+                            style: TextStyle(color: colorSecondaryOrange),
                           ),
                           onPressed: () {
                             _navigatrAddressSelect(context);
@@ -457,10 +505,11 @@ class _CheackoutPageState extends State<CheackoutPage> {
                     ),
                     Text(
                       "Refill Type",
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(fontSize: 17),
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
                     ),
                     _buildCylinders()
                   ],

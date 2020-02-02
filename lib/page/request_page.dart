@@ -15,13 +15,12 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
-  final TextStyle checkboxTextStyle =
+  final TextStyle checkboxTextStyle = TextStyle(
+      fontSize: 18.0, fontWeight: FontWeight.w600, color: colorPrimary);
+  final TextStyle quantityTextStyle =
       TextStyle(fontSize: 18.0, color: colorPrimary);
-  final TextStyle quantityTextStyle = TextStyle(
-    fontSize: 18.0,
-  );
-  final TextStyle headerTextStyle =
-      TextStyle(color: colorPrimary, fontSize: 20, fontWeight: FontWeight.w600);
+  final TextStyle headerTextStyle = TextStyle(
+      color: colorSecondaryOrange, fontSize: 21, fontWeight: FontWeight.bold);
 
   List<PaymentMethod> _paymentMethods;
   List<DeliveryMethod> _deliveryMethods;
@@ -197,7 +196,7 @@ class _RequestPageState extends State<RequestPage> {
           onChanged: (bool selected) {
             _onConsumerProductSelected(selected, consumerProduct);
           },
-          activeColor: colorPrimaryYellow,
+          activeColor: colorSecondaryOrange,
         ),
         Text(consumerProduct.name, style: checkboxTextStyle),
       ],
@@ -216,7 +215,7 @@ class _RequestPageState extends State<RequestPage> {
             ),
             child: Text(
               "-",
-              style: TextStyle(fontSize: 35, color: colorPrimaryYellow),
+              style: TextStyle(fontSize: 35, color: colorSecondaryOrange),
             ),
             onPressed: () {
               if (_selecteConsumerProducts.isNotEmpty) {
@@ -248,7 +247,7 @@ class _RequestPageState extends State<RequestPage> {
               borderRadius: BorderRadius.all(Radius.circular(2.0)),
             ),
             child: Text("+",
-                style: TextStyle(fontSize: 30, color: colorPrimaryYellow)),
+                style: TextStyle(fontSize: 30, color: colorSecondaryOrange)),
             onPressed: () {
               if (_selecteConsumerProducts.isNotEmpty) {
                 final item = _selecteConsumerProducts

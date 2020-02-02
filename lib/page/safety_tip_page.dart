@@ -43,7 +43,7 @@ class _SafetyTipPageState extends State<SafetyTipPage> {
         return Divider(
           height: 4.0,
           thickness: 2.0,
-          color: colorAccentYellow,
+          color: colorSecondaryOrange,
         );
       },
     );

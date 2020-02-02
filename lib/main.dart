@@ -4,6 +4,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:npa_user/bloc/authentication/authentication.dart';
 import 'package:npa_user/bloc/blocs.dart';
@@ -152,8 +153,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FirebaseAnalytics analytics = FirebaseAnalytics();
     return MaterialApp(
-      title: 'NPA User',
-      theme: _buildTheme(),
+      title: 'LCRM Consumer',
+      theme: _buildTheme(ctx: context),
       onGenerateRoute: RouteGenerator.generateRoute,
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
@@ -189,17 +190,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-ThemeData _buildTheme() {
+ThemeData _buildTheme({@required BuildContext ctx}) {
   final ThemeData base = ThemeData.light();
 
   return base.copyWith(
-    accentColor: colorAccentYellow,
+    textTheme: GoogleFonts.montserratTextTheme(
+      Theme.of(ctx).textTheme,
+    ),
+    accentColor: colorSecondaryOrange,
     primaryColor: colorPrimary,
     buttonTheme: base.buttonTheme.copyWith(
-      buttonColor: colorPrimaryYellow,
+      buttonColor: colorSecondaryOrange,
       textTheme: ButtonTextTheme.normal,
     ),
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: colorScaffoldBackground,
     cardColor: Colors.white,
     errorColor: kShrineErrorRed,
   );

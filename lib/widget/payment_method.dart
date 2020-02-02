@@ -56,7 +56,7 @@ class _PaymentState extends State<Payment> {
         title: Text(method.name),
         onChanged: onChangedPaymentMethod,
         selected: widget.selectedPaymentMethod == method,
-        activeColor: colorAccentYellow,
+        activeColor: colorSecondaryOrange,
       ));
     }
 

@@ -84,8 +84,8 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
                 Text('Refill Type: ',
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: colorPrimary)),
+                        fontWeight: FontWeight.bold,
+                        color: colorSecondaryOrange)),
                 _buildProducts(
                     products: widget.upcomingRequest.products,
                     mContext: context),
@@ -153,9 +153,7 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
     for (RequestProduct product in products) {
       widgets.add(
         Text("${product.size} x ${product.quantity}",
-            style: TextStyle(
-              fontSize: 16,
-            )),
+            style: TextStyle(fontSize: 16, color: colorPrimary)),
       );
     }
 
@@ -214,11 +212,15 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         Text(
           title,
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w500, color: colorPrimary),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: colorSecondaryOrange,
+          ),
         ),
         Text(subtitle,
             style: TextStyle(
               fontSize: 16,
+              color: colorPrimary,
             )),
       ],
     );

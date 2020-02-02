@@ -145,7 +145,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             text: "Request Refill",
                             onTap: () {
                               if (user.statusId == 1) {
-                                _showSnackbar(mContext: context);
+                                FlushbarHelper.createInformation(
+                                    message:
+                                        'Please Confirm Deposite with Dealer');
                               } else {
                                 Navigator.push(
                                   context,
@@ -196,8 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: Icons.error,
                           text: "Safety Tips",
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, requestTrackingMapRoute);
+                            Navigator.pushNamed(context, safetyTipRoute);
                           }),
                       _buildItem(
                           icon: Icons.notifications,
@@ -221,19 +222,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _showSnackbar({BuildContext mContext}) {
-    final snackBar = SnackBar(
-      content: Text('Please Confirm Deposite with Dealer',
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: Colors.redAccent,
-      elevation: 10,
-    );
-
-    Scaffold.of(mContext).showSnackBar(snackBar);
-  }
-
   Widget _buildItem({IconData icon, String text, GestureTapCallback onTap}) {
     return Container(
       width: 120,
@@ -245,9 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           ),
-          color: colorPrimaryYellow,
+          color: colorPrimaryLight,
           child: InkWell(
-            splashColor: Colors.indigo,
             onTap: onTap,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

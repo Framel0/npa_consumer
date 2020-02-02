@@ -31,10 +31,10 @@ class SummaryPage extends StatefulWidget {
 }
 
 class _SummaryPageState extends State<SummaryPage> {
-  final TextStyle headerTextStyle =
-      TextStyle(color: colorPrimary, fontSize: 20, fontWeight: FontWeight.w600);
+  final TextStyle headerTextStyle = TextStyle(
+      color: colorSecondaryOrange, fontSize: 21, fontWeight: FontWeight.bold);
 
-  final double cardElevation = 3;
+  final double cardElevation = 4;
 
   User _user = User();
 
@@ -120,7 +120,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -129,7 +133,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -149,7 +157,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -158,7 +170,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -182,7 +198,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
-                                        .copyWith(fontSize: 17),
+                                        .copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                                   ),
                                   RichText(
                                     maxLines: 1,
@@ -191,7 +211,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .title
-                                          .copyWith(fontSize: 17),
+                                          .copyWith(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
                                       children: <TextSpan>[
                                         TextSpan(
                                           text: 'GHC ',
@@ -240,30 +264,36 @@ class _SummaryPageState extends State<SummaryPage> {
                             children: <Widget>[
                               Text(
                                 "Name: \n${firstName} ${lastName}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(fontSize: 17),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 "Phone Number: \n${phoneNumber}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(fontSize: 17),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 "Address: ",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(fontSize: 17),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,12 +301,18 @@ class _SummaryPageState extends State<SummaryPage> {
                                   Text(
                                     widget.deliveryAddress.residentialAddress,
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: colorPrimary,
+                                    ),
                                   ),
                                   Text(
                                     widget.deliveryAddress.ghanaPostGpsaddress,
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: colorPrimary,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -285,10 +321,12 @@ class _SummaryPageState extends State<SummaryPage> {
                               ),
                               Text(
                                 "Refill Type",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .title
-                                    .copyWith(fontSize: 17),
+                                style:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: colorPrimary,
+                                        ),
                               ),
                               _buildCylinders(),
                               SizedBox(
@@ -323,6 +361,10 @@ class _SummaryPageState extends State<SummaryPage> {
                           child: ListTile(
                             title: Text(
                               widget.deliveryMethod.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: colorPrimary,
+                              ),
                             ),
                           )),
                     ),
@@ -350,6 +392,10 @@ class _SummaryPageState extends State<SummaryPage> {
                         child: ListTile(
                           title: Text(
                             widget.paymentMethod.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: colorPrimary,
+                            ),
                           ),
                         )),
                   ),
@@ -421,7 +467,11 @@ class _SummaryPageState extends State<SummaryPage> {
       widgets.add(
         Text(
           "${product.name} x ${product.quantity}",
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: colorPrimary,
+          ),
         ),
       );
     }

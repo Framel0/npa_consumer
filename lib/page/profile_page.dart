@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
               shape: new RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(2.0)),
               ),
-              borderSide: BorderSide(color: colorAccentYellow, width: 2),
+              borderSide: BorderSide(color: colorSecondaryOrange, width: 2),
               padding: EdgeInsets.symmetric(vertical: 14.0),
               child: Text(
                 "Addresses",
@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Divider(
       height: 2,
       thickness: 1.5,
-      color: colorAccentYellow,
+      color: colorSecondaryOrange,
     );
   }
 

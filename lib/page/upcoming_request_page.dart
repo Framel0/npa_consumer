@@ -106,7 +106,7 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
                   return Divider(
                     height: 2,
                     thickness: 2,
-                    color: colorAccentYellow,
+                    color: colorSecondaryOrange,
                   );
                 },
               )

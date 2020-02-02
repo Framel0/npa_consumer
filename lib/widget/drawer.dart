@@ -102,18 +102,19 @@ class _AppDrawerState extends State<AppDrawer> {
       @required String phoneNumber}) {
     return UserAccountsDrawerHeader(
       margin: EdgeInsets.zero,
-      decoration: BoxDecoration(color: colorPrimary),
+      decoration: BoxDecoration(color: colorScaffoldBackground),
       accountName: InkWell(
         onTap: onTap,
         child: Text(
           "$firstName $lastName",
-          style: TextStyle(color: colorAccentYellow),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: colorSecondaryOrange),
         ),
       ),
       accountEmail: Text(
         phoneNumber,
         style: TextStyle(
-          color: Colors.white,
+          color: colorPrimary,
         ),
       ),
     );
