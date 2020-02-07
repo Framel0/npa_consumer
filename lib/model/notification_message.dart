@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:meta/meta.dart';
-import 'package:npa_user/model/models.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
