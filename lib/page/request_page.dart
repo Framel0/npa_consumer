@@ -26,7 +26,7 @@ class _RequestPageState extends State<RequestPage> {
   List<DeliveryMethod> _deliveryMethods;
   List<ConsumerProduct> _consumerProducts;
 
-  List<ConsumerProduct> _selecteConsumerProducts = [];
+  List<ConsumerProduct> _selectedConsumerProducts = [];
 
   @override
   void initState() {
@@ -71,83 +71,22 @@ class _RequestPageState extends State<RequestPage> {
           _consumerProducts = state.consumerProducts;
           _paymentMethods = state.paymentMethods;
           _deliveryMethods = state.deliveryMethods;
-          return SafeArea(
-            child: Container(
-              child: ListView(
-                padding: EdgeInsets.only(top: 15, bottom: 15),
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      "Refill Type",
-                      style: headerTextStyle,
-                    ),
-                  ),
-                  ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _consumerProducts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _buildField(_consumerProducts[index]);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Divider(
-                        thickness: 2,
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: RaisedButton(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
-                      onPressed: () => {
-                        if (_selecteConsumerProducts.isNotEmpty)
-                          {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CheackoutPage(
-                                        products: _selecteConsumerProducts,
-                                        paymentMethods: _paymentMethods,
-                                        deliveryMethods: _deliveryMethods,
-                                      )),
-                            )
-                          }
-                        else
-                          {
-                            FlushbarHelper.createInformation(
-                                message:
-                                    "Please Select Refill Type and Quantity")
-                              ..show(context)
-                          }
-                      },
-                      child: Text(
-                        "Proceed To Payment",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return buildContainer(context);
         }
         if (state is RequestRefillApiError) {
           return Center(
-            child: Text("Something went wrong"),
+            child: Column(
+              children: <Widget>[
+                Text("Something went wrong"),
+                IconButton(
+                  icon: Icon(
+                    Icons.replay,
+                    color: colorSecondaryOrange,
+                  ),
+                  onPressed: getRequests,
+                )
+              ],
+            ),
           );
         }
       }),
@@ -155,22 +94,97 @@ class _RequestPageState extends State<RequestPage> {
     );
   }
 
+  Container buildContainer(BuildContext context) {
+    return _consumerProducts.isEmpty
+        ? Center(child: Text("No Products Available"))
+        : Container(
+            child: ListView(
+              padding: EdgeInsets.only(top: 15, bottom: 15),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    "Refill Type",
+                    style: headerTextStyle,
+                  ),
+                ),
+                ListView.separated(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _consumerProducts.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildField(_consumerProducts[index]);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider(
+                      thickness: 2,
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.0,
+                    ),
+                    onPressed: () => {
+                      if (_selectedConsumerProducts.isNotEmpty)
+                        {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CheackoutPage(
+                                      products: _selectedConsumerProducts,
+                                      paymentMethods: _paymentMethods,
+                                      deliveryMethods: _deliveryMethods,
+                                    )),
+                          )
+                        }
+                      else
+                        {
+                          FlushbarHelper.createInformation(
+                              message: "Please Select Refill Type and Quantity")
+                            ..show(context)
+                        }
+                    },
+                    child: Text(
+                      "Proceed To Payment",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
   _onConsumerProductSelected(bool selected, ConsumerProduct consumerProduct) {
     if (selected == true) {
       setState(() {
-        _selecteConsumerProducts.add(consumerProduct);
-        final item = _selecteConsumerProducts
+        _selectedConsumerProducts.add(consumerProduct);
+        final item = _selectedConsumerProducts
             .firstWhere((c) => c.id == consumerProduct.id);
-        item.quantity = 1;
-        print(_selecteConsumerProducts);
+        item.selectedQuantity = 1;
+        print(_selectedConsumerProducts);
       });
     } else {
       setState(() {
-        final item = _selecteConsumerProducts
+        final item = _selectedConsumerProducts
             .firstWhere((c) => c.id == consumerProduct.id);
-        item.quantity = 0;
-        _selecteConsumerProducts.remove(consumerProduct);
-        print(_selecteConsumerProducts);
+        item.selectedQuantity = 0;
+        _selectedConsumerProducts.remove(consumerProduct);
+        print(_selectedConsumerProducts);
       });
     }
   }
@@ -192,7 +206,7 @@ class _RequestPageState extends State<RequestPage> {
     return Row(
       children: <Widget>[
         Checkbox(
-          value: _selecteConsumerProducts.contains(consumerProduct),
+          value: _selectedConsumerProducts.contains(consumerProduct),
           onChanged: (bool selected) {
             _onConsumerProductSelected(selected, consumerProduct);
           },
@@ -218,14 +232,14 @@ class _RequestPageState extends State<RequestPage> {
               style: TextStyle(fontSize: 35, color: colorSecondaryOrange),
             ),
             onPressed: () {
-              if (_selecteConsumerProducts.isNotEmpty) {
-                final item = _selecteConsumerProducts
+              if (_selectedConsumerProducts.isNotEmpty) {
+                final item = _selectedConsumerProducts
                     .firstWhere((c) => c.id == consumerProduct.id);
 
-                if (_selecteConsumerProducts.contains(item)) {
-                  if (item.quantity != 1) {
+                if (_selectedConsumerProducts.contains(item)) {
+                  if (item.selectedQuantity != 1) {
                     setState(() {
-                      item.quantity -= 1;
+                      item.selectedQuantity -= 1;
                     });
                   }
                 }
@@ -236,7 +250,7 @@ class _RequestPageState extends State<RequestPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            "${consumerProduct.quantity}",
+            "${consumerProduct.selectedQuantity}",
             style: quantityTextStyle,
           ),
         ),
@@ -249,13 +263,15 @@ class _RequestPageState extends State<RequestPage> {
             child: Text("+",
                 style: TextStyle(fontSize: 30, color: colorSecondaryOrange)),
             onPressed: () {
-              if (_selecteConsumerProducts.isNotEmpty) {
-                final item = _selecteConsumerProducts
+              if (_selectedConsumerProducts.isNotEmpty) {
+                final item = _selectedConsumerProducts
                     .firstWhere((c) => c.id == consumerProduct.id);
-                if (_selecteConsumerProducts.contains(item)) {
-                  setState(() {
-                    item.quantity += 1;
-                  });
+                if (_selectedConsumerProducts.contains(item)) {
+                  if (item.selectedQuantity < item.quantity) {
+                    setState(() {
+                      item.selectedQuantity += 1;
+                    });
+                  }
                 }
               }
             },

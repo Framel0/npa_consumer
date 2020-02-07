@@ -22,3 +22,5 @@ export 'address_change_page.dart';
 export 'dealers_map_page.dart';
 export 'notification_page.dart';
 export 'request_tracking_map_page.dart';
+export 'add_new_cylinder_page.dart';
+export 'add_new_cylinder_summary_page.dart';

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+//import 'package:firebase_analytics/firebase_analytics.dart';
+//import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +39,7 @@ void main() {
       refillRequestHistoryApiClient:
           RefillRequestHistoryApiClient(httpClient: http.Client()));
 
-  final productRepository = ConsumerProductRepository(
+  final consumerProductRepository = ConsumerProductRepository(
       consumerProductApiClient:
           ConsumerProductApiClient(httpClient: http.Client()));
 
@@ -73,6 +73,11 @@ void main() {
 
   final regionRepository = RegionRepository(
       regionApiClient: RegionApiClient(
+    httpClient: http.Client(),
+  ));
+
+  final productRepository = ProductRepository(
+      productApiClient: ProductApiClient(
     httpClient: http.Client(),
   ));
 
@@ -121,7 +126,7 @@ void main() {
         builder: (context) {
           return RefillRequestBloc(
               refillRequestRepository: refillRequestRepository,
-              consumerProductRepository: productRepository,
+              consumerProductRepository: consumerProductRepository,
               paymentMethodRepository: paymentMethodRepository,
               deliveryMethodRepository: deliveryMethodRepository);
         },
@@ -135,6 +140,17 @@ void main() {
       BlocProvider<FirebaseBloc>(
         builder: (context) {
           return FirebaseBloc(firebaseRepository: firebaseRepository);
+        },
+      ),
+      BlocProvider<ProductBloc>(
+        builder: (context) {
+          return ProductBloc(productRepository: productRepository);
+        },
+      ),
+      BlocProvider<ConsumerProductBloc>(
+        builder: (context) {
+          return ConsumerProductBloc(
+              consumerProductRepository: consumerProductRepository);
         },
       ),
     ],
@@ -151,14 +167,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAnalytics analytics = FirebaseAnalytics();
+//    FirebaseAnalytics analytics = FirebaseAnalytics();
     return MaterialApp(
       title: 'LCRM Consumer',
       theme: _buildTheme(ctx: context),
       onGenerateRoute: RouteGenerator.generateRoute,
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
+//      navigatorObservers: [
+//        FirebaseAnalyticsObserver(analytics: analytics),
+//      ],
       home: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is AuthenticationAuthenticated) {

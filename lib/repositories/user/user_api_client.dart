@@ -13,11 +13,15 @@ class UserApiClient {
   Future<User> login({
     @required String phoneNumber,
     @required String password,
+    @required String firebaseToken,
   }) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    final loginUrl = "$baseUrl/api/ConsumerApi/Authenticate";
-    final body =
-        jsonEncode({"phoneNumber": "$phoneNumber", "password": "$password"});
+    final loginUrl = "$baseUrl/api/Consumer/Authenticate";
+    final body = jsonEncode({
+      "phoneNumber": "$phoneNumber",
+      "password": "$password",
+      "firebaseToken": "$firebaseToken",
+    });
 
     final loginResponse =
         await this.httpClient.post(loginUrl, headers: headers, body: body);
@@ -27,8 +31,7 @@ class UserApiClient {
       throw Exception("Login failed, Please check Phone number or Password");
     }
 
-    final responseJson = jsonDecode(loginResponse.body);
-    var userJson = responseJson["model"];
+    final userJson = jsonDecode(loginResponse.body);
     var user = User.fromJson(userJson);
     return user;
   }
@@ -37,7 +40,7 @@ class UserApiClient {
     @required int userId,
   }) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    final loginUrl = "$baseUrl/api/ConsumerApi/Consumer/$userId";
+    final loginUrl = "$baseUrl/api/Consumer/Consumer/$userId";
 
     final loginResponse = await this.httpClient.get(
           loginUrl,
@@ -48,10 +51,31 @@ class UserApiClient {
       throw Exception("Login failed, Please check Phone number or Password");
     }
 
-    final responseJson = jsonDecode(loginResponse.body);
-    var userJson = responseJson["model"];
+    final userJson = jsonDecode(loginResponse.body);
     var user = User.fromJson(userJson);
     return user;
+  }
+
+  Future updateFirebaseToken({
+    @required int userId,
+    @required String firebaseToken,
+  }) async {
+    final url = "$baseUrl/api/Consumer/UpdateFirebaseToken/$userId";
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      "firebaseToken": "$firebaseToken",
+    });
+
+    final response = await this.httpClient.put(
+          url,
+          headers: headers,
+          body: body,
+        );
+
+    if (response.statusCode != 200) {
+      print(response.statusCode);
+      throw Exception("Login failed, Please check Phone number or Password");
+    }
   }
 
   Future<void> register({
@@ -59,7 +83,6 @@ class UserApiClient {
     @required String lastName,
     @required int dealerId,
     @required String phoneNumber,
-    @required String consumerId,
     @required String password,
     @required String houseNumber,
     @required String streetName,
@@ -68,6 +91,7 @@ class UserApiClient {
     @required int districtId,
     @required int depositeId,
     @required int productId,
+    @required int registrationType,
     @required double latitude,
     @required double longitude,
     @required String firebaseToken,
@@ -78,7 +102,6 @@ class UserApiClient {
       "lastName": "$lastName",
       "dealerId": dealerId,
       "phoneNumber": "$phoneNumber",
-      "consumerId": "$consumerId",
       "password": "$password",
       "houseNumber": "$houseNumber",
       "streetName": "$streetName",
@@ -88,16 +111,25 @@ class UserApiClient {
       "productId": productId,
       "ghanaPostGpsaddress": "$ghanaPostGpsaddress",
       "firebaseToken": "$firebaseToken",
+      "registrationType": "$registrationType",
       // "latitude": latitude,
       // "longitude": longitude,
     });
-    final registernUrl = "$baseUrl/api/ConsumerApi/Register";
+    final registernUrl = "$baseUrl/api/Consumer/Register";
     final registerResponse =
         await this.httpClient.post(registernUrl, headers: headers, body: body);
-    if (registerResponse.statusCode != 200) {
-      throw Exception("Register Failed");
+    if (registerResponse.statusCode == 200) {
+      print("debeg: user registration successful ");
+    } else if (registerResponse.statusCode == 400) {
+      var response = jsonDecode(registerResponse.body);
+      var message = response["message"];
+      print(
+          "debeg: user registration error code:${registerResponse.statusCode}");
+      throw Exception(message);
+    } else if (registerResponse.statusCode == 500) {
+      print(
+          "debeg: user registration error code:${registerResponse.statusCode}");
+      throw Exception("Services down, Please Try Agan Later");
     }
-    final responseJson = jsonDecode(registerResponse.body);
-    var user = responseJson["model"];
   }
 }

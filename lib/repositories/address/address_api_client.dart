@@ -12,7 +12,7 @@ class AddressApiClient {
 
   Future<List<Address>> fetchAddresses({@required int id}) async {
     final addresssUrl =
-        "$baseUrl/api/ConsumerAddresseApi/ConsumerAddressesByConsumer/$id";
+        "$baseUrl/api/ConsumerAddress/ConsumerAddressesByConsumer/$id";
     final addresssResponse = await this.httpClient.get(addresssUrl);
 
     if (addresssResponse.statusCode != 200) {
@@ -20,8 +20,7 @@ class AddressApiClient {
       throw Exception('error getting addresss');
     }
 
-    final reponse = jsonDecode(addresssResponse.body);
-    var addresss = reponse["model"];
+    final addresss = jsonDecode(addresssResponse.body);
     List<Address> addressList = [];
     for (var d in addresss) {
       addressList.add(Address.fromJson(d));
@@ -37,6 +36,7 @@ class AddressApiClient {
       @required String residentialAddress,
       @required int districtId,
       @required String ghanaPostGpsaddress}) async {
+    final addressUrl = "$baseUrl/api/ConsumerAddress/Create";
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       "consumerId": consumerId,
@@ -46,7 +46,7 @@ class AddressApiClient {
       "districtId": districtId,
       "ghanaPostGpsaddress": ghanaPostGpsaddress
     });
-    final addressUrl = "$baseUrl/api/ConsumerAddresseApi/Create";
+
     final addresssResponse =
         await this.httpClient.post(addressUrl, headers: headers, body: body);
 
@@ -54,7 +54,5 @@ class AddressApiClient {
       print(addresssResponse.statusCode);
       throw Exception('error getting addresss');
     }
-
-    final reponse = jsonDecode(addresssResponse.body);
   }
 }

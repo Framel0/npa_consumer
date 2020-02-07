@@ -6,9 +6,9 @@ abstract class DealerEvent extends Equatable {
 }
 
 class FetchDealers extends DealerEvent {
-  final int id;
+  final int lpgmcId;
 
-  FetchDealers({@required this.id}) : super([id]);
+  FetchDealers({@required this.lpgmcId}) : super([lpgmcId]);
   @override
   String toString() {
     return "FetchDealers";

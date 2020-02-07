@@ -11,7 +11,7 @@ class DistrictApiClient {
   DistrictApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<District>> fetchDistricts() async {
-    final districtsUrl = "$baseUrl/api/DistrictApi/Districts";
+    final districtsUrl = "$baseUrl/api/District/Districts";
     final districtsResponse = await this.httpClient.get(districtsUrl);
 
     if (districtsResponse.statusCode != 200) {
@@ -19,10 +19,9 @@ class DistrictApiClient {
       throw Exception('error getting districts');
     }
 
-    final reponse = jsonDecode(districtsResponse.body);
-    var districts = reponse["model"];
-    List<District> districtList = [];
+    final districts = jsonDecode(districtsResponse.body);
 
+    List<District> districtList = [];
     for (var d in districts) {
       districtList.add(District.fromJson(d));
     }

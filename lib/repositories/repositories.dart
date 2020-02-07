@@ -1,5 +1,4 @@
-export 'user_api_client.dart';
-export 'user_repository.dart';
+export './user/user.dart';
 export './cylinder/cylinder.dart';
 export './deposite/deposite.dart';
 export './dealer/dealer.dart';

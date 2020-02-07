@@ -11,7 +11,7 @@ class LpgmcApiClient {
   LpgmcApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Lpgmc>> fetchLpgmcs() async {
-    final lpgmcsUrl = "$baseUrl/api/LpgmcApi/Lpgmcs";
+    final lpgmcsUrl = "$baseUrl/api/Lpgmc/Lpgmcs";
     final lpgmcsResponse = await this.httpClient.get(lpgmcsUrl);
 
     if (lpgmcsResponse.statusCode != 200) {
@@ -19,8 +19,8 @@ class LpgmcApiClient {
       throw Exception('error getting lpgmcs');
     }
 
-    final reponse = jsonDecode(lpgmcsResponse.body);
-    var lpgmcs = reponse["model"];
+    final lpgmcs = jsonDecode(lpgmcsResponse.body);
+
     List<Lpgmc> lpgmcList = [];
     for (var l in lpgmcs) {
       lpgmcList.add(Lpgmc.fromJson(l));

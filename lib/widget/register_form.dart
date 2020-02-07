@@ -46,57 +46,51 @@ class _RegisterFormState extends State<RegisterForm> {
   final _dealerController = TextEditingController();
   final _regionController = TextEditingController();
 
+  bool _showPassword = true;
+
   Dealer _selectedDealer;
 
   List _regions = [];
   Region _selectedRegion;
 
+  List _districts = [];
   District _selectedDistrict;
 
+  List _lpgmcs = [];
   Lpgmc _selectedLpgmc;
 
+  List _products = [];
   Product _selectedProduct;
 
+  List _deposites = [];
   Deposite _selectedDeposite;
 
   String firebaseToken = "";
 
   @override
   void initState() {
-    _firebaseMessaging.getToken().then((_key) {
-      print(_key);
-      firebaseToken = _key;
-    });
-
     super.initState();
+
+    getFirebaseToken();
+
     BlocProvider.of<RegisterBloc>(context).dispatch(FetchAll());
   }
 
-  @override
-  void dispose() {
-    _dateController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _houseNumberController.dispose();
-    _streetNameController.dispose();
-    _residentialAddressController.dispose();
-    _gpsAddressController.dispose();
-    // _phoneNumberController.dispose();
-    _consumerIdController.dispose();
-    _passwordController.dispose();
-    _dealerController.dispose();
-    super.dispose();
+  getFirebaseToken() async {
+    await _firebaseMessaging.getToken().then((_key) {
+      print(_key);
+      firebaseToken = _key;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final registerBloc = BlocProvider.of<RegisterBloc>(context);
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state is RegisterFailuer) {
           FlushbarHelper.createError(
             title: "Error",
-            message: "Unable to register Please try again",
+            message: "${state.error}",
           )..show(context);
         }
 
@@ -122,11 +116,15 @@ class _RegisterFormState extends State<RegisterForm> {
 
         if (state is RegisterApiLoaded) {
           final districts = state.districts;
+          _districts = districts;
           final regions = state.regions;
           _regions = regions;
           final lpgmcs = state.lpgmcs;
+          _lpgmcs = lpgmcs;
           final deposites = state.deposites;
+          _deposites = deposites;
           final cylinderSizes = state.products;
+          _products = cylinderSizes;
           return Form(
             key: _formKey,
             child: Column(
@@ -155,7 +153,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildDistrictField(dropdownMenuItems: districts),
+                _buildDistrictField(dropdownMenuItems: _districts),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -175,7 +173,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildLpgmcField(dropdownMenuItems: lpgmcs),
+                _buildLpgmcField(dropdownMenuItems: _lpgmcs),
                 // SizedBox(
                 //   height: 20,
                 // ),
@@ -200,8 +198,9 @@ class _RegisterFormState extends State<RegisterForm> {
                       if (_selectedLpgmc != null) {
                         _navigatrToMap(context);
                       } else {
-                        _showSnackbar(
-                            mContext: context, text: "Please Select LPGMC");
+                        FlushbarHelper.createInformation(
+                            message: "Please Select LPGMC")
+                          ..show(context);
                       }
                     },
                   ),
@@ -209,11 +208,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildDepositeField(dropdownMenuItems: deposites),
+                _buildDepositeField(dropdownMenuItems: _deposites),
                 // SizedBox(
                 //   height: 20,
                 // ),
-                _buildProductField(dropdownMenuItems: cylinderSizes),
+                _buildProductField(dropdownMenuItems: _products),
                 SizedBox(
                   height: 30,
                 ),
@@ -234,19 +233,184 @@ class _RegisterFormState extends State<RegisterForm> {
                       _formKey.currentState.save();
 
                       if (!_formKey.currentState.validate()) {
+                        FlushbarHelper.createInformation(
+                            message: "Please enter values for required fields")
+                          ..show(context);
                         return;
                       } else if (_selectedDistrict == null) {
-                        _showSnackbar(
-                            mContext: context, text: "Please Select District");
+                        FlushbarHelper.createInformation(
+                            message: "Please Select District")
+                          ..show(context);
                         return;
                       } else if (_selectedDeposite == null) {
-                        _showSnackbar(
-                            mContext: context, text: "Please Select Deposite");
+                        FlushbarHelper.createInformation(
+                            message: "Please Select Deposit Type")
+                          ..show(context);
                         return;
                       } else if (_selectedProduct == null) {
-                        _showSnackbar(
-                            mContext: context,
-                            text: "Please Select Cylinder Size");
+                        FlushbarHelper.createInformation(
+                            message: "Please Select Product")
+                          ..show(context);
+                        return;
+                      } else {
+                        onRegisterButtonPressed();
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                FlatButton(
+                  child: Text(
+                    'Already have an account, Login',
+                    style: TextStyle(
+                      // color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        // replcet the curent layout unlike push that just creates new page
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext cotext) => LoginPage(
+                                  userRepository: widget.userRepository,
+                                )));
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (state is RegisterFailuer) {
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                _buildDateField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildFirstNameField(),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                _buildLastNameField(),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                _buildHouseNumberField(),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                _buildStreetNameField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildAreaField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildDistrictField(dropdownMenuItems: _districts),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildRegionsField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildGhanaPostGpsAddressField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildPhoneNumberField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildPasswordField(),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildLpgmcField(dropdownMenuItems: _lpgmcs),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildDealerField(),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        side: BorderSide(color: Colors.white)),
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    // color: Theme.of(context).buttonColor,
+                    textColor: Colors.white,
+                    child: Text(
+                      'Choose Dealer',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () {
+                      if (_selectedLpgmc != null) {
+                        _navigatrToMap(context);
+                      } else {
+                        FlushbarHelper.createInformation(
+                            message: "Please Select LPGMC")
+                          ..show(context);
+                      }
+                    },
+                  ),
+                ),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildDepositeField(dropdownMenuItems: _deposites),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                _buildProductField(dropdownMenuItems: _products),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        side: BorderSide(color: Colors.white)),
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    // color: Theme.of(context).buttonColor,
+                    textColor: Colors.white,
+                    child: Text(
+                      'Register',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () {
+                      _formKey.currentState.save();
+
+                      if (!_formKey.currentState.validate()) {
+                        FlushbarHelper.createInformation(
+                            message: "Please enter values for required fields")
+                          ..show(context);
+                        return;
+                      } else if (_selectedDistrict == null) {
+                        FlushbarHelper.createInformation(
+                            message: "Please Select District")
+                          ..show(context);
+                        return;
+                      } else if (_selectedDeposite == null) {
+                        FlushbarHelper.createInformation(
+                            message: "Please Select Deposit Type")
+                          ..show(context);
+                        return;
+                      } else if (_selectedProduct == null) {
+                        FlushbarHelper.createInformation(
+                            message: "Please Select Product")
+                          ..show(context);
                         return;
                       } else {
                         onRegisterButtonPressed();
@@ -295,6 +459,22 @@ class _RegisterFormState extends State<RegisterForm> {
     _dealerController.text = "";
   }
 
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _houseNumberController.dispose();
+    _streetNameController.dispose();
+    _residentialAddressController.dispose();
+    _gpsAddressController.dispose();
+    // _phoneNumberController.dispose();
+    _consumerIdController.dispose();
+    _passwordController.dispose();
+    _dealerController.dispose();
+    super.dispose();
+  }
+
   onRegisterButtonPressed() {
     BlocProvider.of<RegisterBloc>(context)
       ..dispatch(
@@ -304,7 +484,6 @@ class _RegisterFormState extends State<RegisterForm> {
           dealerId: _selectedDealer.id,
           phoneNumber: _phoneNumberController.text.trim(),
           password: _passwordController.text.trim(),
-          consumerId: getConsumerId(),
           houseNumber: _houseNumberController.text,
           streetName: _streetNameController.text,
           residentialAddress: _residentialAddressController.text,
@@ -312,33 +491,12 @@ class _RegisterFormState extends State<RegisterForm> {
           districtId: _selectedDistrict.id,
           depositeId: _selectedDeposite.id,
           productId: _selectedProduct.id,
+          registrationType: 1,
           firebaseToken: firebaseToken,
           // latitude: _residentialAddressController.text,
           // longitude: _residentialAddressController.text,
         ),
       );
-  }
-
-  getConsumerId() {
-    var phoneNumber = _phoneNumberController.text;
-
-    var newNumber = phoneNumber.substring(phoneNumber.length - 4);
-    var yer = now.year.toString().substring(now.year.toString().length - 3);
-
-    return "NPACR-${newNumber + yer}";
-  }
-
-  _showSnackbar({@required BuildContext mContext, @required String text}) {
-    final snackBar = SnackBar(
-      content: Text(text,
-          style: TextStyle(
-            color: Colors.white,
-          )),
-      backgroundColor: Colors.redAccent,
-      elevation: 10,
-    );
-
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   _navigatrToMap(BuildContext context) async {
@@ -669,6 +827,12 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
+  _toggleVisibility() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
   Widget _buildPasswordField() {
     return TextFormField(
       obscureText: true, // used to set the initial value
@@ -678,7 +842,16 @@ class _RegisterFormState extends State<RegisterForm> {
       },
       style: formTextStyle,
       keyboardType: TextInputType.text,
-      decoration: inputDecoration('Password'),
+      decoration: InputDecoration(
+          labelStyle: TextStyle(color: colorPrimary),
+          errorStyle: TextStyle(
+            color: Colors.red,
+          ),
+          labelText: "Password",
+          suffixIcon: IconButton(
+            icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+            onPressed: _toggleVisibility,
+          )),
       controller: _passwordController,
     );
   }

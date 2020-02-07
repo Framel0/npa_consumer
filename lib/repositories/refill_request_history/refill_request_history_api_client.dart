@@ -15,7 +15,7 @@ class RefillRequestHistoryApiClient {
       {@required int userId}) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final refillRequestHistorysUrl =
-        "$baseUrl/api/ConsumerRefillRequestApi/ConsumerRefillRequestsByConsumerHistory/$userId";
+        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumerHistory/$userId";
 
     final refillRequestHistorysResponse =
         await this.httpClient.get(refillRequestHistorysUrl, headers: headers);
@@ -25,8 +25,7 @@ class RefillRequestHistoryApiClient {
       throw Exception('error getting refillRequestHistorys');
     }
 
-    final reponse = jsonDecode(refillRequestHistorysResponse.body);
-    var requestHistory = reponse["model"];
+    final requestHistory = jsonDecode(refillRequestHistorysResponse.body);
     List<RequestHistory> requestHistoryList = [];
     for (var d in requestHistory) {
       requestHistoryList.add(RequestHistory.fromJson(d));

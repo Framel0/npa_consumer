@@ -10,10 +10,15 @@ class ConsumerProductRepository {
 
   ConsumerProductRepository({@required this.consumerProductApiClient});
 
-  Future<List<ConsumerProduct>> getConsumerProducts(
-      {@required int userId}) async {
+  Future getConsumerProducts({@required int userId}) async {
     _consumerProducts =
         await consumerProductApiClient.fetchConsumerProducts(userId: userId);
+  }
+
+  Future addNewConsumerProducts(
+      {@required AddNewCylinderRequest cylinderRequest}) async {
+    await consumerProductApiClient.addNewConsumerProducts(
+        cylinderRequest: cylinderRequest);
   }
 
   List<ConsumerProduct> get consumerConsumerProducts {

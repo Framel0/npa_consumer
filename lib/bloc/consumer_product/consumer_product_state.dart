@@ -41,3 +41,31 @@ class ConsumerProductError extends ConsumerProductState {
     return "ConsumerProductError";
   }
 }
+
+class AddNewConsumerProductLoading extends ConsumerProductState {
+  @override
+  List<Object> get props => [];
+  @override
+  String toString() {
+    return "AddNewConsumerProductLoading";
+  }
+}
+
+class AddNewConsumerProductSuccess extends ConsumerProductState {
+  @override
+  String toString() {
+    return "AddNewConsumerProductSuccess";
+  }
+}
+
+class AddNewConsumerProductError extends ConsumerProductState {
+  final String error;
+
+  AddNewConsumerProductError({@required this.error});
+  @override
+  List<Object> get props => [error];
+  @override
+  String toString() {
+    return "AddNewConsumerProductError";
+  }
+}

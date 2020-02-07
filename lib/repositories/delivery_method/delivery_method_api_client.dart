@@ -12,7 +12,7 @@ class DeliveryMethodApiClient {
       : assert(httpClient != null);
 
   Future<List<DeliveryMethod>> fetchDeliveryMethods() async {
-    final deliveryMethodsUrl = "$baseUrl/api/DeliveryMethodApi/DeliveryMethods";
+    final deliveryMethodsUrl = "$baseUrl/api/DeliveryMethod/DeliveryMethods";
     final deliveryMethodsResponse =
         await this.httpClient.get(deliveryMethodsUrl);
 
@@ -21,8 +21,8 @@ class DeliveryMethodApiClient {
       throw Exception('error getting deliveryMethods');
     }
 
-    final reponse = jsonDecode(deliveryMethodsResponse.body);
-    var deliveryMethods = reponse["model"];
+    final deliveryMethods = jsonDecode(deliveryMethodsResponse.body);
+
     List<DeliveryMethod> deliveryMethodList = [];
 
     for (var d in deliveryMethods) {

@@ -41,8 +41,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 productApiClient: ProductApiClient(httpClient: http.Client())),
           );
         },
-        child: new SingleChildScrollView(
-            child: new Container(
+        child: SingleChildScrollView(
+            child: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
               // color: Colors.indigoAccent,

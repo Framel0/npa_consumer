@@ -19,3 +19,5 @@ const String addressChangeRoute = "/addressChange";
 const String dealersMapRoute = "/dealersMap";
 const String notificationRoute = "/notification";
 const String requestTrackingMapRoute = "/requestTrackingMap";
+const String addNewCylinderRoute = "/addNewCylinder";
+const String addNewCylinderSummaryRoute = "/addNewCylinderSummary";

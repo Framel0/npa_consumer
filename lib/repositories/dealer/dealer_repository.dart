@@ -10,7 +10,7 @@ class DealerRepository {
     return await dealerApiClient.fetchDealers();
   }
 
-  Future<List<Dealer>> getDealersByLpgmc(int id) async {
-    return await dealerApiClient.fetchDealersByLpgmc(id);
+  Future<List<Dealer>> getDealersByLpgmc({@required int lpgmcId}) async {
+    return await dealerApiClient.fetchDealersByLpgmc(lpgmcId: lpgmcId);
   }
 }

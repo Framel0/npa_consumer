@@ -23,7 +23,7 @@ InputDecoration inputDecoration(String label, {String hint}) {
     // hintText: 'Enter your product title',
     labelStyle: TextStyle(color: colorPrimary),
     errorStyle: TextStyle(
-      color: Colors.black,
+      color: Colors.red,
     ),
     labelText: label,
     hintText: hint,

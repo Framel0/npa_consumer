@@ -85,6 +85,12 @@ class RouteGenerator {
       case requestTrackingMapRoute:
         return MaterialPageRoute(builder: (_) => RequestTrackingMapPage());
         break;
+      case addNewCylinderRoute:
+        return MaterialPageRoute(builder: (_) => AddNewCylinderPage());
+        break;
+      case addNewCylinderSummaryRoute:
+        return MaterialPageRoute(builder: (_) => AddNewCylinderSummaryPage());
+        break;
       default:
     }
   }

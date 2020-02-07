@@ -25,9 +25,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         final user = await userRepository.authenticate(
-          phoneNumber: event.phoneNumber,
-          password: event.password,
-        );
+            phoneNumber: event.phoneNumber,
+            password: event.password,
+            firebaseToken: event.firebaseToken);
 
         // authenticationBloc.dispatch(LoggedIn(token: token));
 

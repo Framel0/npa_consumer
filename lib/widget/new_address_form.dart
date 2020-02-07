@@ -31,15 +31,6 @@ class _NewAddressFormState extends State<NewAddressForm> {
   User user;
   int userId;
 
-  @override
-  void dispose() {
-    _houseNumberController.dispose();
-    _streetNameController.dispose();
-    _residentialAddressController.dispose();
-    _regionController.dispose();
-    _gpsAddressController.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -127,6 +118,16 @@ class _NewAddressFormState extends State<NewAddressForm> {
         }
       }),
     );
+  }
+
+  @override
+  void dispose() {
+    _houseNumberController.dispose();
+    _streetNameController.dispose();
+    _residentialAddressController.dispose();
+    _regionController.dispose();
+    _gpsAddressController.dispose();
+    super.dispose();
   }
 
   Container buildButton(BuildContext context) {

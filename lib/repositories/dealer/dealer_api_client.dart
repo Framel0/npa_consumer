@@ -11,7 +11,7 @@ class DealerApiClient {
   DealerApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Dealer>> fetchDealers() async {
-    final dealersUrl = "$baseUrl/api/DealerApi/Dealers";
+    final dealersUrl = "$baseUrl/api/Dealer/Dealers";
     final dealersResponse = await this.httpClient.get(dealersUrl);
 
     if (dealersResponse.statusCode != 200) {
@@ -19,8 +19,7 @@ class DealerApiClient {
       throw Exception('error getting dealers');
     }
 
-    final reponse = jsonDecode(dealersResponse.body);
-    var dealers = reponse["model"];
+    final dealers = jsonDecode(dealersResponse.body);
     List<Dealer> dealerList = [];
     for (var d in dealers) {
       dealerList.add(Dealer.fromJson(d));
@@ -29,8 +28,8 @@ class DealerApiClient {
     return dealerList;
   }
 
-  Future<List<Dealer>> fetchDealersByLpgmc(int id) async {
-    final dealersUrl = "$baseUrl/api/DealerApi/DealersByLpgmc/$id";
+  Future<List<Dealer>> fetchDealersByLpgmc({@required int lpgmcId}) async {
+    final dealersUrl = "$baseUrl/api/Dealer/DealersByLpgmc/$lpgmcId";
     final dealersResponse = await this.httpClient.get(dealersUrl);
 
     if (dealersResponse.statusCode != 200) {
@@ -38,8 +37,7 @@ class DealerApiClient {
       throw Exception('error getting dealers');
     }
 
-    final reponse = jsonDecode(dealersResponse.body);
-    var dealers = reponse["model"];
+    final dealers = jsonDecode(dealersResponse.body);
     List<Dealer> dealerList = [];
     for (var d in dealers) {
       dealerList.add(Dealer.fromJson(d));

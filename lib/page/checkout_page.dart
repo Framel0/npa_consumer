@@ -66,7 +66,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
         firstName = _user.firstName ?? "";
         lastName = _user.lastName ?? "";
         phoneNumber = _user.phoneNumber ?? "";
-        consumerId = _user.consumerId ?? "";
+        consumerId = _user.consumerCode ?? "";
       });
     });
   }
@@ -284,7 +284,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
 
   _getTotal() {
     for (var product in widget.products) {
-      _subTotal += (product.price * product.quantity);
+      _subTotal += (product.price * product.selectedQuantity);
     }
   }
 
@@ -293,7 +293,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
     for (ConsumerProduct product in widget.products) {
       widgets.add(
         Text(
-          "${product.name} x ${product.quantity}",
+          "${product.name} x ${product.selectedQuantity}",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,

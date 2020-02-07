@@ -26,16 +26,17 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
   @override
   Widget build(BuildContext context) {
     final requestId = widget.upcomingRequest.id ?? 0;
+    final consumerCode = widget.upcomingRequest.consumerCode ?? "";
     final consumerFirstName = widget.upcomingRequest.firstName ?? "";
     final consumerLastName = widget.upcomingRequest.lastName ?? "";
     final houseNumber = widget.upcomingRequest.houseNumber ?? "";
     final streetName = widget.upcomingRequest.streetName ?? "";
     final residentialAddress = widget.upcomingRequest.residentialAddress ?? "";
     final deliveryMethodId = widget.upcomingRequest.deliveryMethodId ?? 0;
-    final deliveryMethodName = widget.upcomingRequest.deliveryMethod ?? "";
+    final deliveryMethod = widget.upcomingRequest.deliveryMethod ?? "";
     final paymentMethodId = widget.upcomingRequest.paymentMethodId ?? 0;
-    final paymentMethodName = widget.upcomingRequest.paymentMethod ?? "";
-    final dispatchId = widget.upcomingRequest.dispatchId ?? "";
+    final paymentMethod = widget.upcomingRequest.paymentMethod ?? "";
+    final dispatchCode = widget.upcomingRequest.dispatchCode ?? "";
     final dispatchFirstName = widget.upcomingRequest.dispatchFirstName ?? "";
     final dispatchLastName = widget.upcomingRequest.dispatchLastName ?? "";
     final dispatchPhoneNumber =
@@ -67,39 +68,43 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               children: <Widget>[
+                _buildHeading(
+                  text: "Consumer",
+                ),
+                _buildItem(title: "Consumer Code", subtitle: "$consumerCode"),
+                _space10(),
                 _buildItem(
                     title: "Name",
                     subtitle: "$consumerFirstName $consumerLastName"),
-                _space(),
+                _space10(),
                 _buildItem(
                     title: "Address",
                     subtitle: "$houseNumber, $streetName, $residentialAddress"),
-                _space(),
+                _space10(),
                 _buildItem(
-                    title: "Delivery Method", subtitle: "$deliveryMethodName"),
-                _space(),
-                _buildItem(
-                    title: "Payment Method", subtitle: "$paymentMethodName"),
-                _space(),
-                Text('Refill Type: ',
+                    title: "Delivery Method", subtitle: "$deliveryMethod"),
+                _space10(),
+                _buildItem(title: "Payment Method", subtitle: "$paymentMethod"),
+                _space10(),
+                Text('Refill Type',
                     style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: colorSecondaryOrange)),
+                        fontWeight: FontWeight.w800,
+                        color: colorPrimary)),
                 _buildProducts(
                     products: widget.upcomingRequest.products,
                     mContext: context),
-                _space(),
+                _space15(),
                 _buildBottom(
                     context: context,
                     requestId: requestId,
                     deliveryMethodId: deliveryMethodId,
                     statusId: statusId,
-                    dispatchId: dispatchId,
+                    dispatchCode: dispatchCode,
                     dispatchFirstName: dispatchFirstName,
                     dispatchLastName: dispatchLastName,
                     dispatchPhoneNumber: dispatchPhoneNumber),
-                _space(),
+                _space10(),
                 Container(
                   child: state is ConfirmDeliveryLoading
                       ? LoadingIndicator()
@@ -113,7 +118,13 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
     );
   }
 
-  Widget _space() {
+  Widget _space10() {
+    return SizedBox(
+      height: 10,
+    );
+  }
+
+  Widget _space15() {
     return SizedBox(
       height: 15,
     );
@@ -168,7 +179,7 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
     @required int requestId,
     @required int deliveryMethodId,
     @required int statusId,
-    @required String dispatchId,
+    @required String dispatchCode,
     @required String dispatchFirstName,
     @required String dispatchLastName,
     @required String dispatchPhoneNumber,
@@ -179,11 +190,18 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            _buildHeading(
+              text: "Dispatch",
+            ),
+            _space10(),
+            _buildItem(title: "Dispatch Code", subtitle: "$dispatchCode"),
+            _space10(),
             _buildItem(
-                title: "Dispatch to Deliver",
-                subtitle:
-                    "$dispatchId \n$dispatchFirstName $dispatchLastName \n$dispatchPhoneNumber"),
-            _space(),
+                title: "Name",
+                subtitle: "$dispatchFirstName $dispatchLastName"),
+            _space10(),
+            _buildItem(title: "Phone Number", subtitle: "$dispatchPhoneNumber"),
+            _space15(),
             _confirmDeliveryButton(requestId: requestId, mContext: context)
           ],
         ),
@@ -192,17 +210,33 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          _buildHeading(
+            text: "Dispatch",
+          ),
+          _space10(),
+          _buildItem(title: "Dispatch Code", subtitle: "$dispatchCode"),
+          _space10(),
           _buildItem(
-              title: "Dispatch to Deliver",
-              subtitle:
-                  "$dispatchId \n$dispatchFirstName $dispatchLastName \n$dispatchPhoneNumber"),
-          _space(),
+              title: "Name", subtitle: "$dispatchFirstName $dispatchLastName"),
+          _space10(),
+          _buildItem(title: "Phone Number", subtitle: "$dispatchPhoneNumber"),
+          _space15(),
           Text("Dispatch to Confirm Payment")
         ],
       );
     } else {
       return Container();
     }
+  }
+
+  Text _buildHeading({@required String text}) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          color: colorSecondaryOrange),
+    );
   }
 
   Widget _buildItem({@required String title, String subtitle}) {
@@ -212,15 +246,14 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         Text(
           title,
           style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: colorSecondaryOrange,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: colorPrimary,
           ),
         ),
         Text(subtitle,
             style: TextStyle(
               fontSize: 16,
-              color: colorPrimary,
             )),
       ],
     );

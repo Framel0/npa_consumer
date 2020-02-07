@@ -12,7 +12,7 @@ class PaymentMethodApiClient {
       : assert(httpClient != null);
 
   Future<List<PaymentMethod>> fetchPaymentMethods() async {
-    final paymentMethodsUrl = "$baseUrl/api/PaymentMethodApi/PaymentMethods";
+    final paymentMethodsUrl = "$baseUrl/api/PaymentMethod/PaymentMethods";
     final paymentMethodsResponse = await this.httpClient.get(paymentMethodsUrl);
 
     if (paymentMethodsResponse.statusCode != 200) {
@@ -20,10 +20,9 @@ class PaymentMethodApiClient {
       throw Exception('error getting paymentMethods');
     }
 
-    final reponse = jsonDecode(paymentMethodsResponse.body);
-    var paymentMethods = reponse["model"];
-    List<PaymentMethod> paymentMethodList = [];
+    final paymentMethods = jsonDecode(paymentMethodsResponse.body);
 
+    List<PaymentMethod> paymentMethodList = [];
     for (var d in paymentMethods) {
       paymentMethodList.add(PaymentMethod.fromJson(d));
     }

@@ -11,7 +11,7 @@ class ProductApiClient {
   ProductApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Product>> fetchProducts() async {
-    final productsUrl = "$baseUrl/api/ProductApi/Products";
+    final productsUrl = "$baseUrl/api/Product/Products";
     final productsResponse = await this.httpClient.get(productsUrl);
 
     if (productsResponse.statusCode != 200) {
@@ -19,9 +19,10 @@ class ProductApiClient {
       throw Exception('error getting products');
     }
 
-    final reponse = jsonDecode(productsResponse.body);
+    final products = jsonDecode(productsResponse.body);
+
     List<Product> productList = [];
-    for (var d in reponse) {
+    for (var d in products) {
       productList.add(Product.fromJson(d));
     }
 

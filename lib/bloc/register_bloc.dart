@@ -30,23 +30,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       yield RegisterLoading();
       try {
         await userRepository.register(
-          firstName: event.firstName,
-          lastName: event.lastName,
-          dealerId: event.dealerId,
-          phoneNumber: event.phoneNumber,
-          password: event.password,
-          consumerId: event.consumerId,
-          houseNumber: event.houseNumber,
-          streetName: event.streetName,
-          residentialAddress: event.residentialAddress,
-          districtId: event.districtId,
-          depositeId: event.depositeId,
-          productId: event.productId,
-          ghanaPostGpsaddress: event.ghanaPostGpsaddress,
-          latitude: event.latitude,
-          longitude: event.longitude,
-          firebaseToken: event.firebaseToken,
-        );
+            firstName: event.firstName,
+            lastName: event.lastName,
+            dealerId: event.dealerId,
+            phoneNumber: event.phoneNumber,
+            password: event.password,
+            houseNumber: event.houseNumber,
+            streetName: event.streetName,
+            residentialAddress: event.residentialAddress,
+            districtId: event.districtId,
+            depositeId: event.depositeId,
+            productId: event.productId,
+            ghanaPostGpsaddress: event.ghanaPostGpsaddress,
+            latitude: event.latitude,
+            longitude: event.longitude,
+            firebaseToken: event.firebaseToken,
+            registrationType: event.registrationType);
 
         yield RegisterSuccess();
       } catch (e) {

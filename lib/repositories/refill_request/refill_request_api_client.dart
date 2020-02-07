@@ -13,8 +13,8 @@ class RefillRequestApiClient {
 
   Future<void> fetchRefillRequests(
       {@required RefillRequest refillRequest}) async {
+    final refillRequestsUrl = "$baseUrl/api/ConsumerRefillRequest/Create";
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    final refillRequestsUrl = "$baseUrl/api/ConsumerRefillRequestApi/Create";
     final body = jsonEncode(refillRequest.toJson());
 
     final refillRequestsResponse = await this
@@ -25,17 +25,14 @@ class RefillRequestApiClient {
       print(refillRequestsResponse.statusCode);
       throw Exception('error getting refillRequests');
     }
-
-    final reponse = jsonDecode(refillRequestsResponse.body);
   }
 
   Future<void> confirmDelivery({
     @required int refillRequestId,
   }) async {
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-
     final String consumerRefillRequestsUrl =
-        "$baseUrl/api/ConsumerRefillRequestApi/ConfirmDelivery/$refillRequestId";
+        "$baseUrl/api/ConsumerRefillRequest/ConfirmDelivery/$refillRequestId";
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     final consumerRefillRequestsResponse = await this.httpClient.put(
           consumerRefillRequestsUrl,
@@ -44,14 +41,7 @@ class RefillRequestApiClient {
 
     if (consumerRefillRequestsResponse.statusCode != 200) {
       print(consumerRefillRequestsResponse.statusCode);
-
-      final reponse = jsonDecode(consumerRefillRequestsResponse.body);
-      var consumerRefillRequests = reponse["model"];
-
       throw Exception('error getting consumerRefillRequests');
     }
-
-    final reponse = jsonDecode(consumerRefillRequestsResponse.body);
-    var consumerRefillRequests = reponse["model"];
   }
 }

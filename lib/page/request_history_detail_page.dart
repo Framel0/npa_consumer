@@ -11,6 +11,7 @@ class RequestHistoryDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final requestId = requestHistory.id ?? 0;
+    final consumerCode = requestHistory.consumerCode ?? "";
     final consumerFirstName = requestHistory.firstName ?? "";
     final consumerLastName = requestHistory.lastName ?? "";
     final houseNumber = requestHistory.houseNumber ?? "";
@@ -20,7 +21,7 @@ class RequestHistoryDetailPage extends StatelessWidget {
     final deliveryMethodName = requestHistory.deliveryMethod ?? "";
     final paymentMethodId = requestHistory.paymentMethodId ?? 0;
     final paymentMethodName = requestHistory.paymentMethod ?? "";
-    final dispatchId = requestHistory.dispatchId ?? "";
+    final dispatchCode = requestHistory.dispatchCode ?? "";
     final dispatchFirstName = requestHistory.dispatchFirstName ?? "";
     final dispatchLastName = requestHistory.dispatchLastName ?? "";
     final dispatchPhoneNumber = requestHistory.dispatchPhoneNumber ?? "";
@@ -30,35 +31,52 @@ class RequestHistoryDetailPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         children: <Widget>[
+          _buildHeading(
+            text: "Consumer",
+          ),
+          _buildItem(title: "Consumer Code", subtitle: "$consumerCode"),
+          _space10(),
           _buildItem(
               title: "Name", subtitle: "$consumerFirstName $consumerLastName"),
-          _space(),
+          _space10(),
           _buildItem(
               title: "Address",
               subtitle: "$houseNumber, $streetName, $residentialAddress"),
-          _space(),
+          _space10(),
           _buildItem(title: "Delivery Method", subtitle: "$deliveryMethodName"),
-          _space(),
+          _space10(),
           _buildItem(title: "Payment Method", subtitle: "$paymentMethodName"),
-          _space(),
-          Text('Refill Type: ',
+          _space10(),
+          Text('Refill Type',
               style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                   color: colorPrimary)),
           _buildProducts(products: requestHistory.products, mContext: context),
-          _space(),
+          _space15(),
+          _buildHeading(
+            text: "Dispatch",
+          ),
+          _space10(),
+          _buildItem(title: "Dispatch Code", subtitle: "$dispatchCode"),
+          _space10(),
           _buildItem(
-              title: "Dispatch",
-              subtitle:
-                  "$dispatchId \n$dispatchFirstName $dispatchLastName \n$dispatchPhoneNumber"),
-          _space(),
+              title: "Name", subtitle: "$dispatchFirstName $dispatchLastName"),
+          _space10(),
+          _buildItem(title: "Phone Number", subtitle: "$dispatchPhoneNumber"),
+          _space10(),
         ],
       ),
     );
   }
 
-  Widget _space() {
+  Widget _space10() {
+    return SizedBox(
+      height: 10,
+    );
+  }
+
+  Widget _space15() {
     return SizedBox(
       height: 15,
     );
@@ -82,6 +100,16 @@ class RequestHistoryDetailPage extends StatelessWidget {
     );
   }
 
+  Text _buildHeading({@required String text}) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          color: colorSecondaryOrange),
+    );
+  }
+
   Widget _buildItem({@required String title, String subtitle}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +117,7 @@ class RequestHistoryDetailPage extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w500, color: colorPrimary),
+              fontSize: 18, fontWeight: FontWeight.w600, color: colorPrimary),
         ),
         Text(subtitle,
             style: TextStyle(

@@ -1,5 +1,6 @@
 class Dealer {
   int id;
+  String dealerCode;
   String firstName;
   String lastName;
   String phoneNumber;
@@ -9,6 +10,7 @@ class Dealer {
 
   Dealer(
       {this.id,
+      this.dealerCode,
       this.firstName,
       this.lastName,
       this.phoneNumber,
@@ -19,6 +21,7 @@ class Dealer {
   factory Dealer.fromJson(Map<String, dynamic> json) {
     return Dealer(
         id: json["id"],
+        dealerCode: json["dealerCode"],
         firstName: json["firstName"],
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],

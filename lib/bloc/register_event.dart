@@ -16,7 +16,6 @@ class RegisterButtonPressed extends RegisterEvent {
   final String lastName;
   final int dealerId;
   final String phoneNumber;
-  final String consumerId;
   final String password;
   final String houseNumber;
   final String streetName;
@@ -25,11 +24,13 @@ class RegisterButtonPressed extends RegisterEvent {
   final int districtId;
   final int depositeId;
   final int productId;
+  final int registrationType;
   final double latitude;
   final double longitude;
   final String firebaseToken;
 
   RegisterButtonPressed({
+    this.registrationType,
     this.depositeId,
     this.productId,
     this.houseNumber,
@@ -40,7 +41,6 @@ class RegisterButtonPressed extends RegisterEvent {
     this.lastName,
     this.phoneNumber,
     this.password,
-    this.consumerId,
     this.residentialAddress,
     this.latitude,
     this.longitude,
@@ -55,7 +55,6 @@ class RegisterButtonPressed extends RegisterEvent {
           lastName,
           phoneNumber,
           password,
-          consumerId,
           residentialAddress,
           latitude,
           longitude,

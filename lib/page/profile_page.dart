@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final String firstName = user.firstName ?? "";
     final String lastName = user.lastName ?? "";
     final String phoneNumber = user.phoneNumber ?? "";
-    final String consumerId = user.consumerId ?? "";
+    final String consumerId = user.consumerCode ?? "";
 
     return Scaffold(
       appBar: AppBar(

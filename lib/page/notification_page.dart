@@ -42,7 +42,7 @@ class _NotifiactionPageState extends State<NotifiactionPage> {
         ('${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}');
     var id = int.parse(date);
     setState(() {
-      DatabaseHelper.instance.insert(Message(
+      DatabaseHelper.instance.insert(NotificationMessage(
         id: id,
         title: title,
         body: body,
@@ -69,7 +69,7 @@ class _NotifiactionPageState extends State<NotifiactionPage> {
             }));
   }
 
-  Widget _buildMessageListItem(int position, Message message) {
+  Widget _buildMessageListItem(int position, NotificationMessage message) {
     return ListTile(
       title: Text(message.title),
       subtitle: Text(message.body),
@@ -86,7 +86,7 @@ class _NotifiactionPageState extends State<NotifiactionPage> {
     );
   }
 
-  Widget _buildMessageList(List<Message> messages) {
+  Widget _buildMessageList(List<NotificationMessage> messages) {
     return messages.isEmpty
         ? Center(
             child: Text("No Notification Available"),

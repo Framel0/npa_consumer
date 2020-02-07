@@ -25,13 +25,13 @@ Future<User> readUserData() async {
 
   var user = User(
     id: id,
-    consumerId: consumerId,
+    consumerCode: consumerId,
     dateOfRegistration: dateOfRegistration,
     firstName: firstName,
     lastName: lastName,
     phoneNumber: phoneNumber,
     dealerId: dealerId,
-    depositeId: depositeId,
+    depositId: depositeId,
     statusId: statusId,
   );
 
@@ -41,12 +41,12 @@ Future<User> readUserData() async {
 Future<void> saveUserData(User user) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setInt(idKey, user.id);
-  prefs.setString(consumerIdKey, user.consumerId);
+  prefs.setString(consumerIdKey, user.consumerCode);
   prefs.setString(dateOfRegistrationKey, user.dateOfRegistration);
   prefs.setString(firstNameKey, user.firstName);
   prefs.setString(lastNameKey, user.lastName);
   prefs.setString(phoneNumberKey, user.phoneNumber);
   prefs.setInt(dealerIdKey, user.dealerId);
-  prefs.setInt(depositeIdKey, user.depositeId);
+  prefs.setInt(depositeIdKey, user.depositId);
   prefs.setInt(statusIdKey, user.statusId);
 }

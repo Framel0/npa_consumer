@@ -11,19 +11,19 @@ final String columnId = '_id';
 final String columnTitle = 'title';
 final String columnBody = 'body';
 
-class Message {
+class NotificationMessage {
   final int id;
   final String title;
   final String body;
 
-  Message({
+  NotificationMessage({
     @required this.id,
     @required this.title,
     @required this.body,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) {
-    return Message(
+  factory NotificationMessage.fromJson(Map<String, dynamic> json) {
+    return NotificationMessage(
       id: json["id"],
       title: json["title"],
       body: json["body"],
@@ -31,8 +31,8 @@ class Message {
   }
 
   // convenience constructor to create a Word object
-  factory Message.fromMap(Map<String, dynamic> map) {
-    return Message(
+  factory NotificationMessage.fromMap(Map<String, dynamic> map) {
+    return NotificationMessage(
       id: map[columnId],
       title: map[columnTitle],
       body: map[columnBody],
@@ -90,34 +90,34 @@ class DatabaseHelper {
 
   // Database helper methods:
 
-  Future<int> insert(Message message) async {
+  Future<int> insert(NotificationMessage message) async {
     Database db = await database;
     int id = await db.insert(tableMessages, message.toMap());
     return id;
   }
 
-  Future<Message> queryMessage(int id) async {
+  Future<NotificationMessage> queryMessage(int id) async {
     Database db = await database;
     List<Map> maps = await db.query(tableMessages,
         columns: [columnId, columnTitle, columnBody],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {
-      return Message.fromMap(maps.first);
+      return NotificationMessage.fromMap(maps.first);
     }
     return null;
   }
 
   // TODO: queryAllMessages()
-  Future<List<Message>> queryAllMessages() async {
+  Future<List<NotificationMessage>> queryAllMessages() async {
     Database db = await database;
     List<Map> maps = await db.query(tableMessages);
 
-    List<Message> messages = [];
+    List<NotificationMessage> messages = [];
     if (maps.length > 0) {
       // List<Message> messages = [];
       for (var m in maps) {
-        messages.add(Message.fromMap(m));
+        messages.add(NotificationMessage.fromMap(m));
       }
       return messages;
     }

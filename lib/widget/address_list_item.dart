@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:npa_user/model/models.dart';
+import 'package:npa_user/values/color.dart';
 
 class AddressListItem extends StatelessWidget {
   final Address address;
@@ -10,11 +11,18 @@ class AddressListItem extends StatelessWidget {
     return ListTile(
       title: Text(
         address.residentialAddress,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: colorPrimary,
+        ),
       ),
       subtitle: Text(
         address.ghanaPostGpsaddress,
-        style: TextStyle(fontSize: 14),
+        style: TextStyle(
+          fontSize: 14,
+          color: colorPrimary,
+        ),
       ),
     );
   }

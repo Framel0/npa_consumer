@@ -57,7 +57,7 @@ class _SummaryPageState extends State<SummaryPage> {
         firstName = _user.firstName ?? "";
         lastName = _user.lastName ?? "";
         phoneNumber = _user.phoneNumber ?? "";
-        consumerId = _user.consumerId ?? "";
+        consumerId = _user.consumerCode ?? "";
       });
     });
   }
@@ -442,7 +442,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
     for (var p in widget.products) {
       refillRequestProducts
-          .add(RefillRequestProduct(productId: p.id, quantity: p.quantity));
+          .add(RefillRequestProduct(productId: p.id, quantity: p.selectedQuantity));
     }
 
     return refillRequestProducts;
@@ -466,7 +466,7 @@ class _SummaryPageState extends State<SummaryPage> {
     for (ConsumerProduct product in widget.products) {
       widgets.add(
         Text(
-          "${product.name} x ${product.quantity}",
+          "${product.name} x ${product.selectedQuantity}",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,

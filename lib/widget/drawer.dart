@@ -35,7 +35,7 @@ class _AppDrawerState extends State<AppDrawer> {
     final String firstName = user.firstName ?? "";
     final String lastName = user.lastName ?? "";
     final String phoneNumber = user.phoneNumber ?? "";
-    final String consumerId = user.consumerId ?? "";
+    final String consumerId = user.consumerCode ?? "";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -59,6 +59,14 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           _createDrawerItem(
+            icon: Icons.add,
+            text: 'Add New Cylinder',
+            onTap: () {
+              // Navigator.of(context).pop();
+              Navigator.pushNamed(context, addNewCylinderRoute);
+            },
+          ),
+          _createDrawerItem(
             icon: Icons.error,
             text: 'Safety Tips',
             onTap: () {
@@ -78,7 +86,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, landingRoute, (Route<dynamic> route) => false);
               }),
-          _createDrawerItem(icon: Icons.notifications, text: 'Notification'),
+          // _createDrawerItem(icon: Icons.notifications, text: 'Notification'),
           _createDrawerItem(
             icon: Icons.phone,
             text: 'Contact Us',

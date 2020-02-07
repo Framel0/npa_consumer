@@ -2,8 +2,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
-import 'package:npa_user/repositories/repositories.dart';
 import 'package:http/http.dart' as http;
+import 'package:npa_user/repositories/user/user.dart';
 
 class UserRepository {
   final UserApiClient userApiClient = UserApiClient(httpClient: http.Client());
@@ -13,9 +13,13 @@ class UserRepository {
   Future<User> authenticate({
     @required String phoneNumber,
     @required String password,
+    @required String firebaseToken,
   }) async {
-    User user =
-        await userApiClient.login(phoneNumber: phoneNumber, password: password);
+    User user = await userApiClient.login(
+      phoneNumber: phoneNumber,
+      password: password,
+      firebaseToken: firebaseToken,
+    );
     await saveData(user);
     return user;
   }
@@ -28,12 +32,21 @@ class UserRepository {
     return user;
   }
 
+  Future updateFirebaseToken({
+    @required int userId,
+    @required String firebaseToken,
+  }) async {
+    await userApiClient.updateFirebaseToken(
+      userId: userId,
+      firebaseToken: firebaseToken,
+    );
+  }
+
   Future<void> register({
     @required String firstName,
     @required String lastName,
     @required int dealerId,
     @required String phoneNumber,
-    @required String consumerId,
     @required String password,
     @required String houseNumber,
     @required String streetName,
@@ -42,6 +55,7 @@ class UserRepository {
     @required int districtId,
     @required int depositeId,
     @required int productId,
+    @required int registrationType,
     @required double latitude,
     @required double longitude,
     @required String firebaseToken,
@@ -52,7 +66,6 @@ class UserRepository {
         dealerId: dealerId,
         phoneNumber: phoneNumber,
         password: password,
-        consumerId: consumerId,
         houseNumber: houseNumber,
         streetName: streetName,
         residentialAddress: residentialAddress,
@@ -60,6 +73,7 @@ class UserRepository {
         districtId: districtId,
         depositeId: depositeId,
         productId: productId,
+        registrationType: registrationType,
         latitude: latitude,
         longitude: longitude,
         firebaseToken: firebaseToken);

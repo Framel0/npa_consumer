@@ -20,7 +20,8 @@ class DealerBloc extends Bloc<DealerEvent, DealerState> {
       yield DealerLoading();
 
       try {
-        final dealers = await dealerRepository.getDealersByLpgmc(event.id);
+        final dealers =
+            await dealerRepository.getDealersByLpgmc(lpgmcId: event.lpgmcId);
         yield DealerLoaded(dealers);
       } catch (ex) {
         yield DealerError(ex.toString());

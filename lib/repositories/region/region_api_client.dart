@@ -11,7 +11,8 @@ class RegionApiClient {
   RegionApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Region>> fetchRegions() async {
-    final regionsUrl = "$baseUrl/api/RegionApi/Regions";
+    final regionsUrl = "$baseUrl/api/Region/Regions";
+
     final regionsResponse = await this.httpClient.get(regionsUrl);
 
     if (regionsResponse.statusCode != 200) {
@@ -19,10 +20,9 @@ class RegionApiClient {
       throw Exception('error getting regions');
     }
 
-    final reponse = jsonDecode(regionsResponse.body);
-    var regions = reponse["model"];
-    List<Region> regionList = [];
+    final regions = jsonDecode(regionsResponse.body);
 
+    List<Region> regionList = [];
     for (var r in regions) {
       regionList.add(Region.fromJson(r));
     }

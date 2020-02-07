@@ -29,5 +29,17 @@ class ConsumerProductBloc
         yield ConsumerProductError(error: e.toString());
       }
     }
+
+    if (event is AddNewConsumerProducts) {
+      yield AddNewConsumerProductLoading();
+
+      try {
+        await consumerProductRepository.addNewConsumerProducts(
+            cylinderRequest: event.addNewCylinderRequest);
+        yield AddNewConsumerProductSuccess();
+      } catch (e) {
+        yield AddNewConsumerProductError(error: e.toString());
+      }
+    }
   }
 }

@@ -33,7 +33,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
     _getUserLocation();
     if (widget.lpgmc.id != null) {
       BlocProvider.of<DealerBloc>(context)
-        ..dispatch(FetchDealers(id: widget.lpgmc.id));
+        ..dispatch(FetchDealers(lpgmcId: widget.lpgmc.id));
     }
   }
 
@@ -99,7 +99,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Error",
+                "Something went wrong",
                 style: Theme.of(context)
                     .textTheme
                     .title
@@ -108,7 +108,7 @@ class _DealersMapPageState extends State<DealersMapPage> {
               IconButton(
                 icon: Icon(Icons.replay),
                 onPressed: () {
-                  bloc.dispatch(FetchDealers(id: widget.lpgmc.id));
+                  bloc.dispatch(FetchDealers(lpgmcId: widget.lpgmc.id));
                 },
               )
             ],
@@ -129,8 +129,8 @@ class _DealersMapPageState extends State<DealersMapPage> {
   void _getUserLocation() async {
     Position pos = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemark = await Geolocator()
-        .placemarkFromCoordinates(pos.latitude, pos.longitude);
+    // List<Placemark> placemark = await Geolocator()
+    //     .placemarkFromCoordinates(pos.latitude, pos.longitude);
     setState(() {
       _initPos = LatLng(pos.latitude, pos.longitude);
     });

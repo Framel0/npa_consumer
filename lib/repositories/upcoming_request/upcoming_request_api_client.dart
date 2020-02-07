@@ -15,7 +15,7 @@ class UpcomingRequestApiClient {
   Future<List<UpcomingRequest>> fetchUpcomingRequests(
       {@required int userId}) async {
     final upcomingRequestsUrl =
-        "$baseUrl/api/ConsumerRefillRequestApi/ConsumerRefillRequestsByConsumer/$userId";
+        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumer/$userId";
     final upcomingRequestsResponse =
         await this.httpClient.get(upcomingRequestsUrl);
 
@@ -24,8 +24,8 @@ class UpcomingRequestApiClient {
       throw Exception('error getting upcomingRequests');
     }
 
-    final reponse = jsonDecode(upcomingRequestsResponse.body);
-    var upcomingRequests = reponse["model"];
+    final upcomingRequests = jsonDecode(upcomingRequestsResponse.body);
+
     List<UpcomingRequest> upcomingRequestList = [];
     for (var d in upcomingRequests) {
       upcomingRequestList.add(UpcomingRequest.fromJson(d));

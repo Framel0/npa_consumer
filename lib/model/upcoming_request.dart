@@ -4,7 +4,7 @@ import 'package:npa_user/model/request_product.dart';
 class UpcomingRequest {
   int id;
   String date;
-  String consumerId;
+  String consumerCode;
   String firstName;
   String lastName;
   String phoneNumber;
@@ -16,7 +16,7 @@ class UpcomingRequest {
   String deliveryMethod;
   int paymentMethodId;
   String paymentMethod;
-  String dispatchId;
+  String dispatchCode;
   String dispatchFirstName;
   String dispatchLastName;
   String dispatchPhoneNumber;
@@ -26,7 +26,7 @@ class UpcomingRequest {
   UpcomingRequest(
       {this.id,
       this.date,
-      this.consumerId,
+      this.consumerCode,
       this.firstName,
       this.lastName,
       this.phoneNumber,
@@ -44,7 +44,7 @@ class UpcomingRequest {
     // return UpcomingRequest(
     id = json["id"];
     date = json["date"];
-    consumerId = json["consumerId"];
+    consumerCode = json["consumerCode"];
     firstName = json["consumerFirstName"];
     lastName = json["consumerLastName"];
     phoneNumber = json["consumerPhoneNumber"];
@@ -56,7 +56,7 @@ class UpcomingRequest {
     deliveryMethod = json["deliveryMethod"];
     paymentMethodId = json["paymentMethodId"];
     paymentMethod = json["paymentMethod"];
-    dispatchId = json["dispatchId"];
+    dispatchCode = json["dispatchCode"];
     dispatchFirstName = json["dispatchFirstName"];
     dispatchLastName = json["dispatchLastName"];
     dispatchPhoneNumber = json["dispatchPhoneNumber"];

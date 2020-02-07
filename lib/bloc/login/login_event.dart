@@ -8,9 +8,13 @@ abstract class LoginEvent extends Equatable {
 class LoginButtonPressed extends LoginEvent {
   final String phoneNumber;
   final String password;
+  final String firebaseToken;
 
-  LoginButtonPressed({@required this.phoneNumber, @required this.password})
-      : super([phoneNumber, password]);
+  LoginButtonPressed({
+    @required this.phoneNumber,
+    @required this.password,
+    @required this.firebaseToken,
+  }) : super([phoneNumber, password]);
 
   @override
   String toString() =>

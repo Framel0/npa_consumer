@@ -4,10 +4,11 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:npa_user/data/consumer_info.dart';
 import 'package:npa_user/model/models.dart';
 import 'package:npa_user/page/pages.dart';
-import 'package:npa_user/repositories/user_repository.dart';
+import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/values/color.dart';
 import 'package:npa_user/widget/drawer.dart';
@@ -19,7 +20,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  static User user;
+   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+       new FlutterLocalNotificationsPlugin();
 
   int userId;
   int userStatus;
@@ -29,16 +31,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    _getuserInfo();
 
-    _getUserInfo();
-
-    readUserData().then((value) {
-      setState(() {
-        user = value;
-      });
-    });
+    _refreshUserInfo();
 
     _firebaseListener();
+
+    _flutterLocalNotification();
+  }
+
+  _getuserInfo() async {
+    await readUserData().then((value) {
+      setState(() {
+        var user = value;
+        userId = user.id;
+        userStatus = user.statusId;
+      });
+    });
   }
 
   _firebaseListener() {
@@ -47,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _firebaseMessaging.requestNotificationPermissions(
           const IosNotificationSettings(sound: true, alert: true, badge: true));
     }
+
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -54,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final title = notification["title"];
         final body = notification["body"];
         _setMessage(title: title, body: body);
+        _showNotification(title: title, body: body);
       },
       //  onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
@@ -71,6 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
         _setMessage(title: title, body: body);
       },
     );
+
+    Stream<String> fcmStream = _firebaseMessaging.onTokenRefresh;
+    fcmStream.listen((token) {
+      saveToken(token);
+    });
+  }
+
+  void saveToken(String token) async {
+    var user = await readUserData();
+    userRepository.updateFirebaseToken(userId: user.id, firebaseToken: token);
   }
 
   void _setMessage({@required title, @required body}) {
@@ -79,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ('${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}');
     var id = int.parse(date);
     // setState(() {
-    DatabaseHelper.instance.insert(Message(
+    DatabaseHelper.instance.insert(NotificationMessage(
       id: id,
       title: title,
       body: body,
@@ -87,23 +108,54 @@ class _MyHomePageState extends State<MyHomePage> {
     // });
   }
 
-  _getUserInfo() {
+  _refreshUserInfo() {
     Timer.periodic(Duration(seconds: 10), (timer) {
       print("Timer:${DateTime.now()}");
       if (userStatus != 2) {
         readUserData().then((value) {
           setState(() {
-            user = value;
+            var user = value;
+            userId = user.id;
+            userStatus = user.statusId;
           });
         });
-        userId = user.id;
-        userStatus = user.statusId;
+
         userRepository.getUserInfo(userId: userId);
         print("Get user Info:${DateTime.now()}");
         print("Status id:${userStatus}");
       }
     });
   }
+
+   _flutterLocalNotification() {
+     var initializationSettingsAndroid = new AndroidInitializationSettings(
+       'app_icon',
+     );
+     var initializationSettingsIOS = IOSInitializationSettings(
+     );
+     var initializationSettings = InitializationSettings(
+       initializationSettingsAndroid,
+       initializationSettingsIOS,
+     );
+     flutterLocalNotificationsPlugin.initialize(
+       initializationSettings,
+     );
+   }
+
+   _showNotification({@required title, @required body}) async {
+     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+         'your channel id', 'your channel name', 'your channel description',
+         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+     var platformChannelSpecifics = NotificationDetails(
+         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+     await flutterLocalNotificationsPlugin.show(
+       0,
+       title,
+       body,
+       platformChannelSpecifics,
+     );
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -144,10 +196,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             icon: Icons.library_books,
                             text: "Request Refill",
                             onTap: () {
-                              if (user.statusId == 1) {
+                              if (userStatus == 1) {
                                 FlushbarHelper.createInformation(
                                     message:
-                                        'Please Confirm Deposite with Dealer');
+                                        'Please Confirm Deposite with Dealer')
+                                  ..show(context);
                               } else {
                                 Navigator.push(
                                   context,
@@ -217,8 +270,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ));
       }),
-
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
@@ -257,6 +308,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.body2.copyWith(
                           color: Colors.white,
+                          fontSize: 13.5,
                         ),
                   ),
                 )

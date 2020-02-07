@@ -11,7 +11,7 @@ class DepositeApiClient {
   DepositeApiClient({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Deposite>> fetchDeposites() async {
-    final depositesUrl = "$baseUrl/api/DepositeApi/Deposites";
+    final depositesUrl = "$baseUrl/api/Deposit/Deposits";
     final depositesResponse = await this.httpClient.get(depositesUrl);
 
     if (depositesResponse.statusCode != 200) {
@@ -19,8 +19,8 @@ class DepositeApiClient {
       throw Exception('error getting deposites');
     }
 
-    final reponse = jsonDecode(depositesResponse.body);
-    var deposites = reponse["model"];
+    final deposites = jsonDecode(depositesResponse.body);
+
     List<Deposite> depositeList = [];
     for (var d in deposites) {
       depositeList.add(Deposite.fromJson(d));

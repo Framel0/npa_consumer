@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:npa_user/page/sign_up_page.dart';
 import 'package:npa_user/repositories/repositories.dart';
 import 'package:npa_user/routes/routes.dart';
 import 'package:npa_user/util/util.dart';
+import 'package:npa_user/values/color.dart';
+import 'package:npa_user/widget/loading_indicator.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository userRepository;
@@ -19,12 +22,30 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> _loginData = {'email': null, 'password': null};
 
   TextStyle style = TextStyle(fontSize: 18.0, color: Colors.black);
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   final _phoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _showPassword = true;
+
+  String firebaseToken = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getFirebaseToken();
+  }
+
+  getFirebaseToken() async {
+    await _firebaseMessaging.getToken().then((_key) {
+      print(_key);
+      firebaseToken = _key;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +71,10 @@ class _LoginFormState extends State<LoginForm> {
               //   );
               // } else if (user.statusId == 2) {
               FlushbarHelper.createSuccess(
-                title: "Success",
-                message: "Login",
-              )..show(context).then((result) {
+                  title: "Success",
+                  message: "Logged in",
+                  duration: Duration(seconds: 2))
+                ..show(context).then((result) {
                   BlocProvider.of<AuthenticationBloc>(context)
                       .dispatch(LoggedIn(token: user.token));
                 });
@@ -108,9 +130,15 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text('Login', style: TextStyle(fontSize: 18)),
                   onPressed: () {
                     if (!_formKey.currentState.validate()) {
+                      FlushbarHelper.createInformation(
+                          message: "Please enter values for required fields")
+                        ..show(context);
                       return;
                     } else {
                       state is! LoginLoading ? _onLoginButtonPressed() : null;
+                      if (state is LoginLoading) {
+                        _showProgress();
+                      }
                     }
                   },
                 ),
@@ -137,8 +165,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
               Container(
-                child:
-                    state is LoginLoading ? CircularProgressIndicator() : null,
+                child: state is LoginLoading ? LoadingIndicator() : null,
               ),
             ],
           ),
@@ -160,8 +187,15 @@ class _LoginFormState extends State<LoginForm> {
         LoginButtonPressed(
           phoneNumber: _phoneNumberController.text.trim(),
           password: _passwordController.text.trim(),
+          firebaseToken: firebaseToken,
         ),
       );
+  }
+
+  _showProgress() {
+    FlushbarHelper.createLoading(
+        message: "Signin in",
+        linearProgressIndicator: LinearProgressIndicator());
   }
 
   Widget _buildPhoneNumberField() {
@@ -170,7 +204,6 @@ class _LoginFormState extends State<LoginForm> {
       validator: (String value) {
         if (value.trim().length < 10 || value.trim().isEmpty)
           return 'Please enter a valid Phone Number.';
-
         return null;
       },
 
@@ -182,9 +215,15 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
+  _toggleVisibility() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
   Widget _buildPasswordField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: _showPassword,
       validator: (String value) {
         if (value.trim().isEmpty) return 'Please enter Password.';
 
@@ -192,7 +231,16 @@ class _LoginFormState extends State<LoginForm> {
       },
       style: style,
       keyboardType: TextInputType.text,
-      decoration: inputDecoration('Password'),
+      decoration: InputDecoration(
+          labelStyle: TextStyle(color: colorPrimary),
+          errorStyle: TextStyle(
+            color: Colors.red,
+          ),
+          labelText: "Password",
+          suffixIcon: IconButton(
+            icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+            onPressed: _toggleVisibility,
+          )),
       controller: _passwordController,
     );
   }
