@@ -91,348 +91,345 @@ class _SummaryPageState extends State<SummaryPage> {
           return ListView(
             padding: EdgeInsets.symmetric(vertical: 10),
             children: <Widget>[
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "Order",
-                        style: headerTextStyle,
-                      ),
-                    ),
-                    Card(
-                        elevation: cardElevation,
-                        // shape: new RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                        // ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Subtotal",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                          color: colorPrimary,
-                                        ),
-                                  ),
-                                  RichText(
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    text: TextSpan(
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .title
-                                          .copyWith(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500,
-                                            color: colorPrimary,
-                                          ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'GHC ',
-                                        ),
-                                        TextSpan(text: "${widget.subTotal}"),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Delivery",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                          color: colorPrimary,
-                                        ),
-                                  ),
-                                  RichText(
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    text: TextSpan(
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .title
-                                          .copyWith(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600,
-                                            color: colorPrimary,
-                                          ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'GHC ',
-                                        ),
-                                        TextSpan(
-                                            text: "${widget.deliveryPrice}"),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                thickness: 2,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Total",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          color: colorPrimary,
-                                        ),
-                                  ),
-                                  RichText(
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    text: TextSpan(
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .title
-                                          .copyWith(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600,
-                                            color: colorPrimary,
-                                          ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: 'GHC ',
-                                        ),
-                                        TextSpan(
-                                            text:
-                                                "${widget.subTotal + widget.deliveryPrice}"),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                        ))
-                  ],
-                ),
+              _buildContainerSubTotal(context),
+              SizedBox(
+                height: 20,
               ),
+              _buildContainerDetails(context),
+              SizedBox(
+                height: 20,
+              ),
+              _buildContainerDeliveryMethod(context),
+              SizedBox(
+                height: 20,
+              ),
+              _buildContainerPaymentMethod(context),
               SizedBox(
                 height: 20,
               ),
               Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "Details",
-                        style: headerTextStyle,
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Card(
-                        elevation: cardElevation,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Name: \n${firstName} ${lastName}",
-                                style:
-                                    Theme.of(context).textTheme.title.copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          color: colorPrimary,
-                                        ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Phone Number: \n${phoneNumber}",
-                                style:
-                                    Theme.of(context).textTheme.title.copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          color: colorPrimary,
-                                        ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Address: ",
-                                style:
-                                    Theme.of(context).textTheme.title.copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          color: colorPrimary,
-                                        ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    widget.deliveryAddress.residentialAddress,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: colorPrimary,
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.deliveryAddress.ghanaPostGpsaddress,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: colorPrimary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Refill Type",
-                                style:
-                                    Theme.of(context).textTheme.title.copyWith(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          color: colorPrimary,
-                                        ),
-                              ),
-                              _buildCylinders(),
-                              SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                child: state is RequestRefillLoading
+                    ? CircularProgressIndicator()
+                    : null,
               ),
               SizedBox(
                 height: 20,
               ),
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "Delivery Method",
-                        style: headerTextStyle,
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Card(
-                          elevation: cardElevation,
-                          child: ListTile(
-                            title: Text(
-                              widget.deliveryMethod.name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: colorPrimary,
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      "Payment Method",
-                      style: headerTextStyle,
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                        elevation: cardElevation,
-                        child: ListTile(
-                          title: Text(
-                            widget.paymentMethod.name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: colorPrimary,
-                            ),
-                          ),
-                        )),
-                  ),
-                ],
-              )),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 12.0,
-                  ),
-                  onPressed: () => {onConfirmButtonPressed()},
-                  child: Text(
-                    "Confirm",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                ),
-              ),
-              // Container(
-              //   child: state is RequestRefillLoading
-              //       ? CircularProgressIndicator()
-              //       : null,
-              // ),
+              buildConfirmButton(context),
             ],
           );
         }),
+      ),
+    );
+  }
+
+  Container buildConfirmButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      width: MediaQuery.of(context).size.width,
+      child: RaisedButton(
+        shape: new RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0)),
+        ),
+        padding: EdgeInsets.symmetric(
+          vertical: 12.0,
+        ),
+        onPressed: () => {onConfirmButtonPressed()},
+        child: Text(
+          "Confirm",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container _buildContainerPaymentMethod(BuildContext context) {
+    return Container(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Payment Method",
+            style: headerTextStyle,
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+              elevation: cardElevation,
+              child: ListTile(
+                title: Text(
+                  widget.paymentMethod.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: colorPrimary,
+                  ),
+                ),
+              )),
+        ),
+      ],
+    ));
+  }
+
+  Container _buildContainerDeliveryMethod(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Delivery Method",
+              style: headerTextStyle,
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+                elevation: cardElevation,
+                child: ListTile(
+                  title: Text(
+                    widget.deliveryMethod.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: colorPrimary,
+                    ),
+                  ),
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildContainerSubTotal(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Order",
+              style: headerTextStyle,
+            ),
+          ),
+          Card(
+              elevation: cardElevation,
+              // shape: new RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.all(Radius.circular(0.0)),
+              // ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Subtotal",
+                          style: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: colorPrimary,
+                              ),
+                        ),
+                        RichText(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                  color: colorPrimary,
+                                ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'GHC ',
+                              ),
+                              TextSpan(text: "${widget.subTotal}"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Delivery",
+                          style: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: colorPrimary,
+                              ),
+                        ),
+                        RichText(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  color: colorPrimary,
+                                ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'GHC ',
+                              ),
+                              TextSpan(text: "${widget.deliveryPrice}"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      thickness: 2,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Total",
+                          style: Theme.of(context).textTheme.title.copyWith(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                color: colorPrimary,
+                              ),
+                        ),
+                        RichText(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                  color: colorPrimary,
+                                ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'GHC ',
+                              ),
+                              TextSpan(
+                                  text:
+                                      "${widget.subTotal + widget.deliveryPrice}"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Container _buildContainerDetails(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              "Details",
+              style: headerTextStyle,
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              elevation: cardElevation,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Name: \n${firstName} ${lastName}",
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Phone Number: \n${phoneNumber}",
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Address: ",
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.deliveryAddress.residentialAddress,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                        ),
+                        Text(
+                          widget.deliveryAddress.ghanaPostGpsaddress,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      "Refill Type",
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: colorPrimary,
+                          ),
+                    ),
+                    _buildCylinders(),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -441,8 +438,8 @@ class _SummaryPageState extends State<SummaryPage> {
     List<RefillRequestProduct> refillRequestProducts = [];
 
     for (var p in widget.products) {
-      refillRequestProducts
-          .add(RefillRequestProduct(productId: p.id, quantity: p.selectedQuantity));
+      refillRequestProducts.add(
+          RefillRequestProduct(productId: p.id, quantity: p.selectedQuantity));
     }
 
     return refillRequestProducts;

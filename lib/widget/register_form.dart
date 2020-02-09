@@ -217,6 +217,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 30,
                 ),
                 Container(
+                  child: state is RegisterLoading ? LoadingIndicator() : null,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton(
                     shape: new RoundedRectangleBorder(

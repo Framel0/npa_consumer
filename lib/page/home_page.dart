@@ -20,8 +20,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-       new FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 
   int userId;
   int userStatus;
@@ -127,35 +127,34 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-   _flutterLocalNotification() {
-     var initializationSettingsAndroid = new AndroidInitializationSettings(
-       'app_icon',
-     );
-     var initializationSettingsIOS = IOSInitializationSettings(
-     );
-     var initializationSettings = InitializationSettings(
-       initializationSettingsAndroid,
-       initializationSettingsIOS,
-     );
-     flutterLocalNotificationsPlugin.initialize(
-       initializationSettings,
-     );
-   }
+  _flutterLocalNotification() {
+    var initializationSettingsAndroid = new AndroidInitializationSettings(
+      'launcher_icon',
+    );
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,
+      initializationSettingsIOS,
+    );
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+  }
 
-   _showNotification({@required title, @required body}) async {
-     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-         'your channel id', 'your channel name', 'your channel description',
-         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
-     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-     var platformChannelSpecifics = NotificationDetails(
-         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-     await flutterLocalNotificationsPlugin.show(
-       0,
-       title,
-       body,
-       platformChannelSpecifics,
-     );
-   }
+  _showNotification({@required title, @required body}) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

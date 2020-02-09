@@ -43,7 +43,11 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         widget.upcomingRequest.dispatchPhoneNumber ?? "";
     final statusId = widget.upcomingRequest.statusId ?? 0;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          "Refill Request",
+        ),
+      ),
       body: Builder(builder: (context) {
         return BlocListener<RefillRequestBloc, RefillRequestState>(
           listener: (context, state) {
@@ -254,6 +258,7 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
         Text(subtitle,
             style: TextStyle(
               fontSize: 16,
+              color: colorPrimary,
             )),
       ],
     );

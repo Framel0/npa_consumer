@@ -122,6 +122,7 @@ class RequestHistoryDetailPage extends StatelessWidget {
         Text(subtitle,
             style: TextStyle(
               fontSize: 16,
+              color: colorPrimary,
             )),
       ],
     );

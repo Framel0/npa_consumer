@@ -76,6 +76,8 @@ class _RequestPageState extends State<RequestPage> {
         if (state is RequestRefillApiError) {
           return Center(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Something went wrong"),
                 IconButton(
@@ -94,9 +96,27 @@ class _RequestPageState extends State<RequestPage> {
     );
   }
 
-  Container buildContainer(BuildContext context) {
+  Widget buildContainer(BuildContext context) {
     return _consumerProducts.isEmpty
-        ? Center(child: Text("No Products Available"))
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "No Products Available",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: colorPrimary,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.replay,
+                    color: colorSecondaryOrange,
+                  ),
+                  onPressed: getRequests)
+            ],
+          )
         : Container(
             child: ListView(
               padding: EdgeInsets.only(top: 15, bottom: 15),

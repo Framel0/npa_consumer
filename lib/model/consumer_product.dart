@@ -2,7 +2,7 @@ class ConsumerProduct {
   final int id;
   final String name;
   final double price;
-  final double quantity;
+  final int quantity;
   int selectedQuantity;
 
   ConsumerProduct(
