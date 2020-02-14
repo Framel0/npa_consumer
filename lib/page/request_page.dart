@@ -32,10 +32,10 @@ class _RequestPageState extends State<RequestPage> {
   void initState() {
     super.initState();
 
-    getRequests();
+    _getRequests();
   }
 
-  getRequests() async {
+  _getRequests() async {
     final user = await readUserData();
 
     BlocProvider.of<RefillRequestBloc>(context)
@@ -64,7 +64,9 @@ class _RequestPageState extends State<RequestPage> {
           BlocBuilder<RefillRequestBloc, RefillRequestState>(
               builder: (context, state) {
         if (state is RequestRefillApiLoading) {
-          return Center(child: LoadingIndicator());
+          return Center(
+            child: LoadingIndicator(),
+          );
         }
 
         if (state is RequestRefillApiLoaded) {
@@ -79,13 +81,15 @@ class _RequestPageState extends State<RequestPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("Something went wrong"),
+                Text(
+                  "Something went wrong",
+                ),
                 IconButton(
                   icon: Icon(
                     Icons.replay,
                     color: colorSecondaryOrange,
                   ),
-                  onPressed: getRequests,
+                  onPressed: _getRequests,
                 )
               ],
             ),
@@ -114,7 +118,7 @@ class _RequestPageState extends State<RequestPage> {
                     Icons.replay,
                     color: colorSecondaryOrange,
                   ),
-                  onPressed: getRequests)
+                  onPressed: _getRequests)
             ],
           )
         : Container(

@@ -2,7 +2,7 @@ import 'package:npa_user/model/request_product.dart';
 
 class RequestHistory {
   int id;
-  String date;
+  DateTime date;
   String consumerCode;
   String firstName;
   String lastName;
@@ -42,7 +42,8 @@ class RequestHistory {
   RequestHistory.fromJson(Map<String, dynamic> json) {
     // return UpcomingRequest(
     id = json["id"];
-    date = json["date"];
+    String dateTime = json["date"];
+    date = DateTime.parse(dateTime);
     consumerCode = json["consumerCode"];
     firstName = json["consumerFirstName"];
     lastName = json["consumerLastName"];

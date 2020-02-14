@@ -20,7 +20,7 @@ Future<User> readUserData() async {
   final lastName = prefs.getString(lastNameKey) ?? "";
   final phoneNumber = prefs.getString(phoneNumberKey) ?? "";
   final dealerId = prefs.getInt(dealerIdKey) ?? 0;
-  final depositeId = prefs.getInt(depositeIdKey) ?? 0;
+  final depositId = prefs.getInt(depositeIdKey) ?? 0;
   final statusId = prefs.getInt(statusIdKey) ?? 0;
 
   var user = User(
@@ -31,7 +31,7 @@ Future<User> readUserData() async {
     lastName: lastName,
     phoneNumber: phoneNumber,
     dealerId: dealerId,
-    depositId: depositeId,
+    depositId: depositId,
     statusId: statusId,
   );
 

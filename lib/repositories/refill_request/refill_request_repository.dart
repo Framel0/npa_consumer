@@ -13,9 +13,19 @@ class RefillRequestRepository {
         refillRequest: refillRequest);
   }
 
-  Future<void> confirmDelivery(
-      {@required int refillRequestId,}) async {
+  Future<void> confirmDelivery({
+    @required int refillRequestId,
+  }) async {
     return await refillRequestApiClient.confirmDelivery(
-        refillRequestId: refillRequestId, );
+      refillRequestId: refillRequestId,
+    );
+  }
+
+  Future<void> cancelRequest({
+    @required int refillRequestId,
+  }) async {
+    return await refillRequestApiClient.confirmDelivery(
+      refillRequestId: refillRequestId,
+    );
   }
 }

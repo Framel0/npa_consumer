@@ -25,14 +25,16 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
 
     _refreshCompleter = Completer<void>();
 
-    getRequests();
+    _getRequests();
   }
 
-  getRequests() async {
+  _getRequests() async {
     final user = await readUserData();
 
     BlocProvider.of<UpcomingRequestBloc>(context)
-        .dispatch(FetchUpcomingRequests(userId: user.id));
+        .dispatch(FetchUpcomingRequests(
+      userId: user.id,
+    ));
   }
 
   Future _refresh() async {
@@ -47,14 +49,17 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Upcoming Orders"),
+        title: Text(
+          "Upcoming Orders",
+        ),
         actions: <Widget>[
           IconButton(
-              icon: const Icon(Icons.refresh),
-              tooltip: 'Refresh',
-              onPressed: () {
-                getRequests();
-              }),
+            icon: const Icon(
+              Icons.refresh,
+            ),
+            tooltip: 'Refresh',
+            onPressed: _getRequests,
+          ),
         ],
       ),
       body: BlocBuilder<UpcomingRequestBloc, UpcomingRequestState>(
@@ -72,11 +77,25 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
         }
 
         if (state is UpcomingRequestError) {
-          return Center(
-            child: Text(
-              'Something went wrong!',
-              style: TextStyle(color: Colors.red),
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Something went wrong!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: colorPrimary,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.replay,
+                  color: colorSecondaryOrange,
+                ),
+                onPressed: _getRequests,
+              )
+            ],
           );
         }
       }),
@@ -96,7 +115,6 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
         onRefresh: _refresh,
         child: upcomingOrders.isNotEmpty
             ? ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                 itemBuilder: (BuildContext context, int index) {
                   return _buildUpcomingOrderItems(
                       context, index, upcomingOrders[index]);
@@ -106,7 +124,7 @@ class _UpcomingRequestPageState extends State<UpcomingRequestPage> {
                   return Divider(
                     height: 2,
                     thickness: 2,
-                    color: colorSecondaryOrange,
+                    color: colorSecondaryOrangeLight,
                   );
                 },
               )

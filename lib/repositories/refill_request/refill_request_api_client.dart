@@ -44,4 +44,23 @@ class RefillRequestApiClient {
       throw Exception('error getting consumerRefillRequests');
     }
   }
+
+  Future<void> cancelRequest({
+    @required int refillRequestId,
+  }) async {
+    final String consumerRefillRequestsUrl =
+        "$baseUrl/api/ConsumerRefillRequest/CancelRequest/$refillRequestId";
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+
+    final consumerRefillRequestsResponse = await this.httpClient.put(
+          consumerRefillRequestsUrl,
+          headers: headers,
+        );
+
+    if (consumerRefillRequestsResponse.statusCode != 200) {
+      print(consumerRefillRequestsResponse.statusCode);
+
+      throw Exception('error getting consumerRefillRequests');
+    }
+  }
 }

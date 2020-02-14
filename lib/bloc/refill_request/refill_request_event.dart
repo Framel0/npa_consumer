@@ -39,3 +39,16 @@ class ConfirmDelivery extends RefillRequestEvent {
     return "ConfirmDelivery";
   }
 }
+
+class CancelRequest extends RefillRequestEvent {
+  final int refillRequestId;
+
+  CancelRequest({
+    @required this.refillRequestId,
+  });
+
+  @override
+  String toString() {
+    return "CancelRequest";
+  }
+}

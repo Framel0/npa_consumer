@@ -28,7 +28,14 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProductBloc>(context).dispatch(FetchProducts());
+
+    _getProducts();
+  }
+
+  _getProducts() {
+    BlocProvider.of<ProductBloc>(context).dispatch(
+      FetchProducts(),
+    );
   }
 
   @override
@@ -114,7 +121,26 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
           );
         }
         if (state is ProductError) {
-          return Center();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Something went wrong!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: colorPrimary,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.replay,
+                  color: colorSecondaryOrange,
+                ),
+                onPressed: _getProducts,
+              )
+            ],
+          );
         }
       }),
     );

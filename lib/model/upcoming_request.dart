@@ -3,7 +3,7 @@ import 'package:npa_user/model/request_product.dart';
 
 class UpcomingRequest {
   int id;
-  String date;
+  DateTime date;
   String consumerCode;
   String firstName;
   String lastName;
@@ -43,7 +43,8 @@ class UpcomingRequest {
   UpcomingRequest.fromJson(Map<String, dynamic> json) {
     // return UpcomingRequest(
     id = json["id"];
-    date = json["date"];
+    String dateTime = json["date"];
+    date = DateTime.parse(dateTime);
     consumerCode = json["consumerCode"];
     firstName = json["consumerFirstName"];
     lastName = json["consumerLastName"];

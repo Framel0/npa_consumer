@@ -128,3 +128,33 @@ class ConfirmDeliveryError extends RefillRequestState {
     return "ConfirmDeliveryError";
   }
 }
+
+class CancelRequestLoading extends RefillRequestState {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() {
+    return "ConfirmDeliveryLoading";
+  }
+}
+
+class CancelRequestSuccess extends RefillRequestState {
+  @override
+  String toString() {
+    return "ConfirmDeliverySuccess";
+  }
+}
+
+class CancelRequestError extends RefillRequestState {
+  final String error;
+
+  CancelRequestError({@required this.error});
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() {
+    return "ConfirmDeliveryError";
+  }
+}
