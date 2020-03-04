@@ -81,6 +81,11 @@ void main() {
     httpClient: http.Client(),
   ));
 
+  final depositeRepository = DepositeRepository(
+      depositeApiClient: DepositeApiClient(
+    httpClient: http.Client(),
+  ));
+
   final firebaseRepository = FirebaseRepository(
       firebaseApiClient: FirebaseApiClient(
     httpClient: http.Client(),
@@ -150,7 +155,10 @@ void main() {
       BlocProvider<ConsumerProductBloc>(
         builder: (context) {
           return ConsumerProductBloc(
-              consumerProductRepository: consumerProductRepository);
+            consumerProductRepository: consumerProductRepository,
+            depositeRepository: depositeRepository,
+            productRepository: productRepository,
+          );
         },
       ),
     ],

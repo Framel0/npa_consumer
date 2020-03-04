@@ -7,9 +7,9 @@ abstract class ConsumerProductEvent extends Equatable {
 }
 
 class FetchConsumerProducts extends ConsumerProductEvent {
-  final int userId;
+  final int consumerId;
 
-  FetchConsumerProducts({@required this.userId});
+  FetchConsumerProducts({@required this.consumerId});
 
   @override
   String toString() {
@@ -24,5 +24,12 @@ class AddNewConsumerProducts extends ConsumerProductEvent {
   @override
   String toString() {
     return "Add New Consumer Products";
+  }
+}
+
+class FetchAddNewConsumerApi extends ConsumerProductEvent {
+  @override
+  String toString() {
+    return "FetchAddNewConsumerApi";
   }
 }

@@ -41,37 +41,43 @@ class _RegisterPageState extends State<RegisterPage> {
                 productApiClient: ProductApiClient(httpClient: http.Client())),
           );
         },
-        child: SingleChildScrollView(
-            child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              // color: Colors.indigoAccent,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onPanDown: (_) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
+              child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                // color: Colors.indigoAccent,
 
-              ),
-          child: SafeArea(
-            child: Center(
-              child: ListView(shrinkWrap: true, children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: _width / 17, vertical: 10.0),
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      FormLogo(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      RegisterForm(
-                        userRepository: UserRepository(),
-                      )
-                    ],
-                  ),
                 ),
-              ]),
+            child: SafeArea(
+              child: Center(
+                child: ListView(shrinkWrap: true, children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: _width / 17, vertical: 10.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        FormLogo(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        RegisterForm(
+                          userRepository: UserRepository(),
+                        )
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
             ),
-          ),
-        )),
+          )),
+        ),
       ),
     );
   }

@@ -432,7 +432,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Name: \n${firstName} ${lastName}",
+                      "Name: \n$firstName $lastName",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -443,7 +443,7 @@ class _CheackoutPageState extends State<CheackoutPage> {
                       height: 5,
                     ),
                     Text(
-                      "Phone Number: \n${phoneNumber}",
+                      "Phone Number: \n$phoneNumber",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -478,9 +478,9 @@ class _CheackoutPageState extends State<CheackoutPage> {
                               ),
                             ),
                             Text(
-                              _address.ghanaPostGpsaddress == null
+                              _address.ghanaPostGpsAddress == null
                                   ? ""
-                                  : _address.ghanaPostGpsaddress,
+                                  : _address.ghanaPostGpsAddress,
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,

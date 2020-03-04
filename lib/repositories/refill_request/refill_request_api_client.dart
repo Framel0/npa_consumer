@@ -60,7 +60,10 @@ class RefillRequestApiClient {
     if (consumerRefillRequestsResponse.statusCode != 200) {
       print(consumerRefillRequestsResponse.statusCode);
 
-      throw Exception('error getting consumerRefillRequests');
+      var response = jsonDecode(consumerRefillRequestsResponse.body);
+      var message = response["message"];
+
+      throw Exception(message.toString());
     }
   }
 }

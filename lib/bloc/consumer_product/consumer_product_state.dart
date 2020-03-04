@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:npa_user/model/consumer_product.dart';
+import 'package:npa_user/model/models.dart';
 
 abstract class ConsumerProductState extends Equatable {
   ConsumerProductState([List<Object> props = const []]) : super(props);
@@ -67,5 +68,41 @@ class AddNewConsumerProductError extends ConsumerProductState {
   @override
   String toString() {
     return "AddNewConsumerProductError";
+  }
+}
+
+class AddNewConsumerProductApiLoading extends ConsumerProductState {
+  @override
+  List<Object> get props => [];
+  @override
+  String toString() {
+    return "AddNewConsumerProductApiLoading";
+  }
+}
+
+class AddNewConsumerProductApiLoaded extends ConsumerProductState {
+  final List<Product> products;
+  final List<Deposite> deposits;
+
+  AddNewConsumerProductApiLoaded({
+    @required this.products,
+    @required this.deposits,
+  });
+
+  @override
+  String toString() {
+    return "AddNewConsumerProductApiLoaded";
+  }
+}
+
+class AddNewConsumerProductApiError extends ConsumerProductState {
+  final String error;
+
+  AddNewConsumerProductApiError({@required this.error});
+  @override
+  List<Object> get props => [error];
+  @override
+  String toString() {
+    return "AddNewConsumerProductApiError";
   }
 }

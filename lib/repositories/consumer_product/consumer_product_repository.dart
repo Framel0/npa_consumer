@@ -10,9 +10,9 @@ class ConsumerProductRepository {
 
   ConsumerProductRepository({@required this.consumerProductApiClient});
 
-  Future getConsumerProducts({@required int userId}) async {
+  Future getConsumerProducts({@required int consumerId}) async {
     _consumerProducts =
-        await consumerProductApiClient.fetchConsumerProducts(userId: userId);
+        await consumerProductApiClient.fetchConsumerProducts(consumerId: consumerId);
   }
 
   Future addNewConsumerProducts(

@@ -21,7 +21,7 @@ class UpcomingRequestBloc
 
       try {
         await upcomingRequestRepository.getUpcomingRequests(
-            userId: event.userId);
+            consumerId: event.userId);
 
         final upcomingRequests = upcomingRequestRepository.upcomingRequests;
         yield UpcomingRequestLoaded(upcomingRequests: upcomingRequests);
@@ -33,7 +33,7 @@ class UpcomingRequestBloc
     if (event is RefreshUpcomingRequest) {
       try {
         await upcomingRequestRepository.getUpcomingRequests(
-            userId: event.userId);
+            consumerId: event.userId);
 
         final upcomingRequests = upcomingRequestRepository.upcomingRequests;
         yield UpcomingRequestLoaded(upcomingRequests: upcomingRequests);

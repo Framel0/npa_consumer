@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         userRepository.getUserInfo(userId: userId);
         print("Get user Info:${DateTime.now()}");
-        print("Status id:${userStatus}");
+        print("Status id:$userStatus");
       }
     });
   }

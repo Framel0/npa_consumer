@@ -15,6 +15,7 @@ class RequestHistoryListItem extends StatelessWidget {
     final lastName = history.lastName ?? "";
     final deliveryMethod = history.deliveryMethod ?? "";
     final paymentMethod = history.paymentMethod ?? "";
+    final status = history.status ?? "";
     return ListTile(
         onTap: () {
           Navigator.pushNamed(context, requestHistoryDetailRoute,

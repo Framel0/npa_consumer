@@ -12,7 +12,7 @@ class DepositeRepository {
     _deposites = await depositeApiClient.fetchDeposites();
   }
 
-  List<Lpgmc> get deposites {
+  List<Deposite> get deposites {
     return List.from(_deposites);
   }
 

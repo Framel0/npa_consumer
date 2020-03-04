@@ -24,7 +24,7 @@ class RefillRequestRepository {
   Future<void> cancelRequest({
     @required int refillRequestId,
   }) async {
-    return await refillRequestApiClient.confirmDelivery(
+    return await refillRequestApiClient.cancelRequest(
       refillRequestId: refillRequestId,
     );
   }

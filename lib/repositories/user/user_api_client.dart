@@ -39,7 +39,6 @@ class UserApiClient {
   Future<User> getUserInfo({
     @required int userId,
   }) async {
-    Map<String, String> headers = {'Content-Type': 'application/json'};
     final loginUrl = "$baseUrl/api/Consumer/Consumer/$userId";
 
     final loginResponse = await this.httpClient.get(

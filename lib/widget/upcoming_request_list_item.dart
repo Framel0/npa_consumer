@@ -18,6 +18,7 @@ class UpcomingRequestListItem extends StatelessWidget {
     final lastName = upcomingRequest.lastName ?? "";
     final deliveryMethod = upcomingRequest.deliveryMethod ?? "";
     final paymentMethod = upcomingRequest.paymentMethod ?? "";
+    final status = upcomingRequest.status ?? "";
     return ListTile(
         onTap: () {
           Navigator.pushNamed(context, upcomingRequestDetailRoute,

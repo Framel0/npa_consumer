@@ -75,10 +75,10 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
-                // BlocProvider.of<RefillRequestBloc>(context)
-                //     .dispatch(CancelRequest(
-                //   refillRequestId: requestId,
-                // ));
+                BlocProvider.of<RefillRequestBloc>(context)
+                    .dispatch(CancelRequest(
+                  refillRequestId: requestId,
+                ));
               },
             ),
           ],
@@ -99,7 +99,6 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
     final residentialAddress = widget.upcomingRequest.residentialAddress ?? "";
     final deliveryMethodId = widget.upcomingRequest.deliveryMethodId ?? 0;
     final deliveryMethod = widget.upcomingRequest.deliveryMethod ?? "";
-    final paymentMethodId = widget.upcomingRequest.paymentMethodId ?? 0;
     final paymentMethod = widget.upcomingRequest.paymentMethod ?? "";
     final dispatchCode = widget.upcomingRequest.dispatchCode ?? "";
     final dispatchFirstName = widget.upcomingRequest.dispatchFirstName ?? "";
@@ -156,7 +155,7 @@ class _UpcomingRequestDetailPageState extends State<UpcomingRequestDetailPage> {
             if (state is CancelRequestError) {
               FlushbarHelper.createError(
                 title: "Error",
-                message: "Delivery Confirmed failed, Please try again",
+                message: state.error,
               )..show(context);
             }
           },

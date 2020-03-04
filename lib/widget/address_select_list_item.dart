@@ -17,7 +17,7 @@ class AddressSelectListItem extends StatelessWidget {
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
       subtitle: Text(
-        address.ghanaPostGpsaddress,
+        address.ghanaPostGpsAddress,
         style: TextStyle(fontSize: 14),
       ),
     );

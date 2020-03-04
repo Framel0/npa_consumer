@@ -91,13 +91,22 @@ class _RegisterFormState extends State<RegisterForm> {
           FlushbarHelper.createError(
             title: "Error",
             message: "${state.error}",
-          )..show(context);
+          )..show(context).then((result) {
+              Navigator.pop(context);
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (BuildContext cotext) => LoginPage(
+              //               userRepository: widget.userRepository,
+              //             )));
+            });
         }
 
         if (state is RegisterSuccess) {
           FlushbarHelper.createSuccess(
             title: "Success",
             message: "Registration Successful",
+            duration: Duration(seconds: 2),
           )..show(context).then((result) {
               Navigator.pushReplacement(
                   context,
@@ -117,14 +126,19 @@ class _RegisterFormState extends State<RegisterForm> {
         if (state is RegisterApiLoaded) {
           final districts = state.districts;
           _districts = districts;
+
           final regions = state.regions;
           _regions = regions;
+
           final lpgmcs = state.lpgmcs;
           _lpgmcs = lpgmcs;
+
           final deposites = state.deposites;
           _deposites = deposites;
+
           final cylinderSizes = state.products;
           _products = cylinderSizes;
+
           return Form(
             key: _formKey,
             child: Column(

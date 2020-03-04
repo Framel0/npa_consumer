@@ -7,9 +7,9 @@ abstract class RefillRequestEvent extends Equatable {
 }
 
 class FetchApis extends RefillRequestEvent {
-  final int userId;
+  final int consumerId;
 
-  FetchApis({@required this.userId});
+  FetchApis({@required this.consumerId});
   @override
   String toString() {
     return "FetchApis";

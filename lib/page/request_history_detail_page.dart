@@ -11,7 +11,6 @@ class RequestHistoryDetailPage extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final requestId = requestHistory.id ?? 0;
     final date = requestHistory.date ?? null;
     final consumerCode = requestHistory.consumerCode ?? "";
     final consumerFirstName = requestHistory.firstName ?? "";
@@ -19,15 +18,12 @@ class RequestHistoryDetailPage extends StatelessWidget {
     final houseNumber = requestHistory.houseNumber ?? "";
     final streetName = requestHistory.streetName ?? "";
     final residentialAddress = requestHistory.residentialAddress ?? "";
-    final deliveryMethodId = requestHistory.deliveryMethodId ?? 0;
-    final deliveryMethodName = requestHistory.deliveryMethod ?? "";
-    final paymentMethodId = requestHistory.paymentMethodId ?? 0;
-    final paymentMethodName = requestHistory.paymentMethod ?? "";
+    final deliveryMethod = requestHistory.deliveryMethod ?? "";
+    final paymentMethod = requestHistory.paymentMethod ?? "";
     final dispatchCode = requestHistory.dispatchCode ?? "";
     final dispatchFirstName = requestHistory.dispatchFirstName ?? "";
     final dispatchLastName = requestHistory.dispatchLastName ?? "";
     final dispatchPhoneNumber = requestHistory.dispatchPhoneNumber ?? "";
-    final statusId = requestHistory.statusId ?? 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -66,13 +62,13 @@ class RequestHistoryDetailPage extends StatelessWidget {
             _buildItem(
               ctx: context,
               title: "Delivery Method",
-              subtitle: "$deliveryMethodName",
+              subtitle: "$deliveryMethod",
             ),
             _space10(),
             _buildItem(
               ctx: context,
               title: "Payment Method",
-              subtitle: "$paymentMethodName",
+              subtitle: "$paymentMethod",
             ),
             _space10(),
             Row(

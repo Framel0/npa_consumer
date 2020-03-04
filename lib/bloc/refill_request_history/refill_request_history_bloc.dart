@@ -21,7 +21,7 @@ class RefillRequestHistoryBloc
 
       try {
         final history = await refillRequestHistoryRepository
-            .getRefillRequestHistory(userId: event.userId);
+            .getRefillRequestHistory(consumerId: event.consumerId);
 
         yield RefillRequestHistoryLoaded(histories: history);
       } catch (e) {

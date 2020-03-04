@@ -18,7 +18,7 @@ class AddressListItem extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        address.ghanaPostGpsaddress,
+        address.ghanaPostGpsAddress,
         style: TextStyle(
           fontSize: 14,
           color: colorPrimary,

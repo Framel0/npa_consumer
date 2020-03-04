@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:npa_user/bloc/blocs.dart';
+import 'package:npa_user/model/models.dart';
 import 'package:npa_user/model/product.dart';
 import 'package:npa_user/page/pages.dart';
 import 'package:npa_user/values/color.dart';
@@ -23,6 +24,7 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
       color: colorSecondaryOrange, fontSize: 21, fontWeight: FontWeight.bold);
 
   List<Product> _products;
+  List<Deposite> _deposits;
   List<Product> _selecteProducts = [];
 
   @override
@@ -33,8 +35,8 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
   }
 
   _getProducts() {
-    BlocProvider.of<ProductBloc>(context).dispatch(
-      FetchProducts(),
+    BlocProvider.of<ConsumerProductBloc>(context).dispatch(
+      FetchAddNewConsumerApi(),
     );
   }
 
@@ -44,12 +46,16 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
       appBar: AppBar(
         title: Text("Add New Cylinder"),
       ),
-      body: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
-        if (state is ProductLoading) {
+      body: BlocBuilder<ConsumerProductBloc, ConsumerProductState>(builder: (
+        context,
+        state,
+      ) {
+        if (state is AddNewConsumerProductApiLoading) {
           return Center(child: LoadingIndicator());
         }
-        if (state is ProductLoaded) {
+        if (state is AddNewConsumerProductApiLoaded) {
           _products = state.products;
+          _deposits = state.deposits;
           return Container(
             child: ListView(
               padding: EdgeInsets.only(top: 15, bottom: 15),
@@ -95,6 +101,7 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
                             MaterialPageRoute(
                                 builder: (context) => AddNewCylinderSummaryPage(
                                       products: _selecteProducts,
+                                      deposits: _deposits,
                                     )),
                           )
                         }
@@ -120,7 +127,7 @@ class _AddNewCylinderPageState extends State<AddNewCylinderPage> {
             ),
           );
         }
-        if (state is ProductError) {
+        if (state is AddNewConsumerProductApiError) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

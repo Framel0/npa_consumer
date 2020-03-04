@@ -23,7 +23,7 @@ class _RequestHistoryPageState extends State<RequestHistoryPage> {
     final user = await readUserData();
 
     BlocProvider.of<RefillRequestHistoryBloc>(context)
-        .dispatch(FetchRefillRequestHistory(userId: user.id));
+        .dispatch(FetchRefillRequestHistory(consumerId: user.id));
   }
 
   @override

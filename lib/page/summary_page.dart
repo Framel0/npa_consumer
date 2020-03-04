@@ -359,7 +359,7 @@ class _SummaryPageState extends State<SummaryPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Name: \n${firstName} ${lastName}",
+                      "Name: \n$firstName $lastName",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -370,7 +370,7 @@ class _SummaryPageState extends State<SummaryPage> {
                       height: 5,
                     ),
                     Text(
-                      "Phone Number: \n${phoneNumber}",
+                      "Phone Number: \n$phoneNumber",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -400,7 +400,7 @@ class _SummaryPageState extends State<SummaryPage> {
                           ),
                         ),
                         Text(
-                          widget.deliveryAddress.ghanaPostGpsaddress,
+                          widget.deliveryAddress.ghanaPostGpsAddress,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,

@@ -8,9 +8,9 @@ class UpcomingRequestRepository {
 
   List<UpcomingRequest> _upcomingRequests = [];
 
-  Future<void> getUpcomingRequests({@required int userId}) async {
+  Future<void> getUpcomingRequests({@required int consumerId}) async {
     _upcomingRequests =
-        await upcomingRequestApiClient.fetchUpcomingRequests(userId: userId);
+        await upcomingRequestApiClient.fetchUpcomingRequests(consumerId: consumerId);
   }
 
   List<UpcomingRequest> get upcomingRequests {

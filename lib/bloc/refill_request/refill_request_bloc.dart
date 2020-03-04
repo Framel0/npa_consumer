@@ -28,7 +28,7 @@ class RefillRequestBloc extends Bloc<RefillRequestEvent, RefillRequestState> {
 
       try {
         await consumerProductRepository.getConsumerProducts(
-            userId: event.userId);
+            consumerId: event.consumerId);
         final consumerProducts =
             consumerProductRepository.consumerConsumerProducts;
 

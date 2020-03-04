@@ -12,10 +12,10 @@ class RefillRequestHistoryApiClient {
       : assert(httpClient != null);
 
   Future<List<RequestHistory>> fetchRefillRequestHistorys(
-      {@required int userId}) async {
+      {@required int consumerId}) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final refillRequestHistorysUrl =
-        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumerHistory/$userId";
+        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumerHistory/$consumerId";
 
     final refillRequestHistorysResponse =
         await this.httpClient.get(refillRequestHistorysUrl, headers: headers);

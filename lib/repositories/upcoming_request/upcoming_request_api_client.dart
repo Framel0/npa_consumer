@@ -13,9 +13,9 @@ class UpcomingRequestApiClient {
       : assert(httpClient != null);
 
   Future<List<UpcomingRequest>> fetchUpcomingRequests(
-      {@required int userId}) async {
+      {@required int consumerId}) async {
     final upcomingRequestsUrl =
-        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumer/$userId";
+        "$baseUrl/api/ConsumerRefillRequest/ConsumerRefillRequestsByConsumer/$consumerId";
     final upcomingRequestsResponse =
         await this.httpClient.get(upcomingRequestsUrl);
 

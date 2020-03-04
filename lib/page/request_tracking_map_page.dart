@@ -1,11 +1,9 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:npa_user/bloc/google_map_service/google_map_service.dart';
-import 'package:npa_user/repositories/google_map_service/google_map_service.dart';
 import 'package:npa_user/widget/loading_indicator.dart';
 
 class RequestTrackingMapPage extends StatefulWidget {

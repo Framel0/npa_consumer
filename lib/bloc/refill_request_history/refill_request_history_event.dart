@@ -6,9 +6,9 @@ abstract class RefillRequestHistoryEvent extends Equatable {
 }
 
 class FetchRefillRequestHistory extends RefillRequestHistoryEvent {
-  final int userId;
+  final int consumerId;
 
-  FetchRefillRequestHistory({@required this.userId});
+  FetchRefillRequestHistory({@required this.consumerId});
   @override
   String toString() {
     return "FetchRefillRequestHistory";

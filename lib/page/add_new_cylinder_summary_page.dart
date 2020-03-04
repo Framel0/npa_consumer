@@ -11,10 +11,12 @@ import 'package:npa_user/widget/widgets.dart';
 
 class AddNewCylinderSummaryPage extends StatefulWidget {
   final List<Product> products;
+  final List<Deposite> deposits;
 
   const AddNewCylinderSummaryPage({
     Key key,
     @required this.products,
+    @required this.deposits,
   }) : super(key: key);
   @override
   _AddNewCylinderSummaryPageState createState() =>
@@ -25,7 +27,14 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
   final TextStyle headerTextStyle = TextStyle(
       color: colorSecondaryOrange, fontSize: 20, fontWeight: FontWeight.bold);
 
+  final TextStyle radioButtonTextStyle = TextStyle(
+    fontWeight: FontWeight.w600,
+    color: colorPrimary,
+  );
+
   double _subTotal = 0.0;
+
+  Deposite _selectedDeposite;
 
   User user = User();
 
@@ -35,6 +44,7 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
   @override
   void initState() {
     super.initState();
+    _selectedDeposite = widget.deposits[0];
     _getTotal();
     _getUser();
   }
@@ -59,7 +69,9 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Summary"),
+      ),
       body: BlocListener<ConsumerProductBloc, ConsumerProductState>(
         listener: (context, state) {
           if (state is AddNewConsumerProductSuccess) {
@@ -83,18 +95,30 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
           return ListView(
             padding: EdgeInsets.symmetric(vertical: 10),
             children: <Widget>[
+              _buildDeposite(),
+              _buildSizedBox(),
+              // Container(
+              //   child: _selectedDeposite.id == 1
+              //       ? Column(
+              //           children: <Widget>[
+              //             _buildOrder(context),
+              //             _buildSizedBox(),
+              //           ],
+              //         )
+              //       : null,
+              // ),
               _buildOrder(context),
               _buildSizedBox(),
               _buildDetails(context),
               _buildSizedBox(),
               _buildProducts(context),
               _buildSizedBox(),
-              _buildConfirmButton(context),
               Container(
                 child: state is AddNewConsumerProductLoading
                     ? LoadingIndicator()
                     : null,
               ),
+              _buildConfirmButton(context),
             ],
           );
         }),
@@ -123,6 +147,7 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
     final user = await readUserData();
     AddNewCylinderRequest request = AddNewCylinderRequest();
     request.consumerId = user.id;
+    request.depositId = _selectedDeposite.id;
     request.addNewCylinderRequestProduct = requestProducts;
 
     BlocProvider.of<ConsumerProductBloc>(context)
@@ -196,6 +221,56 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
     );
   }
 
+  onChangedDeposite(Deposite selectedDeposite) {
+    setState(() {
+      _selectedDeposite = selectedDeposite;
+      if (_selectedDeposite.id == 2) {
+        _subTotal = 0.0;
+      } else {
+        _getTotal();
+      }
+    });
+  }
+
+  Widget _buildRadioListDeposite() {
+    List<Widget> widgets = List<Widget>();
+    for (Deposite method in widget.deposits) {
+      widgets.add(RadioListTile(
+        value: method,
+        groupValue: _selectedDeposite,
+        title: Text(method.name, style: radioButtonTextStyle),
+        onChanged: onChangedDeposite,
+        selected: _selectedDeposite == method,
+        activeColor: colorSecondaryOrange,
+      ));
+    }
+
+    return Column(
+      children: widgets,
+    );
+  }
+
+  Widget _buildDeposite() {
+    return Container(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Select Deposit",
+            style: headerTextStyle,
+          ),
+        ),
+        Card(
+          elevation: 4,
+          // color: colorPrimary100,
+          child: _buildRadioListDeposite(),
+        )
+      ],
+    ));
+  }
+
   Container _buildDetails(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -219,7 +294,7 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Name: \n${firstName} ${lastName}",
+                      "Name: \n$firstName $lastName",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -230,7 +305,7 @@ class _AddNewCylinderSummaryPageState extends State<AddNewCylinderSummaryPage> {
                       height: 5,
                     ),
                     Text(
-                      "Phone Number: \n${phoneNumber}",
+                      "Phone Number: \n$phoneNumber",
                       style: Theme.of(context).textTheme.title.copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,

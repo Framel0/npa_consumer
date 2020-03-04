@@ -19,6 +19,7 @@ class RequestHistory {
   String dispatchFirstName;
   String dispatchLastName;
   String dispatchPhoneNumber;
+  String status;
   int statusId;
   List<RequestProduct> products;
 
@@ -60,6 +61,7 @@ class RequestHistory {
     dispatchFirstName = json["dispatchFirstName"];
     dispatchLastName = json["dispatchLastName"];
     dispatchPhoneNumber = json["dispatchPhoneNumber"];
+    status = json["status"];
     statusId = json["statusId"];
     var list = json["consumerRefillRequestProduct"] as List;
     products = list.map((i) => RequestProduct.fromJson(i)).toList();

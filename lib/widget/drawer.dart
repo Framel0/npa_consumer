@@ -35,7 +35,7 @@ class _AppDrawerState extends State<AppDrawer> {
     final String firstName = user.firstName ?? "";
     final String lastName = user.lastName ?? "";
     final String phoneNumber = user.phoneNumber ?? "";
-    final String consumerId = user.consumerCode ?? "";
+    final String consumerCode = user.consumerCode ?? "";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -116,7 +116,9 @@ class _AppDrawerState extends State<AppDrawer> {
         child: Text(
           "$firstName $lastName",
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: colorSecondaryOrange),
+            fontWeight: FontWeight.bold,
+            color: colorSecondaryOrange,
+          ),
         ),
       ),
       accountEmail: Text(
@@ -133,10 +135,19 @@ class _AppDrawerState extends State<AppDrawer> {
     return ListTile(
       title: Row(
         children: <Widget>[
-          Icon(icon),
+          Icon(
+            icon,
+            color: colorSecondaryOrange,
+          ),
           Padding(
             padding: EdgeInsets.only(left: 8.0),
-            child: Text(text),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: colorPrimary,
+              ),
+            ),
           )
         ],
       ),

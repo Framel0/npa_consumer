@@ -27,32 +27,38 @@ class _LoginPageState extends State<LoginPage> {
             userRepository: widget.userRepository,
           );
         },
-        child: SingleChildScrollView(
-          child: new Container(
-            height: MediaQuery.of(context).size.height,
-            padding:
-                EdgeInsets.symmetric(horizontal: _width / 17, vertical: 10.0),
-            decoration: BoxDecoration(
-                // color: Colors.indigoAccent,
-                // image: DecorationImage(
-                //   colorFilter: new ColorFilter.mode(
-                //       Colors.black.withOpacity(0.05), BlendMode.dstATop),
-                //   image: AssetImage('assets/images/mountains.jpg'),
-                //   fit: BoxFit.cover,
-                // ),
-                ),
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FormLogo(),
-                SizedBox(
-                  height: 20,
-                ),
-                LoginForm(
-                  userRepository: UserRepository(),
-                )
-              ],
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onPanDown: (_) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
+            child: new Container(
+              height: MediaQuery.of(context).size.height,
+              padding:
+                  EdgeInsets.symmetric(horizontal: _width / 17, vertical: 10.0),
+              decoration: BoxDecoration(
+                  // color: Colors.indigoAccent,
+                  // image: DecorationImage(
+                  //   colorFilter: new ColorFilter.mode(
+                  //       Colors.black.withOpacity(0.05), BlendMode.dstATop),
+                  //   image: AssetImage('assets/images/mountains.jpg'),
+                  //   fit: BoxFit.cover,
+                  // ),
+                  ),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FormLogo(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  LoginForm(
+                    userRepository: UserRepository(),
+                  )
+                ],
+              ),
             ),
           ),
         ),

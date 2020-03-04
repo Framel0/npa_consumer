@@ -39,7 +39,7 @@ class _RequestPageState extends State<RequestPage> {
     final user = await readUserData();
 
     BlocProvider.of<RefillRequestBloc>(context)
-        .dispatch(FetchApis(userId: user.id));
+        .dispatch(FetchApis(consumerId: user.id));
   }
 
   @override

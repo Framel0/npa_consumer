@@ -50,9 +50,9 @@ class _ProfilePageState extends State<ProfilePage> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         children: <Widget>[
-          _buildListItem(title: "Consumer ID", subtitle: consumerId),
+          _buildListItem(title: "Consumer Code", subtitle: consumerId),
           _divider(),
-          _buildListItem(title: "Name", subtitle: "${firstName} ${lastName}"),
+          _buildListItem(title: "Name", subtitle: "$firstName $lastName"),
           _divider(),
           _buildListItem(title: "Phone", subtitle: phoneNumber),
           SizedBox(
@@ -96,11 +96,17 @@ class _ProfilePageState extends State<ProfilePage> {
       title: Text(
         title,
         style: TextStyle(
-            color: colorPrimary, fontSize: 18, fontWeight: FontWeight.w500),
+          color: colorPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       subtitle: Text(
         subtitle,
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(
+          fontSize: 16,
+          color: colorPrimary,
+        ),
       ),
     );
   }

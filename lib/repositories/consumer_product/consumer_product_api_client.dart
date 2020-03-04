@@ -13,10 +13,10 @@ class ConsumerProductApiClient {
       : assert(httpClient != null);
 
   Future<List<ConsumerProduct>> fetchConsumerProducts({
-    @required int userId,
+    @required int consumerId,
   }) async {
     final consumerProductsUrl =
-        "$baseUrl/api/ConsumerProduct/ConsumerProductsByConsumer/$userId";
+        "$baseUrl/api/ConsumerProduct/ConsumerProductsByConsumer/$consumerId";
     final consumerProductsResponse =
         await this.httpClient.get(consumerProductsUrl);
 
@@ -37,7 +37,8 @@ class ConsumerProductApiClient {
   Future addNewConsumerProducts({
     @required AddNewCylinderRequest cylinderRequest,
   }) async {
-    final consumerProductsUrl = "$baseUrl/api/ConsumerProduct/Create";
+    final consumerProductsUrl =
+        "$baseUrl/api/ConsumerAddNewProductRequest/Create";
     Map<String, String> headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(cylinderRequest.toJson());
 
